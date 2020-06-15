@@ -1,0 +1,39 @@
+image: docker:latest
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+stages:
+  - build
+  - deploy
+
+before_script:
+  - chmod +x mvnw
+
+build:
+  image: maven:3-jdk-11-openj9
+  stage: build
+  cache:
+    paths:
+      - .m2/repository
+  tags:
+    - dalfcs_gitlab_docker_ci
+  script: ./mvnw package
+ # artifacts:
+  #  paths:
+   #   - target/*.jar
+   
+#Comment below script after creating features branch   
+deploy:
+ stage: deploy
+ image: ruby:2.3
+ script:
+ - apt-get update -qy
+ - apt-get install -y ruby-dev
+ - gem install dpl
+ - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
+ tags:
+ - dalfcs_gitlab_docker_ci

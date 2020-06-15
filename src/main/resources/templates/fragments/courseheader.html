@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+
+	<div th:fragment="header">
+
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand" href="#">EvalMe</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link"
+						th:href="@{/userhome}">Course List <span class="sr-only">(current)</span></a>
+					</li>
+
+					<li class="nav-item"><a class="nav-link"
+						sec:authorize="hasAuthority('STUDENT')"
+						th:href="@{/enrolledcourses}">Courses as Student</a></li>
+
+					<li class="nav-item"><a class="nav-link"
+						sec:authorize="hasAuthority('INSTRUCTOR')"
+						th:href="@{/instructedcourses}">Courses as Instructor</a></li>
+
+					<li class="nav-item"><a class="nav-link"
+						sec:authorize="hasAuthority('TA')" th:href="@{/tacourses}">Courses
+							as TA</a></li>
+
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/logout}">Logout</a></li>
+
+				</ul>
+			</div>
+		</nav>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Add Course</title>
+</head>
+
+<body>
+
+	<div th:if="${param.error}">
+		<p><h3>Input is incorrect. Try again!</h3></p> 
+	</div>
+
+	<div th:if="${param.invalidid}">
+		<p><h3>Course Id should be 4 digits. Try again!</h3></p> 
+	</div>
+	
+	<div th:if="${param.shortname}">
+		<p><h3>Course Name should be between 5 to 10 characters. Try again!</h3></p>
+	</div>
+	
+	<div th:if="${param.invalidinstid}">
+		<p><h3>Instructor Id should start with 'B00...' and should be 9 characters. Try again!</h3></p>
+	</div>
+	
+	<div th:if="${param.idexists}">
+		<p><h3>Id exists! Try again!</h3></p>
+	</div>
+	
+	<div th:if="${param.nameexists}">
+		<p><h3>Name exists! Try again!</h3></p>
+	</div>
+	
+	<div th:if="${param.invalidinst}">
+		<p><h3>Instructor does not exist! Try again!</h3></p>
+	</div>
+	
+	<div th:if="${param.coursenotcreated}">
+		<p><h3>Course not created. Try again!</h3></p>
+	</div>
+	
+	
+	
+	<div id="addcourse">
+	
+	<h1>Add Course</h1>
+
+		<form th:action="@{/adminadd}" th:object="${courseadmin}" method="post">
+		
+			<p>Course Id: <input type="text" th:field="*{courseId}"/></p>
+			
+			<p>Course Name: <input type="text" th:field="*{courseName}"/></p>
+			
+			<p>Instructor Id: <input type="text" th:field="*{instructorId}"/></p>
+			
+			<p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+			
+		</form>
+		
+		<form th:action="@{/adminhome}" method="get">
+		
+			<button name="goback" value="gobackdashboard" th:href="@{adminhome}">Go Back to Admin Dashboard</button>
+		
+		</form>
+	
+	</div>
+	
+	<a th:href="@{/logout}">logout</a>
+	
+
+</body>
+
+</html>

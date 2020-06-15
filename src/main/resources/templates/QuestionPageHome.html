@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<style>
+h1 {
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+	<br>
+	<div class="container">
+	<div class="row">
+	<h1>Question Manager Page</h1>
+	</div>
+	<hr>
+	<div class="row justify-content-center">
+	<div class="col-3">
+	
+	<a class="btn btn-primary">View Question Titles</a>
+	
+	</div>
+	
+	<div class="col-3">
+	
+	<a class="btn btn-primary" th:href="@{/questionpage/getCreateQuestionHome}">Create Question</a>
+	
+	</div>
+	</div>
+	</div>
+	
+
+	
+</body>
+</html>

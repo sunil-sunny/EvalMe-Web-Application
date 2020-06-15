@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home Page</title>
+<style>
+h1 {
+	text-align: center;
+}
+
+form {
+	text-align: center;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+	overflow: hidden;
+	background-color: #333;
+}
+
+.topnav a {
+	float: left;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+}
+
+.topnav a:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+.topnav a.active {
+	background-color: #4CAF50;
+	color: white;
+}
+</style>
+
+</head>
+<body>
+
+	<div class="topnav">
+		<a th:href="@{/home}">Course List</a> <a th:href="@{/enrolledcourses}">Courses
+			as student</a> <a th:href="@{/instructedcourses}">Courses as
+			Instructor</a> <a th:href="@{/tacourses}">Courses as Instructor</a> <a
+			href="@{/logout}">Logout</a>
+	</div>
+
+	<div>
+
+
+		<h1 th:text="${coursename}"></h1>
+		<br>
+		<h1 th:text="${result}"></h1>
+		<form th:action="@{/allocateTA}" method="post">
+			<div>
+				<input type="hidden" th:value="${courseId}" name="courseid" />
+				<input type="hidden" th:value="${coursename}" name="coursename" /> <label
+					for="TA">Allocate TA: </label> <input type="text" name="TA" id="TA">
+				<input type="submit" value="submit" />
+			</div>
+		</form>
+		<br>
+		<form th:action="@{/uploadstudents}" method="post">
+			<div>
+				<input type="hidden" th:value="${courseId}" name="courseid" /> 
+				<input type="hidden" th:value="${coursename}" name="coursename" /><label
+					for="TA">Enroll Students: </label> <input type="file" name="studentlist">
+				<input type="submit" value="upload" accept=".csv" />
+			</div>
+		</form>
+
+	</div>
+
+
+</body>
+</html>

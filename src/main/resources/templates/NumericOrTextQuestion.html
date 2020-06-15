@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<style>
+h1 {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+	<br>
+	<div class="container"
+		th:if="${BasicQuestion.questionType}== 'numeric'">
+		<!-- container starts -->
+		<div class="row">
+			<h1>Confirm Question</h1>
+		</div>
+		<hr>
+
+		<!-- Numeric Question Form Start -->
+		<div class="container">
+
+			<form th:action="@{/questionpage/createNumericQuestion}"
+				th:object="${question}" method="post">
+				<div class="row">
+					<h4>Displaying Numeric questions looks like this:</h4>
+				</div>
+				<hr>
+				<input type="hidden" id="questionTitle" name="questionTitle"
+					th:field="*{questionTitle}"
+					th:value="${BasicQuestion.questionTitle}"> <input
+					type="hidden" id="questionText" name="questionText"
+					th:field="*{questionText}" th:value="${BasicQuestion.questionText}">
+
+				<input type="hidden" id="questionType" name="questionType"
+					th:field="*{questionType}" th:value="${questionType}">
+
+				<div class="row">
+					<div class="col-8">
+						<p th:text="${BasicQuestion.questionText}"></p>
+					</div>
+					<div class="col-2">
+						<input type="number" class="form-control" style="width: 40%;">
+					</div>
+				</div>
+				<hr>
+				<a href="/questionpage/getCreateQuestionHome"
+					class="btn btn-primary" style="width: 15%; color: white;">Return
+					Home</a>
+
+				<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+
+			</form>
+
+		</div>
+		<!-- Numeric text Question Form End -->
+		<!-- container end -->
+	</div>
+	<!-- Free Question Form Start -->
+	<div class="container"
+		th:if="${BasicQuestion.questionType}== 'freetext'">
+
+		<form th:action="@{/questionpage/createFreeTextQuestion}"
+			th:object="${question}" method="post">
+
+			<div class="row">
+				<h4>Displaying Free text questions looks like this:</h4>
+			</div>
+			<hr>
+			<input type="hidden" id="questionTitle" name="questionTitle"
+				th:field="*{questionTitle}"
+				th:value="${BasicQuestion.questionTitle}"> <input
+				type="hidden" id="questionText" name="questionText"
+				th:field="*{questionText}" th:value="${BasicQuestion.questionText}">
+
+			<input type="hidden" id="questionType" name="questionType"
+				th:field="*{questionType}" th:value="${BasicQuestion.questionType}">
+
+			<div class="row">
+				<div class="col-8">
+					<p th:text="${BasicQuestion.questionText}"></p>
+				</div>
+				<div class="col-4 form-group">
+
+					<textarea class="form-control" id="freetext" rows="3" cols="10"
+						style="width: 45%; border: solid #5d635f;"></textarea>
+
+				</div>
+			</div>
+			<hr>
+			<a href="/questionpage/getCreateQuestionHome" class="btn btn-primary"
+				style="width: 15%; color: white;">Return Home</a>
+
+			<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+
+		</form>
+
+	</div>
+	<!-- Free text Question Form End -->
+</body>
+</html>

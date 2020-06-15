@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+	
+	<h1>Admin Dashboard</h1>
+	
+	
+	<form th:action="@{/adminadd}" method="get">
+	
+	<button name="buttonadd" value="Add Course" th:href="@{adminaddcourse}">Add Course</button>
+	
+	</form>
+	
+	<form th:action="@{/admindelete}" method="get">
+	
+	<button name="buttondelete" value="Delete Course">Delete Course</button>
+	
+	</form>
+	
+		<a th:href="@{/logout}">logout</a>
+	
+</body>
+
+</html>

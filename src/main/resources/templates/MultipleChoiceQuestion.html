@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<style>
+h1 {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+	<br>
+	<div class="container">
+		<!-- container starts -->
+
+		<!-- Multiple choice– choose one Form Start  th:if="${isMultipleOne} == 'YES'" -->
+		<div class="container">
+
+			<div class="row">
+				<h4>Answers</h4>
+			</div>
+			<hr>
+			<form>
+				<!-- option start -->
+				<div class="row">
+					<div class="col-5 form-group">
+						<label for="displaytext-1">Display Text:</label> <input
+							type="text" class="form-control" id="displaytext-1"
+							name="displaytext-1" placeholder="Enter Display text">
+					</div>
+					<div class="col-5 form-group">
+						<label for="stored-1">Stored As:</label> <input type="text"
+							class="form-control" id="stored-1" name="stored-1"
+							placeholder="stored as">
+					</div>
+					<hr>
+				</div>
+				<!-- option start -->
+
+				<!-- option start -->
+				<div class="row">
+					<div class="col-5 form-group">
+						<label for="displaytext-2">Display Text:</label> <input
+							type="text" class="form-control" id="displaytext-2"
+							name="displaytext-2" placeholder="Enter Display text">
+					</div>
+					<div class="col-5 form-group">
+						<label for="stored-2">Stored As:</label> <input type="text"
+							class="form-control" id="stored-2" name="stored-2"
+							placeholder="stored as">
+					</div>
+					<hr>
+				</div>
+				<!-- option start -->
+
+				<!-- option start -->
+				<div class="row">
+					<div class="col-5 form-group">
+						<label for="displaytext-3">Display Text:</label> <input
+							type="text" class="form-control" id="displaytext-3"
+							name="displaytext-3" placeholder="Enter Display text">
+					</div>
+					<div class="col-5 form-group">
+						<label for="stored-3">Stored As:</label> <input type="text"
+							class="form-control" id="stored-3" name="stored-3"
+							placeholder="stored as">
+					</div>
+					<hr>
+				</div>
+				<!-- option start -->
+
+				<!-- option start -->
+				<div class="row">
+					<div class="col-5 form-group">
+						<label for="displaytext-4">Display Text:</label> <input
+							type="text" class="form-control" id="displaytext-4"
+							name="displaytext-4" placeholder="Enter Display text">
+					</div>
+					<div class="col-5 form-group">
+						<label for="stored-4">Stored As:</label> <input type="text"
+							class="form-control" id="stored-4" name="stored-4"
+							placeholder="stored as">
+					</div>
+					<hr>
+				</div>
+				<!-- option start -->
+
+				<!-- option start -->
+				<div class="row">
+					<div class="col-5 form-group">
+						<label for="displaytext-5">Display Text:</label> <input
+							type="text" class="form-control" id="displaytext-5"
+							name="displaytext-5" placeholder="Enter Display text">
+					</div>
+					<div class="col-5 form-group">
+						<label for="stored-5">Stored As:</label> <input type="text"
+							class="form-control" id="stored-5" name="stored-5"
+							placeholder="stored as">
+					</div>
+					<hr>
+				</div>
+				<!-- option start -->
+				<hr>
+				<a href="/questionpage/getCreateQuestionHome"
+					class="btn btn-primary" style="width: 15%; color: white;">Return
+					Home</a>
+
+				<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+			</form>
+
+			<hr>
+			<!-- Confirm Multiple One Form Start th:if="${isMultipleOneFixed} == 'YES'" -->
+			<div class="container">
+				<form>
+					<div class="row">
+						<h4>Displaying Multiple Choice – Choose One questions looks
+							like this:</h4>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-8">
+							<p>How many Credit hours are you attempting this term?</p>
+						</div>
+						<div class="col-4">
+							<select class="custom-select" id="question type"
+								name="question type">
+								<option value="1">Numeric</option>
+								<option value="2">Multiple choice – choose one</option>
+								<option value="3">Multiple choice – choose multiple</option>
+								<option value="4">Free text</option>
+							</select>
+						</div>
+					</div>
+					<hr>
+					<a href="/questionpage/getCreateQuestionHome"
+						class="btn btn-primary" style="width: 15%; color: white;">Return
+						Home</a>
+
+					<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+
+				</form>
+
+			</div>
+			<!-- Confirm Multiple One Form End -->
+		</div>
+		<!-- Multiple choice–choose one Form End -->
+
+
+	</div>
+</body>
+</html>

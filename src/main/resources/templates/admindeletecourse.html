@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Delete Course</title>
+</head>
+
+<body>
+	
+	<div th:if="${param.error}">
+		<p><h3>Input is incorrect. Try again!</h3></p> 
+	</div>
+	
+	<div th:if="${param.invalidid}">
+		<p><h3>Course Id should be 4 digits. Try again!</h3></p> 
+	</div>
+	
+	<div th:if="${param.iddoesnotexist}">
+		<p><h3>Course Id does not exist. Try again!</h3></p> 
+	</div>
+	
+	<div th:if="${param.coursenotdeleted}">
+		<p><h3>Course not deleted. Try again!</h3></p> 
+	</div>
+	
+	<div id="deletecourse">
+	
+		<form th:action="@{/admindelete}" th:object="${course}" method="post">
+		
+			<p>Course Id: <input type="text" th:field="*{courseId}"/></p>
+			
+			<p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+			
+		</form>
+		
+		<form th:action="@{/adminhome}" method="get">
+		
+			<button name="goback" value="gobackdashboard" th:href="@{adminhome}">Go Back to admin Dashboard</button>
+		
+		</form>
+	
+	</div>
+	
+		<a th:href="@{/logout}">logout</a>
+	
+
+</body>
+
+</html>

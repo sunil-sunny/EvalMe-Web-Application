@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+
+<style>
+h1, h3 {
+	text-align: center;
+}
+
+form {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+
+	<br>
+	<div style="width: 800px; margin: 0 auto;">
+		<h1 th:text="${coursename}"></h1>
+		<br> <br>
+		<hr>
+		<form class="form-inline" th:action="@{/allocateTA}" method="post">
+			<div class="form-group mx-sm-3 mb-2">
+				<input type="hidden" th:value="${courseId}" name="courseid" /> <input
+					type="hidden" th:value="${coursename}" name="coursename" />
+				<h2>Allocate TA:</h2>
+				<br> <input type="text" class="form-control"
+					placeholder="Banner Id" name="TA" id="TA">
+			</div>
+			<input type="submit" value="Allocate" class="btn btn-primary mb-2" />
+		</form>
+		<h3 style="color: #5d7fa6;" th:text="${result}"></h3>
+
+
+		<br> <br> <br>
+		<hr>
+		<br>
+
+		<div style="width: 800px; margin: 0 auto;" class="input-group">
+
+			<div class="custom-file">
+				<form style="text-align: center;" class="form-inline"
+					th:action="@{/uploadstudents}" method="post"
+					enctype="multipart/form-data">
+					<div>
+						<input type="hidden" th:value="${courseId}" name="courseid" /> <input
+							type="hidden" th:value="${coursename}" name="coursename" />
+						<h2>Enroll Students:</h2>
+						<br> <input type="file" name="file" id="file" accept=".csv">
+						<input type="submit" id="file" value="upload"
+							class="btn btn-primary" />
+					</div>
+				</form>
+			</div>
+		</div>
+		<br> <br>
+		<h3 class="text-justify" style="color: #5d7fa6;"
+			th:text="${resultEnrolling}"></h3>
+
+		<div class="container">
+
+			<div class="row">
+				<a th:href="@{/questionpage/getHome}" sec:authorize="hasAuthority('INSTRUCTOR')" class="btn btn-primary">Question Manager</a>	
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
