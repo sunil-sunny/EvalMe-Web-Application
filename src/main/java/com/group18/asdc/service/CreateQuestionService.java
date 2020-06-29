@@ -1,17 +1,12 @@
 package com.group18.asdc.service;
 
 import com.group18.asdc.entities.BasicQuestionData;
-import com.group18.asdc.entities.MultipleChoiceChooseMore;
-import com.group18.asdc.entities.MultipleChoiceChooseOne;
+import com.group18.asdc.entities.MultipleChoiceQuestion;
 
 public interface CreateQuestionService {
 
-	public boolean createNumericQuestion(BasicQuestionData theBasicQuestionData);
+	public boolean createNumericOrTextQuestion(BasicQuestionData theBasicQuestionData);
 
-	public boolean createFreeTextQuestion(BasicQuestionData theBasicQuestionData);
-
-	public boolean createMultipleChoiceChooseMoreQuestion(MultipleChoiceChooseMore theMultipleChoiceChooseMore);
-
-	public boolean createMultipleChoiceChooseOneQuestion(MultipleChoiceChooseOne theMultipleChoiceChooseOne);
+	public boolean createMultipleQuestion(MultipleChoiceQuestion theMultipleChoiceChooseOne);
 
 }

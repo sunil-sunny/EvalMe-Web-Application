@@ -7,35 +7,88 @@
 <link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
 <style>
 h1 {
-    text-align: center;
+	text-align: center;
 }
 </style>
+<script>
+	function alert() {
+		var txt;
+		if (confirm("Delete question")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
 </head>
 <body>
 
 	<div th:replace="fragments/courseheader :: header"></div>
 	<br>
 	<div class="container">
-	<div class="row">
-	<h1>Question Manager Page</h1>
+		<div class="row">
+			<h1>Question Manager Page</h1>
+		</div>
+		<hr>
+		<div class="row justify-content-center">
+
+			<div class="col-3">
+
+				<a class="btn btn-primary"
+					th:href="@{/questionpage/getCreateQuestionHome}"
+					style="color: white; width: 80%;">Create Question</a>
+
+			</div>
+			<div class="col-3">
+
+				<a class="btn btn-primary" th:href="@{/viewQuestions/sortByTitle}"
+					style="color: white; width: 80%;">Sort by Title</a>
+
+			</div>
+
+			<div class="col-3">
+
+				<a class="btn btn-primary" th:href="@{/viewQuestions/sortByDate}"
+					style="color: white; width: 80%;">Sort by Creation Date </a>
+
+			</div>
+
+
+		</div>
 	</div>
 	<hr>
-	<div class="row justify-content-center">
-	<div class="col-3">
-	
-	<a class="btn btn-primary">View Question Titles</a>
-	
-	</div>
-	
-	<div class="col-3">
-	
-	<a class="btn btn-primary" th:href="@{/questionpage/getCreateQuestionHome}">Create Question</a>
-	
-	</div>
-	</div>
-	</div>
-	
 
-	
+	<div class="container">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Question Title</th>
+					<th scope="col">Question Text</th>
+					<th scope="col">Date Created</th>
+					<th scope="col">Click to Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<form th:each="prod: ${allquestions}" th:action="@{/deleteQuestion}"
+					method="get">
+
+					<tr>
+						<td th:text="${prod.questionTitle}" />
+						<td th:text="${prod.questionText}" />
+						<td th:text="${prod.creationDateTime}" />
+
+						<input type="hidden" th:value="${prod.questionId}" name="id" />
+
+						<td><input type="submit" value="Delete Question"
+							class="btn btn-danger" onclick="return alert()" /></td>
+					</tr>
+				</form>
+			</tbody>
+		</table>
+
+	</div>
+
+
+
 </body>
 </html>

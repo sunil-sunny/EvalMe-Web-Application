@@ -26,7 +26,7 @@ h1 {
 		<!-- Numeric Question Form Start -->
 		<div class="container">
 
-			<form th:action="@{/questionpage/createNumericQuestion}"
+			<form th:action="@{/questionpage/createNumericOrTextQuestion}"
 				th:object="${question}" method="post">
 				<div class="row">
 					<h4>Displaying Numeric questions looks like this:</h4>
@@ -51,10 +51,9 @@ h1 {
 				</div>
 				<hr>
 				<a href="/questionpage/getCreateQuestionHome"
-					class="btn btn-primary" style="width: 15%; color: white;">Return
-					Home</a>
+					class="btn btn-primary" style="width: 15%; color: white;">Back</a>
 
-				<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+				<button type="submit" class="btn btn-primary" style="width: 15%;">Save</button>
 
 			</form>
 
@@ -66,7 +65,7 @@ h1 {
 	<div class="container"
 		th:if="${BasicQuestion.questionType}== 'freetext'">
 
-		<form th:action="@{/questionpage/createFreeTextQuestion}"
+		<form th:action="@{/questionpage/createNumericOrTextQuestion}"
 			th:object="${question}" method="post">
 
 			<div class="row">
@@ -95,9 +94,9 @@ h1 {
 			</div>
 			<hr>
 			<a href="/questionpage/getCreateQuestionHome" class="btn btn-primary"
-				style="width: 15%; color: white;">Return Home</a>
+				style="width: 15%; color: white;">Back</a>
 
-			<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+			<button type="submit" class="btn btn-primary" style="width: 15%;">Save</button>
 
 		</form>
 

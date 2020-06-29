@@ -66,34 +66,7 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 		return CourseDaoImplMock.coursesDetails;
 	}
 
-	@Override
-	public boolean allocateTa(int courseId, User user) {
-		if (user != null) {
-
-			Course theCourse=new Course();
-			theCourse.setCourseId(courseId);
-			theCourse.setTaList(Arrays.asList(user));
-			if(theCourse.getTaList().size()>0) {
-				return true;
-			}
-			
-			return false;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean enrollStudentsIntoCourse(List<User> studentList, int courseId) {
-
-		Course theCourse=new Course();
-		theCourse.setCourseId(courseId);
-		theCourse.setStudentList(studentList);
-		if(theCourse.getStudentList().size()>0) {
-			return true;
-		}
-		
-		return false;
-	}
+	
 
 	@Override
 	public List<Course> getCoursesWhereUserIsStudent(User user) {
@@ -142,6 +115,7 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 
 		return taCourses;
 	}
+
 
 	public Course getCourseById(int courseId) {
 

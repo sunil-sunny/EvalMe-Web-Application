@@ -76,9 +76,7 @@ public class CustomAuthenticationManager implements AuthenticationManager
 		User u;
 		try
 		{
-            System.out.println("tttttttttttttt");
             u = new User(bannerID, userDB);
-            System.out.println("qqqqqqqqqqqqq"+u.getBannerId());
 		}
 		catch (Exception e)
 		{

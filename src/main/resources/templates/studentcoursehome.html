@@ -7,22 +7,21 @@
 <link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
 <style>
 h1 {
-    text-align: center;
+	text-align: center;
 }
 </style>
 </head>
 <body>
 
-<div th:replace="fragments/courseheader :: header"></div>
+	<div th:replace="fragments/courseheader :: header"></div>
 
-<br>
+	<br>
 
 
-	<div>
+	<div class="container">
 		<h1 th:text="${coursename}"></h1>
 		<br>
 	</div>
-
 
 </body>
 </html>

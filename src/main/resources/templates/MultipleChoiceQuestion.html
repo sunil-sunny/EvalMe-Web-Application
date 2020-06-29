@@ -4,153 +4,186 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>EvalMe</title>
-<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
-<style>
-h1 {
-	text-align: center;
-}
-</style>
+
+<title>Create Elements Dynamically using jQuery</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
+
 <body>
 
 	<div th:replace="fragments/courseheader :: header"></div>
-	<br>
 	<div class="container">
-		<!-- container starts -->
 
-		<!-- Multiple choice– choose one Form Start  th:if="${isMultipleOne} == 'YES'" -->
 		<div class="container">
+
+			<!-- Multiple choice– choose one Form Start  th:if="${isMultipleOne} == 'YES'" -->
 
 			<div class="row">
 				<h4>Answers</h4>
 			</div>
 			<hr>
-			<form>
-				<!-- option start -->
-				<div class="row">
-					<div class="col-5 form-group">
-						<label for="displaytext-1">Display Text:</label> <input
-							type="text" class="form-control" id="displaytext-1"
-							name="displaytext-1" placeholder="Enter Display text">
-					</div>
-					<div class="col-5 form-group">
-						<label for="stored-1">Stored As:</label> <input type="text"
-							class="form-control" id="stored-1" name="stored-1"
-							placeholder="stored as">
-					</div>
-					<hr>
-				</div>
-				<!-- option start -->
 
-				<!-- option start -->
-				<div class="row">
-					<div class="col-5 form-group">
-						<label for="displaytext-2">Display Text:</label> <input
-							type="text" class="form-control" id="displaytext-2"
-							name="displaytext-2" placeholder="Enter Display text">
-					</div>
-					<div class="col-5 form-group">
-						<label for="stored-2">Stored As:</label> <input type="text"
-							class="form-control" id="stored-2" name="stored-2"
-							placeholder="stored as">
-					</div>
-					<hr>
-				</div>
-				<!-- option start -->
+			<div class="row alert alert-danger" th:if="${error} != null" th:text="${error}">
+				<p ></p>
+			</div>
 
-				<!-- option start -->
-				<div class="row">
-					<div class="col-5 form-group">
-						<label for="displaytext-3">Display Text:</label> <input
-							type="text" class="form-control" id="displaytext-3"
-							name="displaytext-3" placeholder="Enter Display text">
-					</div>
-					<div class="col-5 form-group">
-						<label for="stored-3">Stored As:</label> <input type="text"
-							class="form-control" id="stored-3" name="stored-3"
-							placeholder="stored as">
-					</div>
-					<hr>
-				</div>
-				<!-- option start -->
+			<form th:action="@{/questionpage/createMultipleChoiceQuestion}"
+				th:object="${question}" method="post">
+				<div id="options">
 
-				<!-- option start -->
-				<div class="row">
-					<div class="col-5 form-group">
-						<label for="displaytext-4">Display Text:</label> <input
-							type="text" class="form-control" id="displaytext-4"
-							name="displaytext-4" placeholder="Enter Display text">
+					<!-- option start -->
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-1">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-1"
+								name="optiontext-1" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-1">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-1"
+								name="optionstored-1" value="1">
+						</div>
+						<hr>
 					</div>
-					<div class="col-5 form-group">
-						<label for="stored-4">Stored As:</label> <input type="text"
-							class="form-control" id="stored-4" name="stored-4"
-							placeholder="stored as">
-					</div>
-					<hr>
-				</div>
-				<!-- option start -->
+					<!-- option start -->
 
-				<!-- option start -->
-				<div class="row">
-					<div class="col-5 form-group">
-						<label for="displaytext-5">Display Text:</label> <input
-							type="text" class="form-control" id="displaytext-5"
-							name="displaytext-5" placeholder="Enter Display text">
+					<!-- option start -->
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-2">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-2"
+								name="optiontext-2" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-2">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-2"
+								name="optionstored-2" value="2">
+						</div>
+						<hr>
 					</div>
-					<div class="col-5 form-group">
-						<label for="stored-5">Stored As:</label> <input type="text"
-							class="form-control" id="stored-5" name="stored-5"
-							placeholder="stored as">
-					</div>
-					<hr>
-				</div>
-				<!-- option start -->
-				<hr>
-				<a href="/questionpage/getCreateQuestionHome"
-					class="btn btn-primary" style="width: 15%; color: white;">Return
-					Home</a>
+					<!-- option start -->
 
-				<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+					<!-- option start -->
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-3">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-3"
+								name="optiontext-3" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-3">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-3"
+								name="optionstored-3" value="3">
+						</div>
+						<hr>
+					</div>
+					<!-- option start -->
+
+					<!-- option start -->
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-4">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-4"
+								name="optiontext-4" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-4">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-4"
+								name="optionstored-4" value="4">
+						</div>
+						<hr>
+					</div>
+					<!-- option start -->
+
+					<!-- option start -->
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-5">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-5"
+								name="optiontext-5" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-5">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-5"
+								name="optionstored-5" value="5">
+						</div>
+						<hr>
+					</div>
+					<!-- option start -->
+
+				</div>
+
+				<input type="hidden" id="questionTitle" name="questionTitle"
+					th:field="*{questionTitle}"
+					th:value="${BasicQuestion.questionTitle}"> <input
+					type="hidden" id="questionText" name="questionText"
+					th:field="*{questionText}" th:value="${BasicQuestion.questionText}">
+
+				<input type="hidden" id="questionType" name="questionType"
+					th:field="*{questionType}" th:value="${questionType}"> <a
+					href="/questionpage/getCreateQuestionHome" class="btn btn-primary"
+					style="width: 15%; color: white;">Back</a> <input type="button"
+					id="btAdd" value="Add Option" style="width: 15%;"
+					class="btn btn-primary" />
+				<button type="submit" class="btn btn-primary" style="width: 15%;">Save</button>
+
 			</form>
 
-			<hr>
-			<!-- Confirm Multiple One Form Start th:if="${isMultipleOneFixed} == 'YES'" -->
-			<div class="container">
-				<form>
-					<div class="row">
-						<h4>Displaying Multiple Choice – Choose One questions looks
-							like this:</h4>
-					</div>
-					<hr>
-					<div class="row">
-						<div class="col-8">
-							<p>How many Credit hours are you attempting this term?</p>
-						</div>
-						<div class="col-4">
-							<select class="custom-select" id="question type"
-								name="question type">
-								<option value="1">Numeric</option>
-								<option value="2">Multiple choice – choose one</option>
-								<option value="3">Multiple choice – choose multiple</option>
-								<option value="4">Free text</option>
-							</select>
-						</div>
-					</div>
-					<hr>
-					<a href="/questionpage/getCreateQuestionHome"
-						class="btn btn-primary" style="width: 15%; color: white;">Return
-						Home</a>
 
-					<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
-
-				</form>
-
-			</div>
-			<!-- Confirm Multiple One Form End -->
 		</div>
-		<!-- Multiple choice–choose one Form End -->
-
 
 	</div>
+
 </body>
+
+<script>
+	$(document)
+			.ready(
+					function() {
+						var i = 5;
+
+						// Create a DIV and style it using .css() method.
+						var row = $(document.createElement('div')).css({
+
+						});
+
+						var columnone = $(document.createElement('div')).css({
+
+						});
+						var columntwo = $(document.createElement('div')).css({
+
+						});
+
+						$(row).addClass("row");
+						$(columnone).addClass("col-5 form-group");
+						$(columntwo).addClass("col-5 form-group");
+
+						$('#btAdd')
+								.click(
+										function() {
+
+											i = i + 1;
+											$(columnone)
+													.append(
+															'<label for="displaytext-1">Display Text:</label>'
+																	+ ' <input type="text" class="form-control" id="optiontext-'+i+'"'+
+							'name="optiontext-'+i+'" placeholder="Enter Display text">');
+											$(columntwo)
+													.append(
+															'<label for="stored-1">Stored As:</label>'
+																	+ ' <input type="number" class="form-control" id="optionstored-'+i+'" '+
+				'name="optionstored-'+i+'" value="'+i+'">');
+											$(row).append(columnone);
+											$(row).append(columntwo);
+											// Add both DIVs to the main container.
+											$('#options').after(row);
+
+										});
+					});
+</script>
 </html>

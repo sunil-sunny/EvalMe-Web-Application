@@ -9,28 +9,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.springframework.stereotype.Repository;
-
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.database.SQLMethods;
 import com.group18.asdc.database.SQLQueries;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.util.DataBaseQueriesUtil;
 
+import org.springframework.stereotype.Repository;
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
-
 	private Logger log = Logger.getLogger(UserDaoImpl.class.getName());
-
-	// @Override
-	// public Boolean authenticateByEmailAndPassword(ArrayList<Object> valuesList)
-	// throws SQLException {
-	// SQLMethods sqlImplementation = new SQLMethods();
-	// return
-	// sqlImplementation.selectQuery(SQLQueries.USER_AUTH_BY_EMAIL_PASSWORD.toString(),
-	// valuesList).size() == 1;
-	// }
 
 	@Override
 	public boolean isUserExists(User user) {
@@ -51,8 +41,7 @@ public class UserDaoImpl implements UserDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception occured while checking if user exists or not");
 		} finally {
 			try {
 				if (resultSet != null) {
@@ -66,8 +55,8 @@ public class UserDaoImpl implements UserDao {
 				}
 				log.info("closing connection after having a check if user exists or not");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info(
+						"SQL Exception occured while closing the connections and statements after checking if user exists or not");
 			}
 		}
 		return false;
@@ -100,8 +89,7 @@ public class UserDaoImpl implements UserDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception while getting user by banner id");
 		} finally {
 			try {
 				if (resultSet != null) {
@@ -115,8 +103,7 @@ public class UserDaoImpl implements UserDao {
 				}
 				log.info("closing the connection after getting user by banner id");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info("SQL Exception while closing the connections and statements after getting user by banner id");
 			}
 		}
 
@@ -125,9 +112,6 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId) {
-
-		// Returns the list of eligible users to get enrolled in the course.
-
 		List<User> eligibleStudents = new ArrayList<User>();
 		List<User> existingStudentsOfCourse = this.getAllUsersByCourse(courseId);
 
@@ -176,8 +160,8 @@ public class UserDaoImpl implements UserDao {
 			}
 
 		} catch (SQLException e) {
+			log.info("SQL Exception while getting all the users realted to course");
 
-			e.printStackTrace();
 		} finally {
 			try {
 				if (connection != null) {
@@ -192,8 +176,8 @@ public class UserDaoImpl implements UserDao {
 				log.info("Closing connections after getting users based on course");
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info(
+						"SQL Exception while closing the connections and statements after getting all the users realted to course");
 			}
 
 		}
@@ -223,8 +207,7 @@ public class UserDaoImpl implements UserDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception while getting the instructor for course");
 		} finally {
 
 			try {
@@ -241,7 +224,8 @@ public class UserDaoImpl implements UserDao {
 				}
 				log.info("closing connection after getting instructor for a course");
 			} catch (SQLException e) {
-				e.printStackTrace();
+				log.info(
+						"SQL Exception while closing the connections and statements after getting the instructor for course");
 			}
 
 		}
@@ -252,7 +236,6 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public void loadUserWithBannerId(ArrayList<Object> valueList, User userObj) {
 		SQLMethods sqlImplementation = null;
-		System.out.println("nnnnnnnnnnnnnnnnn");
 		try {
 			sqlImplementation = new SQLMethods();
 			ArrayList<HashMap<String, Object>> rowsList = sqlImplementation
@@ -268,7 +251,7 @@ public class UserDaoImpl implements UserDao {
 				userObj.setPassword((String) valuesMap.get("password"));
 			}
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		} finally {
 			if (sqlImplementation != null) {
 				sqlImplementation.cleanup();
@@ -285,7 +268,7 @@ public class UserDaoImpl implements UserDao {
 					criteriaList);
 			return rowCount > 0;
 		} catch (SQLException e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		} finally {
 			if (sqlImplementation != null) {
 				sqlImplementation.cleanup();
@@ -309,7 +292,7 @@ public class UserDaoImpl implements UserDao {
 				}
 			}
 		} catch (SQLException e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		} finally {
 			if (sqlImplementation != null) {
 				sqlImplementation.cleanup();

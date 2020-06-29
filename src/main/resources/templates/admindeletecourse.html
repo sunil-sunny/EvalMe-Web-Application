@@ -9,19 +9,7 @@
 <body>
 	
 	<div th:if="${param.error}">
-		<p><h3>Input is incorrect. Try again!</h3></p> 
-	</div>
-	
-	<div th:if="${param.invalidid}">
-		<p><h3>Course Id should be 4 digits. Try again!</h3></p> 
-	</div>
-	
-	<div th:if="${param.iddoesnotexist}">
-		<p><h3>Course Id does not exist. Try again!</h3></p> 
-	</div>
-	
-	<div th:if="${param.coursenotdeleted}">
-		<p><h3>Course not deleted. Try again!</h3></p> 
+		<p><h4><ul>Input is incorrect. Try again! Make sure you :</h4><h5><li>Enter a valid Course ID.</li></ul><h5></p> 
 	</div>
 	
 	<div id="deletecourse">
@@ -36,13 +24,14 @@
 		
 		<form th:action="@{/adminhome}" method="get">
 		
-			<button name="goback" value="gobackdashboard" th:href="@{adminhome}">Go Back to admin Dashboard</button>
+			<button name="goback" value="gobackdashboard" th:href="@{adminhome}">Go Back to Admin Dashboard</button>
 		
 		</form>
 	
 	</div>
 	
-		<a th:href="@{/logout}">logout</a>
+		<br>
+		<a th:href="@{/logout}">Logout</a>
 	
 
 </body>

@@ -15,6 +15,8 @@ h1 {
 
 	<div th:replace="fragments/courseheader :: header"></div>
 	<br>
+	<div class="container">
+	
 	<h1>Courses as Instructor</h1>
 	<br>
 	<table class="table table-hover">
@@ -29,7 +31,6 @@ h1 {
 		<tbody>
 			<form th:each="prod: ${coursesList}"
 				th:action="@{/coursepageInstrcutor}" method="get">
-
 				<tr>
 					<td th:text="${prod.CourseId}" />
 					<td th:text="${prod.CourseName}" />
@@ -41,5 +42,6 @@ h1 {
 			</form>
 		</tbody>
 	</table>
+	</div>
 </body>
 </html>

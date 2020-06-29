@@ -4,149 +4,144 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.group18.asdc.database.ConnectionManager;
-import com.group18.asdc.entities.Registerbean;
+import com.group18.asdc.entities.UserRegistartionDetails;
+import com.group18.asdc.util.DataBaseQueriesUtil;
 
 public class RegisterDaoImpl implements RegisterDao {
 
+	private Logger log = Logger.getLogger(RegisterDaoImpl.class.getName());
+
 	@Override
-	public boolean registeruser(Registerbean bean) {
+	public boolean registeruser(UserRegistartionDetails registerDetails) {
 
 		Connection connection = null;
-		PreparedStatement pst = null;
-		PreparedStatement pst7 = null;
-		boolean isUserRegisterd=false;
-		boolean isGuestRoleAssigned=false;
-
+		PreparedStatement registerUserStatement = null;
+		PreparedStatement assignRoleStatement = null;
+		boolean isUserRegisterd = false;
+		boolean isGuestRoleAssigned = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			pst = connection.prepareStatement("insert into user values(?,?,?,?,?)");
-
+			connection.setAutoCommit(false);
+			registerUserStatement = connection.prepareStatement(DataBaseQueriesUtil.insertUser);
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String hashedPassword = passwordEncoder.encode(bean.getPassword());
-			// System.out.println("encrypted password is" + hashedPassword);
-			pst.setString(1, bean.getBannerid());
-			pst.setString(2, bean.getLastname());
-			pst.setString(3, bean.getFirstname());
-			pst.setString(4, bean.getEmailid());
-			pst.setString(5, hashedPassword);
-			int rs = pst.executeUpdate();
-			
-			if (rs > 0) {
-				isUserRegisterd=true;
+			String hashedPassword = passwordEncoder.encode(registerDetails.getPassword());
+			registerUserStatement.setString(1, registerDetails.getBannerid());
+			registerUserStatement.setString(2, registerDetails.getLastname());
+			registerUserStatement.setString(3, registerDetails.getFirstname());
+			registerUserStatement.setString(4, registerDetails.getEmailid());
+			registerUserStatement.setString(5, hashedPassword);
+			int registerStatus = registerUserStatement.executeUpdate();
+			if (registerStatus > 0) {
+				isUserRegisterd = true;
 			}
-			pst7 = connection.prepareStatement("insert into systemrole(roleid,bannerid) values(?,?)");
-			pst7.setInt(1, 2);
-			pst7.setString(2, bean.getBannerid());
-			int rs5 = pst7.executeUpdate();
-			
-			if (rs5 > 0) {
-				System.out.println("The role is addded as a guest user");
-				isGuestRoleAssigned=true;
+			assignRoleStatement = connection.prepareStatement(DataBaseQueriesUtil.allocateSystemRole);
+			assignRoleStatement.setInt(1, 2);
+			assignRoleStatement.setString(2, registerDetails.getBannerid());
+			int assignRoleResult = assignRoleStatement.executeUpdate();
+			if (assignRoleResult > 0) {
+				isGuestRoleAssigned = true;
+			}
+			if (isGuestRoleAssigned && isUserRegisterd) {
+				connection.commit();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception occured while Registering the user");
 		} finally {
 
 			try {
 				if (connection != null) {
 					connection.close();
 				}
-				if (pst != null) {
-					pst.close();
+				if (registerUserStatement != null) {
+					registerUserStatement.close();
 				}
-				if (pst7 != null) {
-					pst7.close();
+				if (assignRoleStatement != null) {
+					assignRoleStatement.close();
 				}
+				log.info("Closng connections after registering the user");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info("SQL Exception occured while closing connections and statements after registering user ");
 			}
-
 		}
-
 		return isUserRegisterd && isGuestRoleAssigned;
 	}
 
 	@Override
 	public boolean checkUserWithEmail(String email) {
 		Connection connection = null;
-		PreparedStatement pst3 = null;
-		ResultSet rs3 = null;
+		PreparedStatement thePreparedStatement = null;
+		ResultSet theResultSet = null;
+		boolean isUserExists = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			pst3 = connection.prepareStatement("select * from user where emailid=?");
-			pst3.setString(1, email);
-			rs3 = pst3.executeQuery();
-			if (rs3.next()) {
-				return true;
+			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.checkUserWithEmail);
+			thePreparedStatement.setString(1, email);
+			theResultSet = thePreparedStatement.executeQuery();
+			if (theResultSet.next()) {
+				isUserExists = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception while checking the user with email");
 		} finally {
 
 			try {
 				if (connection != null) {
 					connection.close();
 				}
-				if (pst3 != null) {
-					pst3.close();
+				if (thePreparedStatement != null) {
+					thePreparedStatement.close();
 				}
-				if (rs3 != null) {
-					rs3.close();
+				if (theResultSet != null) {
+					theResultSet.close();
 				}
+				log.info("Closed Connections after checking user with email");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info("SQL Exception occured while closing the statement and connection after checking the user with email");
 			}
 
 		}
-		return false;
+		return isUserExists;
 	}
 
 	@Override
 	public boolean checkUserWithBannerId(String bannerId) {
 
 		Connection connection = null;
-		PreparedStatement pst2 = null;
-		ResultSet rs2 = null;
-
+		PreparedStatement thePreparedStatement = null;
+		ResultSet theResultSet = null;
+		boolean isUserExists=false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			pst2 = connection.prepareStatement("select * from user where bannerid=?");
-			pst2.setString(1, bannerId);
-			rs2 = pst2.executeQuery();
-			if (rs2.next()) {
-				return true;
+			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.checkUserWithBannerId);
+			thePreparedStatement.setString(1, bannerId);
+			theResultSet = thePreparedStatement.executeQuery();
+			if (theResultSet.next()) {
+				isUserExists= true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception occured while checking the user with banner id");
 		} finally {
 
 			try {
 				if (connection != null) {
 					connection.close();
 				}
-				if (pst2 != null) {
-					pst2.close();
+				if (thePreparedStatement != null) {
+					thePreparedStatement.close();
 				}
-				if (rs2 != null) {
-					rs2.close();
+				if (theResultSet != null) {
+					theResultSet.close();
 				}
+				log.info("Closing the connection after checking the user with banner id");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info("SQL Exception while closing connection and statements after checking user with banner id");
 			}
-
 		}
-
-		return false;
+		return isUserExists;
 	}
-
 }

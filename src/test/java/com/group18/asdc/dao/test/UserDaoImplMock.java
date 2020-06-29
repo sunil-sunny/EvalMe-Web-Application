@@ -1,6 +1,5 @@
 package com.group18.asdc.dao.test;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

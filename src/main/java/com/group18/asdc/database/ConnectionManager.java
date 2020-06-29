@@ -6,8 +6,6 @@ import java.sql.SQLException;
 
 import com.group18.asdc.SystemConfig;
 
-
-// Singleton for retrieving connections.
 public class ConnectionManager
 {
 	private static ConnectionManager uniqueInstance = null;
@@ -35,7 +33,6 @@ public class ConnectionManager
 	
 	public Connection getDBConnection() throws SQLException
 	{
-		System.out.println("bbbbbbbbbbbbbb"+dbURL+"qqqqq"+dbUserName+"uuu"+dbPassword);
 		return DriverManager.getConnection(dbURL, dbUserName, dbPassword);
 	}
 }

@@ -7,7 +7,7 @@
 <link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
 <style>
 h1 {
-    text-align: center;
+	text-align: center;
 }
 </style>
 </head>
@@ -15,19 +15,20 @@ h1 {
 
 	<div th:replace="fragments/courseheader :: header"></div>
 	<br>
-	<h1>Courses as student</h1>
-	<br>
-	<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Course Id</th>
-      <th scope="col">Title</th>
-      <th scope="col">Name of Instructor</th>
-      <th scope="col">Details</th>
-    </tr>
-  </thead>
-  <tbody>
-  	<form th:each="prod: ${coursesList}" th:action="@{/coursepage}"
+	<div class="Container">
+		<h1>Courses as student</h1>
+		<br>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Course Id</th>
+					<th scope="col">Title</th>
+					<th scope="col">Name of Instructor</th>
+					<th scope="col">Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<form th:each="prod: ${coursesList}" th:action="@{/coursepage}"
 					method="get">
 
 					<tr>
@@ -35,12 +36,16 @@ h1 {
 						<input type="hidden" th:value="${prod.courseId}" name="id" />
 						<input type="hidden" th:value="${prod.CourseName}" name="name" />
 						<td th:text="${prod.CourseName}" />
-						<td th:text="${prod.instructorName.firstName+ ' ' +prod.instructorName.lastName}" />
-						<td><input type="Submit" value="view course" class="btn btn-primary"></td>
+						<td
+							th:text="${prod.instructorName.firstName+ ' ' +prod.instructorName.lastName}" />
+						<td><input type="Submit" value="view course"
+							class="btn btn-primary"></td>
 					</tr>
 				</form>
-  </tbody>
-</table>
-	
+			</tbody>
+		</table>
+
+
+	</div>
 </body>
 </html>

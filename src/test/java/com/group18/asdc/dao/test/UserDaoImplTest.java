@@ -5,16 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import com.group18.asdc.dao.UserDao;
+import com.group18.asdc.dao.UserDaoImpl;
+import com.group18.asdc.database.SQLMethods;
+import com.group18.asdc.entities.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,12 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.group18.asdc.dao.UserDao;
-import com.group18.asdc.dao.UserDaoImpl;
-import com.group18.asdc.database.SQLMethods;
-import com.group18.asdc.database.SQLQueries;
-import com.group18.asdc.entities.User;
 
 @SpringBootTest
 public class UserDaoImplTest {
@@ -222,101 +216,5 @@ public class UserDaoImplTest {
 
 		return userList;
 	}
-
-	// @Test
-	// public void loadUserWithBannerIdTest() throws SQLException {
-	// 	final User userObj = new User();
-	// 	final ArrayList criteriaList = new ArrayList<>();
-	// 	criteriaList.add("B00838575");
-	// 	sqlMethods = new SQLMethods();
-	// 	//
-		
-	// 	when(sqlMethods.selectQuery(isA(String.class), isA(ArrayList.class))).thenReturn(getDefaultUserObj());
-	// 	userDao.loadUserWithBannerId(criteriaList, userObj);
-	// 	//
-	// 	assertEquals("kr630601@dal.ca", userObj.getEmail());
-	// 	assertEquals("Karthikk", userObj.getFirstName());
-	// 	assertEquals("B00838575", userObj.getBannerId());
-
-	// 	verify(sqlMethods, times(1)).selectQuery(SQLQueries.GET_USER_WITH_BANNER_ID.toString(), criteriaList);
-
-	// }
-
-	// @Test
-	// public void loadUserNotAvailableTest() throws SQLException {
-	// 	User userObj = new User();
-	// 	ArrayList criteriaList = new ArrayList<>();
-	// 	criteriaList.add("B00838575");
-	// 	//
-		
-	// 	when(sqlMethods.selectQuery(isA(String.class), isA(ArrayList.class))).thenReturn(new ArrayList<>());
-	// 	userDao.loadUserWithBannerId(criteriaList, userObj);
-	// 	//
-	// 	assertNull(userObj.getBannerId());
-
-	// 	verify(sqlMethods, times(1)).selectQuery(SQLQueries.GET_USER_WITH_BANNER_ID.toString(), criteriaList);
-
-	// }
-
-	// @Test(expected = SQLException.class)
-	// public void loadBannerIdExceptionTest() throws SQLException
-	// {
-	// 	when(sqlMethods.selectQuery(isA(String.class), isA(ArrayList.class))).thenThrow(new SQLException());
-		
-	// 	User userObj = new User();
-	// 	ArrayList criteriaList = new ArrayList<>();
-	// 	criteriaList.add("B00838575");
-	// 	userDao.loadUserWithBannerId(criteriaList, userObj);
-	// }
-	
-
-	// @Test
-	// public void updatePasswordTest() throws SQLException{
-	// 	final ArrayList criteriaList = new ArrayList<>();
-	// 	criteriaList.add("B00838575");
-	// 	//
-	// 	final ArrayList valuesList = new ArrayList<>();
-	// 	valuesList.add("tamilmani");
-	// 	//
-	// 	when(sqlMethods.updateQuery(isA(String.class), isA(ArrayList.class), isA(ArrayList.class))).thenReturn(new Integer(1));
-	// 	//
-	// 	assertTrue(userDao.updatePassword(criteriaList, valuesList));
-	// 	//
-	// 	verify(sqlMethods, times(1)).updateQuery(SQLQueries.UPDATE_PASSWORD_FOR_USER.toString(), valuesList , criteriaList);
-		
-
-	// }
-
-	// @Test
-	// public void updatePasswordFalseTest() throws SQLException{
-	// 	final ArrayList criteriaList = new ArrayList<>();
-	// 	criteriaList.add("B00838575");
-	// 	//
-	// 	final ArrayList valuesList = new ArrayList<>();
-	// 	valuesList.add("tamilmani");
-	// 	//
-	// 	when(sqlMethods.updateQuery(isA(String.class), isA(ArrayList.class), isA(ArrayList.class))).thenReturn(new Integer(0));
-	// 	//
-	// 	assertFalse(userDao.updatePassword(criteriaList, valuesList));
-	// 	//
-	// 	verify(sqlMethods, times(1)).updateQuery(SQLQueries.UPDATE_PASSWORD_FOR_USER.toString(), valuesList , criteriaList);
-		
-
-	// }
-
-	// @Test(expected = SQLException.class)
-	// public void updatePasswordxceptionTest() throws SQLException
-	// {
-	// 	ArrayList criteriaList = new ArrayList<>();
-	// 	criteriaList.add("B00838575");
-	// 	//
-	// 	ArrayList valuesList = new ArrayList<>();
-	// 	valuesList.add("tamilmani");
-	// 	//
-	// 	when(sqlMethods.updateQuery(isA(String.class), isA(ArrayList.class), isA(ArrayList.class))).thenThrow(new SQLException());
-	// 	//
-	// 	userDao.updatePassword(criteriaList, valuesList);
-
-	// }
 
 }

@@ -21,11 +21,12 @@ import com.group18.asdc.util.DataBaseQueriesUtil;
 @Repository
 public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
-	private Logger log=Logger.getLogger(CourseController.class.getName());
+	private Logger log = Logger.getLogger(CourseController.class.getName());
+
 	@Override
 	public List<Course> getAllCourses() {
 
-		UserDao userDao=SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao userDao = SystemConfig.getSingletonInstance().getTheUserDao();
 		Connection con = null;
 		Statement getCourses = null;
 		PreparedStatement getCourseRoles = null;
@@ -48,7 +49,6 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 				getCourseRoles.setInt(1, resultSetAllCourses.getInt("courseid"));
 				resultSetAllCourseRoles = getCourseRoles.executeQuery();
 				while (resultSetAllCourseRoles.next()) {
-
 					String role = resultSetAllCourseRoles.getString("rolename");
 					String bannerId = resultSetAllCourseRoles.getString("bannerid");
 					if (role.equalsIgnoreCase("INSTRUCTOR")) {
@@ -68,7 +68,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 				allCourses.add(course);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.info("SQL Exception occured while getting all courses");
 		} finally {
 			try {
 				if (getCourses != null) {
@@ -89,8 +89,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 				log.info("closing all the data connections in after getting all courses");
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info("Error while closing the connection and statements after getting all courses");
 			}
 		}
 
@@ -98,132 +97,45 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 	}
 
 	@Override
-	public boolean allocateTa(int courseId, User user) {
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = ConnectionManager.getInstance().getDBConnection();
-			log.info("In Course Dao allocating TA");
-			statement = connection.prepareStatement(DataBaseQueriesUtil.allocateTa);
-			statement.setInt(1, courseId);
-			statement.setString(2, user.getBannerId());
-			int taAllocated = statement.executeUpdate();
-			if (taAllocated > 0) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("Closing the connections after allocating TA");
-		}
-
-		return false;
-
-	}
-
-	@Override
-	public boolean enrollStudentsIntoCourse(List<User> studentList, int courseId) {
-
-		Connection connection = null;
-		PreparedStatement queryToEnrollStudent = null;
-
-		boolean enrollStatus = false;
-		try {
-			connection = ConnectionManager.getInstance().getDBConnection();
-
-			for (User user : studentList) {
-				queryToEnrollStudent = connection.prepareStatement(DataBaseQueriesUtil.enrollStudentIntoCourse);
-				log.info("In Course Controller for enrolling students into course");
-				queryToEnrollStudent.setInt(1, courseId);
-				queryToEnrollStudent.setString(2, user.getBannerId());
-				int isEnrolled = queryToEnrollStudent.executeUpdate();
-
-				if (isEnrolled == 1) {
-					enrollStatus = true;
-				}
-				queryToEnrollStudent.close();
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (queryToEnrollStudent != null) {
-					queryToEnrollStudent.close();
-				}
-				log.info("Closed after enrolling students into course");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-		return enrollStatus;
-	}
-
-	@Override
 	public List<Course> getCoursesWhereUserIsStudent(User user) {
 
-		UserDao userDao=SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao userDao = SystemConfig.getSingletonInstance().getTheUserDao();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-        ResultSet resultset=null;
-        List<Course> getCoursesAsStudent=new ArrayList<Course>();
+		ResultSet resultset = null;
+		List<Course> getCoursesAsStudent = new ArrayList<Course>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement=connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsStudent);
-			preparedStatement.setString(1,user.getBannerId());
+			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsStudent);
+			preparedStatement.setString(1, user.getBannerId());
 			log.info("In course Dao after getting all courses where user is Student");
-			resultset=preparedStatement.executeQuery();
-			Course course=null;
-			while(resultset.next()) {
-				course=new Course();
-				int courseid=resultset.getInt("courseid");
+			resultset = preparedStatement.executeQuery();
+			Course course = null;
+			while (resultset.next()) {
+				course = new Course();
+				int courseid = resultset.getInt("courseid");
 				course.setCourseId(courseid);
 				course.setCourseName(resultset.getString("coursename"));
 				course.setInstructorName(userDao.getInstructorForCourse(courseid));
 				getCoursesAsStudent.add(course);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception occured while getting courses where user is student");
 		} finally {
 			try {
 				if (connection != null) {
 					connection.close();
 				}
-				if(preparedStatement!=null) {
+				if (preparedStatement != null) {
 					preparedStatement.close();
 				}
-				if(resultset !=null) {
+				if (resultset != null) {
 					resultset.close();
 				}
 				log.info("Closing connection after getting all courses where user is Student");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.info(" SQL Exception while closing the connection and statements");
+
 			}
 
 		}
@@ -233,47 +145,43 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
 	@Override
 	public List<Course> getCoursesWhereUserIsInstrcutor(User user) {
-		
-		UserDao userDao=SystemConfig.getSingletonInstance().getTheUserDao();
+
+		UserDao userDao = SystemConfig.getSingletonInstance().getTheUserDao();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-        ResultSet resultset=null;
-        List<Course> getCoursesAsInstructor=new ArrayList<Course>();
+		ResultSet resultset = null;
+		List<Course> getCoursesAsInstructor = new ArrayList<Course>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement=connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsInstructor);
-			preparedStatement.setString(1,user.getBannerId());
-			resultset=preparedStatement.executeQuery();
+			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsInstructor);
+			preparedStatement.setString(1, user.getBannerId());
+			resultset = preparedStatement.executeQuery();
 			log.info("In course Dao after getting all courses where user is Instructor");
-			Course course=null;
-			while(resultset.next()) {
-				course=new Course();
-				int courseid=resultset.getInt("courseid");
+			Course course = null;
+			while (resultset.next()) {
+				course = new Course();
+				int courseid = resultset.getInt("courseid");
 				course.setCourseId(courseid);
 				course.setCourseName(resultset.getString("coursename"));
 				course.setInstructorName(userDao.getInstructorForCourse(courseid));
 				getCoursesAsInstructor.add(course);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception while getting courses where user is instructor");
 		} finally {
 			try {
 				if (connection != null) {
 					connection.close();
 				}
-				if(preparedStatement!=null) {
+				if (preparedStatement != null) {
 					preparedStatement.close();
 				}
-				if(resultset !=null) {
+				if (resultset != null) {
 					resultset.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 				log.info("closing connection after getting all courses where user is Instructor");
 			}
-
 		}
 
 		return getCoursesAsInstructor;
@@ -281,49 +189,43 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
 	@Override
 	public List<Course> getCoursesWhereUserIsTA(User user) {
-		UserDao userDao=SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao userDao = SystemConfig.getSingletonInstance().getTheUserDao();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-        ResultSet resultset=null;
-        List<Course> getCoursesAsTA=new ArrayList<Course>();
+		ResultSet resultset = null;
+		List<Course> getCoursesAsTA = new ArrayList<Course>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement=connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsTA);
-			preparedStatement.setString(1,user.getBannerId());
-			resultset=preparedStatement.executeQuery();
+			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsTA);
+			preparedStatement.setString(1, user.getBannerId());
+			resultset = preparedStatement.executeQuery();
 			log.info("In course Dao after getting all courses where user is TA");
-			Course course=null;
-			while(resultset.next()) {
-				course=new Course();
-				int courseid=resultset.getInt("courseid");
+			Course course = null;
+			while (resultset.next()) {
+				course = new Course();
+				int courseid = resultset.getInt("courseid");
 				course.setCourseId(courseid);
 				course.setCourseName(resultset.getString("coursename"));
 				course.setInstructorName(userDao.getInstructorForCourse(courseid));
 				getCoursesAsTA.add(course);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("SQL Exception occuered while getting the courses where user is TA");
 		} finally {
 			try {
 				if (connection != null) {
 					connection.close();
 				}
-				if(preparedStatement!=null) {
+				if (preparedStatement != null) {
 					preparedStatement.close();
 				}
-				if(resultset !=null) {
+				if (resultset != null) {
 					resultset.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 				log.info("Closed connection after getting all courses where user is TA");
 			}
-
 		}
-
 		return getCoursesAsTA;
 	}
-
 }

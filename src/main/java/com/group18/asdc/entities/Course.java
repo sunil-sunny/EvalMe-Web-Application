@@ -10,7 +10,7 @@ public class Course {
 	private User instructorName = new User();
 	private List<User> taList = new ArrayList<User>();
 	private List<User> studentList = new ArrayList<User>();
-	
+
 	public Course() {
 		super();
 	}

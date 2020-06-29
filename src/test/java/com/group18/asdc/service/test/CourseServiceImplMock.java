@@ -15,22 +15,7 @@ public class CourseServiceImplMock implements CourseDetailsService {
 		return theCourseDaoImplMock.getAllCourses();
 	}
 
-	@Override
-	public boolean allocateTa(int courseId, User user) {
-		CourseDaoImplMock theCourseDaoImplMock=new CourseDaoImplMock();
-		return theCourseDaoImplMock.allocateTa(courseId, user);
-	}
-
-	@Override
-	public boolean enrollStuentsIntoCourse(List<User> studentList, int courseId) {
-		CourseDaoImplMock theCourseDaoImplMock=new CourseDaoImplMock();
-		return theCourseDaoImplMock.enrollStudentsIntoCourse(studentList, courseId);
-	}
-
-	@Override
-	public void registerStudents(List<User> studentList) {
-		
-	}
+	
 
 	@Override
 	public List<Course> getCoursesWhereUserIsStudent(User user) {

@@ -22,9 +22,6 @@ build:
   tags:
     -  dalfcs_gitlab_docker_ci
   script: ./mvnw package
- # artifacts:
-  #  paths:
-   #   - target/*.jar
    
 #Comment below script after creating features branch   
 deploy:
