@@ -25,5 +25,4 @@ public class Option {
 	public String toString() {
 		return "Option [displayText=" + displayText + ", storedData=" + storedData + "]";
 	}
-
 }

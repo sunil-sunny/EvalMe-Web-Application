@@ -1,12 +1,12 @@
 package com.group18.asdc.service;
 
 import java.util.logging.Logger;
-
 import org.springframework.stereotype.Service;
 import com.group18.asdc.SystemConfig;
 import com.group18.asdc.dao.AdminDao;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
+import com.group18.asdc.util.ConstantStringUtil;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -20,8 +20,6 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean isCourseIdValid(Course course) {
-		log.info("Acceesing admin service impl");
-		admindao = SystemConfig.getSingletonInstance().getTheAdminDao();
 		int courseId = course.getCourseId();
 		if (0 >= courseId || 4 != String.valueOf(courseId).length()) {
 			return false;
@@ -31,25 +29,30 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean iscreateCourseParametersValid(Course course) {
-
-		UserService theUserService=SystemConfig.getSingletonInstance().getTheUserService();
-		log.info("Acceesing admin service impl");
+		UserService theUserService = SystemConfig.getSingletonInstance().getTheUserService();
+		CourseDetailsService theCourseDetailsService = SystemConfig.getSingletonInstance().getTheCourseDetailsService();
+		log.info("Acceesing Admin Service Impl");
 		admindao = SystemConfig.getSingletonInstance().getTheAdminDao();
-		if (!isCourseIdValid(course)) {
-			return false;
-		}
-		if (admindao.isCourseExists(course)) {
-			return false;
-		}
-		String instructorId = course.getInstructorName().getBannerId();
-		User instructor=theUserService.getUserById(instructorId);
-		if(instructor==null) {
-			return false;
-		}
-		if (instructorId.length() != 9 || !instructorId.matches("B00(.*)")) {
-			return false;
-		}
-		if (true == admindao.isUserInstructor(course)) {
+		if (isCourseIdValid(course)) {
+			if (theCourseDetailsService.isCourseExists(course)) {
+				return false;
+			} else {
+				String instructorId = course.getInstructorName().getBannerId();
+				User instructor = theUserService.getUserById(instructorId);
+				if (null == instructor) {
+					return false;
+				} else {
+					if (9 == instructorId.length()
+							|| instructorId.matches(ConstantStringUtil.getBanneridpatterncheck())) {
+						if (theUserService.isUserInstructor(course)) {
+							return false;
+						}
+					} else {
+						return false;
+					}
+				}
+			}
+		} else {
 			return false;
 		}
 		return true;
@@ -57,8 +60,8 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean createCourse(Course course) {
-
 		admindao = SystemConfig.getSingletonInstance().getTheAdminDao();
+		log.info("Acceesing Admin Service Impl");
 		if (iscreateCourseParametersValid(course)) {
 			return admindao.addCourse(course);
 		}
@@ -67,8 +70,8 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean deleteCourse(Course course) {
-
 		admindao = SystemConfig.getSingletonInstance().getTheAdminDao();
+		log.info("Accessing Admin Service Impl");
 		if (isCourseIdValid(course)) {
 			return admindao.deleteCourse(course);
 		}

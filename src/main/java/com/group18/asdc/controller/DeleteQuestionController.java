@@ -1,10 +1,8 @@
 package com.group18.asdc.controller;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import com.group18.asdc.SystemConfig;
 import com.group18.asdc.service.DeleteQuestionService;
 

@@ -35,7 +35,6 @@ public class CreateQuestionController {
 
 	@ModelAttribute("multiplequestion")
 	public MultipleChoiceQuestion setMultipleChoiceQuestion() {
-
 		return new MultipleChoiceQuestion();
 	}
 
@@ -46,7 +45,6 @@ public class CreateQuestionController {
 
 	@PostMapping("/getQuestionConfirm")
 	public String getQuestionConfirmPage(@ModelAttribute("question") BasicQuestionData basicQuestionData, Model model) {
-
 		log.info("confirming questions based on type");
 		model.addAttribute("BasicQuestion", basicQuestionData);
 		if (basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.numericType)
@@ -57,7 +55,6 @@ public class CreateQuestionController {
 				|| basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.multipleChooseOne)) {
 			return "MultipleChoiceQuestion";
 		}
-
 		return "error";
 	}
 
@@ -70,11 +67,9 @@ public class CreateQuestionController {
 		boolean isQuestionCreated = theCreateQuestionService.createNumericOrTextQuestion(basicQuestionData);
 		if (isQuestionCreated) {
 			log.info("Numeric or text question created");
-
 			return "QuestionCreateSuccess";
 		} else {
 			log.info("Error creating numeric or text question");
-
 			return "error";
 		}
 	}
@@ -97,7 +92,7 @@ public class CreateQuestionController {
 			theOption = new Option();
 			displayOption = request.getParameter("optiontext-" + iterativeNumber + "");
 			storedOption = request.getParameter("optionstored-" + iterativeNumber + "");
-			if ((displayOption == null) || (storedOption == null)) {
+			if ((null == displayOption) || (null == storedOption)) {
 				break;
 			}
 			if (displayOption.length() > 0) {
@@ -108,13 +103,10 @@ public class CreateQuestionController {
 			iterativeNumber++;
 		}
 		if (optionList.size() == 0) {
-
 			model.addAttribute("BasicQuestion", theBasicQuestionData);
 			model.addAttribute("error", "Enter Options to proceed");
-
 			return "MultipleChoiceQuestion";
 		} else {
-
 			theMultipleChoiceQuestion.setOptionList(optionList);
 		}
 		boolean isQuestionCreated = theCreateQuestionService.createMultipleQuestion(theMultipleChoiceQuestion);
@@ -126,5 +118,4 @@ public class CreateQuestionController {
 			return "error";
 		}
 	}
-
 }

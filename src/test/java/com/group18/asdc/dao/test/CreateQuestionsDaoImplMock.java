@@ -2,7 +2,6 @@ package com.group18.asdc.dao.test;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.group18.asdc.dao.CreateQuestionDao;
 import com.group18.asdc.entities.BasicQuestionData;
 import com.group18.asdc.entities.MultipleChoiceQuestion;
@@ -16,12 +15,8 @@ public class CreateQuestionsDaoImplMock implements CreateQuestionDao {
 	private static List<MultipleChoiceQuestion> multipleQuestions = new ArrayList<MultipleChoiceQuestion>();
 
 	public CreateQuestionsDaoImplMock() {
-
-		// adding titles to list
 		CreateQuestionsDaoImplMock.titles.add("java");
 		CreateQuestionsDaoImplMock.titles.add("python");
-
-		// create question types
 		CreateQuestionsDaoImplMock.types.add("freetext");
 		CreateQuestionsDaoImplMock.types.add("multiple-choice-choose-one");
 		CreateQuestionsDaoImplMock.types.add("multiple-choice-choose-many");
@@ -30,35 +25,28 @@ public class CreateQuestionsDaoImplMock implements CreateQuestionDao {
 
 	@Override
 	public boolean createNumericOrTextQuestion(BasicQuestionData theBasicQuestionData, User theUser) {
-
 		CreateQuestionsDaoImplMock.numberOrTextQuestions.add(theBasicQuestionData);
-
 		return true;
 	}
 
 	@Override
 	public int getIdForQuestionType(String questionType) {
-
 		int index = CreateQuestionsDaoImplMock.types.indexOf(questionType);
-
 		return index;
 	}
 
 	@Override
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion theMultipleChoiceChoose, User theUser) {
-
 		CreateQuestionsDaoImplMock.multipleQuestions.add(theMultipleChoiceChoose);
 		return true;
 	}
 
 	@Override
 	public boolean isQuestionExists(BasicQuestionData theBasicQuestionData) {
-
 		String questionTitle = theBasicQuestionData.getQuestionTitle();
-		if (questionTitle == null) {
+		if (null == questionTitle) {
 			return true;
 		}
 		return true;
 	}
-
 }

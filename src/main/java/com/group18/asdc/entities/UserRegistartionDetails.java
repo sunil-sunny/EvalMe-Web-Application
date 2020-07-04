@@ -18,7 +18,6 @@ public class UserRegistartionDetails {
 	public UserRegistartionDetails(String firstname, String lastname, String bannerid, String emailid, String password,
 			String confirmpassword) {
 		super();
-
 		this.bannerid = bannerid;
 		this.emailid = emailid;
 		this.password = password;
@@ -76,7 +75,6 @@ public class UserRegistartionDetails {
 	}
 
 	public UserRegistartionDetails(User user) {
-
 		super();
 		this.bannerid = user.getBannerId();
 		this.firstname = user.getFirstName();
@@ -85,5 +83,4 @@ public class UserRegistartionDetails {
 		this.password = user.getBannerId() + ConstantStringUtil.getPasswordtag();
 
 	}
-
 }

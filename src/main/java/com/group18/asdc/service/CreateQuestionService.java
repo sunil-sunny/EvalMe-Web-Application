@@ -8,5 +8,4 @@ public interface CreateQuestionService {
 	public boolean createNumericOrTextQuestion(BasicQuestionData theBasicQuestionData);
 
 	public boolean createMultipleQuestion(MultipleChoiceQuestion theMultipleChoiceChooseOne);
-
 }

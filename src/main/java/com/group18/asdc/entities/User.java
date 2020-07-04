@@ -91,5 +91,4 @@ public class User implements UserInterface {
 	public void isPasswordValid(IPasswordPolicyManager passwordPolicyManager) throws PasswordPolicyException {
 		passwordPolicyManager.validatePassword(bannerId, password);
 	}
-
 }

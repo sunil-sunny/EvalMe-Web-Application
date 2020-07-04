@@ -21,22 +21,20 @@
 
 		<div class="container">
 
-			<!-- Multiple choice– choose one Form Start  th:if="${isMultipleOne} == 'YES'" -->
-
 			<div class="row">
 				<h4>Answers</h4>
 			</div>
 			<hr>
 
-			<div class="row alert alert-danger" th:if="${error} != null" th:text="${error}">
-				<p ></p>
+			<div class="row alert alert-danger" th:if="${error} != null"
+				th:text="${error}">
+				<p></p>
 			</div>
 
 			<form th:action="@{/questionpage/createMultipleChoiceQuestion}"
 				th:object="${question}" method="post">
 				<div id="options">
 
-					<!-- option start -->
 					<div class="row">
 						<div class="col-5 form-group">
 							<label for="optiontext-1">Display Text:</label> <input
@@ -50,9 +48,7 @@
 						</div>
 						<hr>
 					</div>
-					<!-- option start -->
 
-					<!-- option start -->
 					<div class="row">
 						<div class="col-5 form-group">
 							<label for="optiontext-2">Display Text:</label> <input
@@ -66,9 +62,7 @@
 						</div>
 						<hr>
 					</div>
-					<!-- option start -->
 
-					<!-- option start -->
 					<div class="row">
 						<div class="col-5 form-group">
 							<label for="optiontext-3">Display Text:</label> <input
@@ -82,9 +76,7 @@
 						</div>
 						<hr>
 					</div>
-					<!-- option start -->
 
-					<!-- option start -->
 					<div class="row">
 						<div class="col-5 form-group">
 							<label for="optiontext-4">Display Text:</label> <input
@@ -98,9 +90,7 @@
 						</div>
 						<hr>
 					</div>
-					<!-- option start -->
 
-					<!-- option start -->
 					<div class="row">
 						<div class="col-5 form-group">
 							<label for="optiontext-5">Display Text:</label> <input
@@ -114,7 +104,7 @@
 						</div>
 						<hr>
 					</div>
-					<!-- option start -->
+
 
 				</div>
 

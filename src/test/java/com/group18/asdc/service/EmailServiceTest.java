@@ -2,10 +2,6 @@ package com.group18.asdc.service;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import com.group18.asdc.util.IJavaMailSenderConfiguration;
-import com.group18.asdc.util.JavaMailSenderConfigurationMock;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -18,29 +14,27 @@ import org.springframework.mail.javamail.JavaMailSender;
 @SpringBootTest
 public class EmailServiceTest {
 
-    @Mock
-    IJavaMailSenderConfiguration javaMailSenderConfiguration = new JavaMailSenderConfigurationMock();
+	@Mock
+	IJavaMailSenderConfiguration javaMailSenderConfiguration = new JavaMailSenderConfigurationMock();
 
-    @InjectMocks
-    EmailService emailService = new EmailServiceImpl(javaMailSenderConfiguration);
+	@InjectMocks
+	EmailService emailService = new EmailServiceImpl(javaMailSenderConfiguration);
 
-    @Mock
-    JavaMailSender mailSender;
+	@Mock
+	JavaMailSender mailSender;
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+	}
 
-    @Test
-    public void checkEmails() {
-        emailService.sendSimpleMessage("kr630601@dal.ca", "Reset", "Your Password");
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("kr630601@dal.ca");
-        message.setSubject("Reset");
-        message.setText("Your Password");
-        verify(mailSender, times(1)).send(message);
-    }
-
+	@Test
+	public void checkEmails() {
+		emailService.sendSimpleMessage("kr630601@dal.ca", "Reset", "Your Password");
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo("kr630601@dal.ca");
+		message.setSubject("Reset");
+		message.setText("Your Password");
+		verify(mailSender, times(1)).send(message);
+	}
 }

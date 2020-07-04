@@ -71,5 +71,4 @@ public class Course {
 	public void setStudentList(List<User> studentList) {
 		this.studentList = studentList;
 	}
-
 }

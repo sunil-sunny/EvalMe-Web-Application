@@ -10,5 +10,4 @@ public class DeleteQuestionServiceImplMock implements DeleteQuestionService {
 		DeleteQuestionDaoImplMock theDaoImplMock=new DeleteQuestionDaoImplMock();
 		return theDaoImplMock.deleteQuestion(questionId);
 	}
-
 }

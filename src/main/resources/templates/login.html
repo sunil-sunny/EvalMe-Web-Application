@@ -3,72 +3,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Login page</title>
-    <!-- Bootstrap Core CSS -->
-    <link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<title>Login page</title>
+<!-- Bootstrap Core CSS -->
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
 
 </head>
 
 <body>
-    <div th:if="${param.accountcreatedsuccessfully}">
-        <div class="alert alert-info">
-            <center>
-                <h5><b>Congratulations, you have successfully registered on our portal, now you can login to your account from below and access all the features.</b></h5>
-            </center>
-        </div>
+	<div th:if="${param.accountcreatedsuccessfully}">
+		<div class="alert alert-info">
+			<center>
+				<h5>
+					<b>Congratulations, you have successfully registered on our
+						portal, now you can login to your account from below and access
+						all the features.</b>
+				</h5>
+			</center>
+		</div>
 
-    </div>
-    <div th:replace="fragments/header :: header"></div>
-    <div class="container" style="position: absolute;top:calc(100vh - 70%);right:calc(100vw - 80%);">
-        <p> Welcome everybody !</p>
-        <div class=" d-flex justify-content-center h-100 ">
+	</div>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container"
+		style="position: absolute; top: calc(100vh - 70%); right: calc(100vw - 80%);">
+		<div class=" d-flex justify-content-center h-100 ">
 
-            <div class="card ">
-                <div class="card-header ">
-                    <h3>Sign In</h3>
-                </div>
-                <div class="card-body ">
-                    <div class="alert alert-danger" role="alert" th:if="${loginError}">
-                        Kindly check the Banner id and password and make sure you're registered.
-                    </div>
-                    <form th:action="@{/login}" method="post">
-                        <div class="input-group form-group ">
-                            <input type="text" class="form-control" name="username" placeholder="Banner Id" required>
+			<div class="card ">
+				<div class="card-header ">
+					<h3>Sign In</h3>
+				</div>
+				<div class="card-body ">
+					<div class="alert alert-danger" role="alert" th:if="${loginError}">
+						Kindly check the Banner id and password and make sure you're
+						registered.</div>
+					<form th:action="@{/login}" method="post">
+						<div class="input-group form-group ">
+							<input type="text" class="form-control" name="username"
+								placeholder="Banner Id" required>
 
-                        </div>
-                        <div class="input-group form-group ">
-                            <input type="password" class="form-control" name="password" placeholder="password" required>
-                        </div>
-                        <div class="form-group w-100">
-                            <input type="submit" value="Login" class="btn w-100">
-                        </div>
-                    </form>
-                </div>
-                <div class="card-footer ">
-                    <div class="d-flex justify-content-center ">
-                        <a href="/forgot-password">Forgot your password?</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- <div id=" container " style="position: absolute;top:calc(100vh - 90%);right:calc(100vw - 50%); ">
-        <h2>Login page</h2>
-
-        <form th:action="@{/login} " method="post ">
-            <label for="username ">Banner Id</label>
-            <input type="text " id="username " name="username " autofocus="autofocus " />
-            <label for="password ">Password</label>
-            <input type="password " id="password " name="password " />
-            <input id="submit " type="submit " value="Log in " />
-        </form>
-
-        <div>
-            <a href="/forgot-password "> Forgot Password?</a>
-        </div>
-    </div> -->
-
+						</div>
+						<div class="input-group form-group ">
+							<input type="password" class="form-control" name="password"
+								placeholder="password" required>
+						</div>
+						<div class="form-group w-100">
+							<input type="submit" value="Login" class="btn w-100">
+						</div>
+					</form>
+				</div>
+				<div class="card-footer ">
+					<div class="d-flex justify-content-center ">
+						<a href="/forgot-password">Forgot your password?</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 

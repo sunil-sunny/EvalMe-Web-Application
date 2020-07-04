@@ -38,42 +38,34 @@ public class CourseRolesController {
 		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
 		CourseRolesService courseRolesService = SystemConfig.getSingletonInstance().getTheCourseRolesService();
 		User user = userService.getUserById(bannerId);
-		if (user == null) {
+		if (null == user) {
 			log.info("User doesnt exists or given id is invalid");
 			theModel.addAttribute("result", "User doesnt exists or given id is invalid");
 			return "instrcutorcoursehome";
 		} else {
-			boolean isAloocated = courseRolesService.allocateTa(Integer.parseInt(courseId),
+			boolean isAllocated = courseRolesService.allocateTa(Integer.parseInt(courseId),
 					userService.getUserById(bannerId));
-			if (!isAloocated) {
-				log.info(
-						"User is already realted to the course i.e user might be already a instructor or TA or Student for the course");
-				theModel.addAttribute("result", "User is already a part of this course");
-			} else {
+			if (isAllocated) {
 				log.info("User has been allocated as TA role for the course");
 				theModel.addAttribute("result", "TA Allocated");
+			} else {
+				log.info("User is already realted to the course "
+						+ "i.e user might be already a instructor or TA or Student for the course");
+				theModel.addAttribute("result", "User is already a part of this course");
 			}
 			return "instrcutorcoursehome";
 		}
 	}
-
-	/*
-	 * Below endpoint uploads the student csv file and enroll them in particular
-	 * course
-	 */
 
 	@RequestMapping(value = "/uploadstudents", method = RequestMethod.POST)
 	public String uploadStudentsToCourse(@RequestParam(name = "file") MultipartFile file, Model theModel,
 			HttpServletRequest request) {
 		String courseId = request.getParameter("courseid");
 		String courseName = request.getParameter("coursename");
-		System.out.println("The Course id is " + courseId);
 		theModel.addAttribute("courseId", courseId);
 		theModel.addAttribute("coursename", courseName);
-
-		System.out.println("In controller allocating student");
 		CourseRolesService courseRolesService = SystemConfig.getSingletonInstance().getTheCourseRolesService();
-		if (courseId.length() == 0) {
+		if (0 == courseId.length()) {
 			log.info("Error in loading file !! user will be prompted to upload file again");
 			theModel.addAttribute("resultEnrolling", "Error in loading file !! please try again");
 		} else {
@@ -98,37 +90,33 @@ public class CourseRolesController {
 							String lastName = userDetails[1];
 							String bannerId = userDetails[2];
 							String email = userDetails[3];
-
-							if (!bannerId.matches(ConstantStringUtil.getBanneridpatterncheck()) || bannerId.length() != 9
+							if (!bannerId.matches(ConstantStringUtil.getBanneridpatterncheck())
+									|| bannerId.length() != 9
 									|| !email.matches(ConstantStringUtil.getEmailpatterncheck())) {
 								inValidUsers.add(user);
-
 							} else {
-
 								user.setFirstName(firstName);
 								user.setLastName(lastName);
 								user.setBannerId(bannerId);
 								user.setEmail(email);
 								validUsers.add(user);
 							}
-
 						} else {
-							log.info("Rows which has invalid details are ignored while reading the student list");
+							log.info("Rows which has invalid details are ignored " + "while reading the student list");
 							theModel.addAttribute("fileDetailsErrors", "Rows which has invalid details are ignored");
 						}
 					}
 					if (validUsers.size() > 0) {
-
 						boolean status = courseRolesService.enrollStuentsIntoCourse(validUsers,
 								Integer.parseInt(courseId));
 						if (status) {
 							log.info("All the student enrolled in the course");
 							theModel.addAttribute("resultEnrolling", "All Students enrolled");
 						} else {
-							log.info(
-									"Students has been enrolled to course and Users who are already related to course are ignored");
+							log.info("Students has been enrolled to course and "
+									+ "Users who are already related to course are ignored");
 							theModel.addAttribute("resultEnrolling",
-									"Success!! Users who are already related to course are ignored");
+									"Success!! " + "Users who are already related to course are ignored");
 						}
 					}
 					br.close();
@@ -136,7 +124,6 @@ public class CourseRolesController {
 					log.info(
 							"IO Exception while reading the multi part file file while enrolling students in particular course");
 				}
-
 			}
 		}
 		return "instrcutorcoursehome";

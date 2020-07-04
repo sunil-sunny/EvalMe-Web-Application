@@ -3,8 +3,8 @@ package com.group18.asdc.dao.test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import com.group18.asdc.dao.CourseDetailsDao;
+import com.group18.asdc.dao.UserDao;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
 
@@ -14,13 +14,11 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 	private static List<User> userList = new ArrayList<User>();
 
 	public CourseDaoImplMock() {
-		// declaring the courses
+
 		Course firstCourse = null;
 		Course secondCourse = null;
 		Course thirdCourse = null;
 		Course fourthCourse = null;
-
-		// declaring the users i.e students, ta and instructors.
 		User instructorOne = new User("Justin", "Langer", "B00123456", "justin@dal.ca");
 		userList.add(instructorOne);
 		User instructorTwo = new User("Don", "Bradman", "B00741399", "don@dal.com");
@@ -44,7 +42,6 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 		User studentFive = new User("Shane", "Warne", "B00654194", "shane@dal.ca");
 		userList.add(studentFive);
 
-		// Adding users to the courses
 		firstCourse = new Course(1, "Machine Learning", instructorOne, Arrays.asList(taOne, taThree),
 				Arrays.asList(studentFive, studentOne));
 		secondCourse = new Course(2, "Mobile Computing", instructorThree, Arrays.asList(taTwo, studentFour),
@@ -62,27 +59,20 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 
 	@Override
 	public List<Course> getAllCourses() {
-
 		return CourseDaoImplMock.coursesDetails;
 	}
 
-	
-
 	@Override
 	public List<Course> getCoursesWhereUserIsStudent(User user) {
-
 		List<Course> studentCourses = new ArrayList<Course>();
 
 		for (Course theCourse : CourseDaoImplMock.coursesDetails) {
-
 			for (User theUser : theCourse.getStudentList()) {
 				if (user.getBannerId() == theUser.getBannerId()) {
 					studentCourses.add(theCourse);
 				}
 			}
-
 		}
-
 		return studentCourses;
 	}
 
@@ -91,7 +81,6 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 		List<Course> instructorCourses = new ArrayList<Course>();
 
 		for (Course theCourse : CourseDaoImplMock.coursesDetails) {
-
 			if (theCourse.getInstructorName().getBannerId() == user.getBannerId()) {
 				instructorCourses.add(theCourse);
 			}
@@ -104,33 +93,64 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 		List<Course> taCourses = new ArrayList<Course>();
 
 		for (Course theCourse : CourseDaoImplMock.coursesDetails) {
-
 			for (User theUser : theCourse.getTaList()) {
 				if (user.getBannerId() == theUser.getBannerId()) {
 					taCourses.add(theCourse);
 				}
 			}
-
 		}
-
 		return taCourses;
 	}
 
-
 	public Course getCourseById(int courseId) {
-
 		Course course = null;
 
 		for (Course listOfCourse : CourseDaoImplMock.coursesDetails) {
-
 			if (listOfCourse.getCourseId() == courseId) {
 				course = listOfCourse;
 				break;
 			}
 		}
-
 		return course;
-
 	}
 
+	@Override
+	public boolean isCourseExists(Course course) {
+		Course newCourse = new Course();
+		CourseDaoImplMock.coursesDetails.add(newCourse);
+		return true;
+	}
+
+	@Override
+	public User getInstructorForCourse(int courseId) {
+		User instrUser = null;
+
+		for (Course theCourse : CourseDaoImplMock.coursesDetails) {
+			if (theCourse.getCourseId() == courseId) {
+				instrUser = theCourse.getInstructorName();
+			}
+		}
+		return instrUser;
+	}
+
+	@Override
+	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId) {
+		UserDao theUserDao = new UserDaoImplMock();
+		List<User> eligibleStudents = new ArrayList<User>();
+		List<User> existingStudentsOfCourse = theUserDao.getAllUsersByCourse(courseId);
+
+		for (User student : studentList) {
+			boolean isExists = false;
+			for (User existingStudent : existingStudentsOfCourse) {
+				if (student.getBannerId().equalsIgnoreCase(existingStudent.getBannerId())) {
+					isExists = true;
+					break;
+				}
+			}
+			if (!isExists) {
+				eligibleStudents.add(student);
+			}
+		}
+		return eligibleStudents;
+	}
 }

@@ -1,7 +1,6 @@
 package com.group18.asdc.service.test;
 
 import java.util.List;
-
 import com.group18.asdc.dao.test.CourseRolesDaoMock;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.service.CourseRolesService;
@@ -19,5 +18,4 @@ public class CourseRolesServiceMock implements CourseRolesService {
 		CourseRolesDaoMock theCourseRolesDaoMock = new CourseRolesDaoMock();
 		return theCourseRolesDaoMock.enrollStudentsIntoCourse(studentList, courseId);
 	}
-
 }

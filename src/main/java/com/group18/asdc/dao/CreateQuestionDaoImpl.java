@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.logging.Logger;
-
 import com.group18.asdc.SystemConfig;
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.BasicQuestionData;
@@ -31,8 +30,7 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.createQuestion);
 			thePreparedStatement.setString(1, theUser.getBannerId());
 			int questionTypeId = this.getIdForQuestionType(theBasicQuestionData.getQuestionType());
-
-			if (questionTypeId == 0) {
+			if (0 == questionTypeId) {
 				isQuestionCreated = false;
 			} else {
 				thePreparedStatement.setInt(2, questionTypeId);
@@ -45,23 +43,20 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 					isQuestionCreated = true;
 				}
 			}
-
 		} catch (SQLException e) {
 			log.info("SQL Exception while creating the Numeric or Text Question");
 		} finally {
-
 			try {
-
-				if (connection != null) {
+				if (null != connection) {
 					connection.close();
 				}
-				if (thePreparedStatement != null) {
+				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
 				log.info("closing connection after creating a numeric or text question");
 			} catch (SQLException e) {
-				log.info(
-						"SQL Exception while closing connections and statements after creating Numeric or Text Question");
+				log.info("SQL Exception while closing connections and "
+						+ "statements after creating Numeric or Text Question");
 			}
 		}
 		return isQuestionCreated;
@@ -81,7 +76,7 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatementForQuestionCreation.setString(1, theUser.getBannerId());
 			int questionTypeId = this.getIdForQuestionType(theMultipleChoiceQuestion.getQuestionType());
-			if (questionTypeId == 0) {
+			if (0 == questionTypeId) {
 				isQuestionCreated = false;
 			} else {
 				preparedStatementForQuestionCreation.setInt(2, questionTypeId);
@@ -96,7 +91,6 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 				if (theResultSet.next()) {
 					long id = theResultSet.getLong(1);
 					int questionId = (int) id;
-					System.out.println(questionId);
 					for (Option theOption : theMultipleChoiceQuestion.getOptionList()) {
 						preparedStatementForOptionCreation = connection
 								.prepareStatement(DataBaseQueriesUtil.createOptions);
@@ -104,12 +98,12 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 						preparedStatementForOptionCreation.setString(2, theOption.getDisplayText());
 						preparedStatementForOptionCreation.setInt(3, theOption.getStoredData());
 						int createdResult = preparedStatementForOptionCreation.executeUpdate();
-						if (createdResult == 0) {
+						if (0 == createdResult) {
 							isQuestionCreated = false;
 							break;
 						} else {
 							isQuestionCreated = true;
-							if (preparedStatementForOptionCreation != null) {
+							if (null != preparedStatementForOptionCreation) {
 								preparedStatementForOptionCreation.close();
 							}
 						}
@@ -122,18 +116,17 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 		} catch (SQLException e) {
 			log.info("SQL Exception while creating Multiple choice question");
 		} finally {
-
 			try {
-				if (theResultSet != null) {
+				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				if (connection != null) {
+				if (null != connection) {
 					connection.close();
 				}
-				if (preparedStatementForQuestionCreation != null) {
+				if (null != preparedStatementForQuestionCreation) {
 					preparedStatementForQuestionCreation.close();
 				}
-				if (preparedStatementForOptionCreation != null) {
+				if (null != preparedStatementForOptionCreation) {
 					preparedStatementForOptionCreation.close();
 				}
 				log.info("closing connection after creating multiple choice question");
@@ -163,15 +156,14 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 		} catch (SQLException e) {
 			log.info("SQL Exception while getting ID for question type");
 		} finally {
-
 			try {
-				if (theResultSet != null) {
+				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				if (connection != null) {
+				if (null != connection) {
 					connection.close();
 				}
-				if (thePreparedStatement != null) {
+				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
 				log.info("closing connection after getting title id");
@@ -179,7 +171,6 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 				log.info("SQL Exception while closing connection and statements after getting the id for title");
 			}
 		}
-
 		return typeId;
 	}
 
@@ -204,23 +195,22 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 		} catch (SQLException e) {
 			log.info("SQL Exception while checking whether the question exists or not");
 		} finally {
-
 			try {
-				if (theResultSet != null) {
+				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				if (connection != null) {
+				if (null != connection) {
 					connection.close();
 				}
-				if (thePreparedStatement != null) {
+				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
 				log.info("closing connection after getting question id");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connection and statements after checking whether the question exists or not");
+				log.info(
+						"SQL Exception while closing the connection and statements after checking whether the question exists or not");
 			}
 		}
 		return isQuestionExists;
 	}
-
 }

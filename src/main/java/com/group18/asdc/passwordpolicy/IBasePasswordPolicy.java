@@ -4,6 +4,6 @@ import com.group18.asdc.errorhandling.PasswordPolicyException;
 
 public interface IBasePasswordPolicy {
 
-    public void validate(String password) throws PasswordPolicyException;
-    
+	public void validate(String password) throws PasswordPolicyException;
+
 }

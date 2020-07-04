@@ -14,5 +14,4 @@ public class MultipleChoiceQuestion extends BasicQuestionData {
 	public void setOptionList(List<Option> optionList) {
 		this.optionList = optionList;
 	}
-
 }

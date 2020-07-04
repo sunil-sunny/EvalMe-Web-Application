@@ -3,7 +3,6 @@ package com.group18.asdc.dao.test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import com.group18.asdc.dao.UserDao;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
@@ -18,13 +17,11 @@ public class UserDaoImplMock implements UserDao {
 		super();
 
 		courseDaoImplMock = new CourseDaoImplMock();
-		// declaring the courses
 		Course firstCourse = null;
 		Course secondCourse = null;
 		Course thirdCourse = null;
 		Course fourthCourse = null;
 
-		// declaring the users i.e students, ta and instructors.
 		User instructorOne = new User("Justin", "Langer", "B00123456", "justin@dal.ca");
 		userList.add(instructorOne);
 		User instructorTwo = new User("Don", "Bradman", "B00741399", "don@dal.com");
@@ -48,7 +45,6 @@ public class UserDaoImplMock implements UserDao {
 		User studentFive = new User("Shane", "Warne", "B00654194", "shane@dal.ca");
 		userList.add(studentFive);
 
-		// Adding users to the courses
 		firstCourse = new Course(1, "Machine Learning", instructorOne, Arrays.asList(taOne, taThree),
 				Arrays.asList(studentFive, studentOne));
 		secondCourse = new Course(2, "Mobile Computing", instructorThree, Arrays.asList(taTwo, studentFour),
@@ -68,7 +64,7 @@ public class UserDaoImplMock implements UserDao {
 	public boolean isUserExists(User user) {
 		boolean isExists = false;
 
-		if (user != null) {
+		if (null != user) {
 			for (User theUser : UserDaoImplMock.userList) {
 				if (theUser.getBannerId() == user.getBannerId()) {
 					isExists = true;
@@ -76,7 +72,6 @@ public class UserDaoImplMock implements UserDao {
 				}
 			}
 		}
-
 		return isExists;
 	}
 
@@ -90,89 +85,48 @@ public class UserDaoImplMock implements UserDao {
 				break;
 			}
 		}
-
 		return user;
 	}
 
 	@Override
-	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId) {
-
-		// Returns the list of eligible users to get enrolled in the course.
-
-		List<User> eligibleStudents = new ArrayList<User>();
-		List<User> existingStudentsOfCourse = this.getAllUsersByCourse(courseId);
-
-		for (User student : studentList) {
-
-			boolean isExists = false;
-			for (User existingStudent : existingStudentsOfCourse) {
-
-				if (student.getBannerId().equalsIgnoreCase(existingStudent.getBannerId())) {
-					isExists = true;
-					break;
-				}
-			}
-			if (!isExists) {
-				eligibleStudents.add(student);
-			}
-		}
-
-		return eligibleStudents;
-	}
-
-	@Override
 	public List<User> getAllUsersByCourse(int courseId) {
-
 		List<User> userList = new ArrayList<User>();
-
 		Course course = courseDaoImplMock.getCourseById(courseId);
-		if (course != null) {
-
+		if (null != course) {
 			userList.add(course.getInstructorName());
 			userList.addAll(course.getTaList());
 			userList.addAll(course.getStudentList());
-
 		}
 		return userList;
 	}
 
 	@Override
-	public User getInstructorForCourse(int courseId) {
-
-		User instrUser = null;
-		for (Course theCourse : UserDaoImplMock.coursesDetails) {
-
-			if (theCourse.getCourseId() == courseId) {
-				instrUser = theCourse.getInstructorName();
-			}
-
-		}
-		return instrUser;
-	}
-
-	@Override
 	public void loadUserWithBannerId(ArrayList<Object> valueList, User userObj) {
-		
 		for (User theUser : UserDaoImplMock.userList) {
 			if (theUser.getBannerId() == "B00123456") {
 				userObj = theUser;
 			}
 		}
-
 	}
 
 	@Override
-	public Boolean updatePassword(ArrayList<Object> criteriaList, ArrayList<Object> valuesList){
-		// TODO Auto-generated method stub
+	public Boolean updatePassword(ArrayList<Object> criteriaList, ArrayList<Object> valuesList) {
 		return null;
 	}
 
 	@Override
-	public ArrayList getUserRoles(ArrayList<Object> criteriaList) {
-		// TODO Auto-generated method stub
+	public ArrayList<Object> getUserRoles(ArrayList<Object> criteriaList) {
 		return null;
 	}
 
-	
-
+	@Override
+	public boolean isUserInstructor(Course course) {
+		User instructor = new User();
+		Course theCourse = new Course();
+		theCourse.setInstructorName(instructor);
+		if (null == theCourse.getInstructorName()) {
+			return false;
+		}
+		return true;
+	}
 }

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.entities.User;
@@ -40,15 +39,14 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		} catch (SQLException e) {
 			log.info("SQL Exception while getting all the question");
 		} finally {
-
 			try {
-				if (theResultSet != null) {
+				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				if (connection != null) {
+				if (null != connection) {
 					connection.close();
 				}
-				if (thePreparedStatement != null) {
+				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
 				log.info("closing connection after getting all questions");
@@ -56,7 +54,6 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				log.info("SQL Exception while closing the connection and statement after getting all the question");
 			}
 		}
-
 		return allQuestions;
 	}
 
@@ -84,23 +81,21 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 			log.info("SQL Exception while getting all the question sort by date");
 		} finally {
 			try {
-				if (theResultSet != null) {
+				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				if (connection != null) {
+				if (null != connection) {
 					connection.close();
 				}
-				if (thePreparedStatement != null) {
+				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
 				log.info("closing connection after getting all questions sort by date");
 			} catch (SQLException e) {
-				log.info(
-						"SQL Exception while closing the connection and statement after getting all the question sort by date");
-
+				log.info("SQL Exception while closing the connection "
+						+ "and statement after getting all the question sort by date");
 			}
 		}
-
 		return allQuestionsSortByDate;
 	}
 
@@ -127,24 +122,22 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		} catch (SQLException e) {
 			log.info("SQL Exception while getting all the question sort by title");
 		} finally {
-
 			try {
-				if (theResultSet != null) {
+				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				if (connection != null) {
+				if (null != connection) {
 					connection.close();
 				}
-				if (thePreparedStatement != null) {
+				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
 				log.info("closing connection after getting all questions sort by title");
 			} catch (SQLException e) {
-				log.info(
-						"SQL Exception while closing the connection and statement after getting all the question sort by title");
+				log.info("SQL Exception while closing the connection "
+						+ "and statement after getting all the question sort by title");
 			}
 		}
-
 		return allQuestionsSortByTitle;
 	}
 }

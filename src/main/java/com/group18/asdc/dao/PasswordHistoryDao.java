@@ -8,5 +8,4 @@ public interface PasswordHistoryDao {
 	public Object insertPasswordHistory(ArrayList valuesList);
 
 	public ArrayList<HashMap> getPasswordHistory(ArrayList criteriaList);
-
 }

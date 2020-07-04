@@ -13,4 +13,11 @@ public interface CourseDetailsDao {
 	public List<Course> getCoursesWhereUserIsInstrcutor(User user);
 
 	public List<Course> getCoursesWhereUserIsTA(User user);
+
+	public boolean isCourseExists(Course course);
+
+	public User getInstructorForCourse(int courseId);
+
+	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId);
+
 }

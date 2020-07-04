@@ -35,5 +35,4 @@ public class BasicQuestionData {
 		return "BasicQuestionData [questionTitle=" + questionTitle + ", questionText=" + questionText
 				+ ", questionType=" + questionType + "]";
 	}
-
 }
