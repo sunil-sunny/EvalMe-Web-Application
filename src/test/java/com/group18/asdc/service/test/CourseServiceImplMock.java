@@ -45,4 +45,12 @@ public class CourseServiceImplMock implements CourseDetailsService {
 		final CourseDetailsDao theCourseDetailsDao=SystemConfig.getSingletonInstance().getTheCourseDetailsDao();
 		return theCourseDetailsDao.filterEligibleUsersForCourse(studentList, courseId);
 	}
+
+	@Override
+	public Course getCourseById(int courseId) {
+		Course course=new Course();
+		course.setCourseId(courseId);
+		course.getCourseId();
+		return course;
+	}
 }

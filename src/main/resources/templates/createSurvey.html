@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<style>
+.center {
+	text-align: center;
+}
+
+.vl {
+	border-left: 3px solid black;
+	height: 500px;
+}
+
+.small {
+	height: 500px;
+	width: 600px;
+}
+</style>
+<script>
+	function alert() {
+		var txt;
+		if (confirm("Delete question")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function alertSave() {
+		var txt;
+		if (confirm("All the unsaved questions will not be in added into survey")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
+</head>
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+	<br>
+	<div class="container-fluid">
+		<div class="row">
+			<h1>Create Survey</h1>
+		</div>
+		<hr>
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<form class="form-inline" th:action="@{/survey/addQuestion}"
+					method="post">
+					<div class="form-group mx-sm-3 mb-2">
+						<select class="custom-select" style="width: 600px;"
+							name="selectedQuestion">
+							<option value="default">Add a question</option>
+							<option th:each="prod: ${existingQuestions}"
+								th:value="${prod.questionId}" th:text="${prod.questionText}" />
+						</select>
+					</div>
+					<input type="submit" value="Add to Survey"
+						class="btn btn-primary mb-2" />
+				</form>
+
+			</div>
+			<div th:if="${message}"
+				th:class="${'container justify-content-center alert alert-danger'}"
+				style="width: 220px;">
+
+				<div class="col-04" th:text="${message}"></div>
+
+			</div>
+			<br>
+			<div class="row">
+				<!-- Existing Questions -->
+
+				<!-- Edit Survey Module -->
+				<div class="col-12">
+
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th scope="col">Question Type</th>
+								<th scope="col">Question Text</th>
+								<th scope="col">Existing Logic</th>
+								<th scope="col">Change Logic</th>
+								<th scope="col">Number Constraint</th>
+								<th scope="col">Remove Question</th>
+							</tr>
+						</thead>
+						<tbody>
+							<form th:each="prod: ${allquestions}"
+								th:action="@{/survey/removeQuestion}" method="post">
+							<tr>
+								<td th:text="${prod.questionData.questionType}" />
+								<td th:text="${prod.questionData.questionText}" />
+								<td th:text="${prod.logicDetail}"></td>
+								<td th:if="${prod.questionData.questionType} == 'numeric'"
+									style="padding: 10px;"><select style="width: 200px;"
+									class="custom-select" th:value="${prod.logicDetail}"
+									id="question type" name="question type">
+										<option value="numeric">Group Similar</option>
+										<option value="multiple-choice-choose-one">Group
+											Disimilar</option>
+										<option value="multiple-choice-choose-more">Greater
+											than (>)</option>
+										<option value="freetext">Less than (<)</option>
+								</select></td>
+								<td
+									th:if="${prod.questionData.questionType} == 'multiple-choice-choose-one' OR 
+									${prod.questionData.questionType} == 'multiple-choice-choose-more' OR 
+									${prod.questionData.questionType} == 'freetext'"
+									style="padding: 10px;"><select style="width: 200px;"
+									class="custom-select" th:value="${prod.logicDetail}"
+									id="question type" name="question type">
+										<option value="numeric">Group Similar</option>
+										<option value="multiple-choice-choose-one">Group
+											Disimilar</option>
+								</select></td>
+
+								<td
+									th:if="${prod.questionData.questionType} == 'multiple-choice-choose-one' OR 
+									${prod.questionData.questionType} == 'multiple-choice-choose-more' OR 
+									${prod.questionData.questionType} == 'freetext'"
+									style="padding: 10px;">Not Applicable</td>
+
+								<td th:if="${prod.questionData.questionType} == 'numeric'"
+									style="padding: 10px;"><input type="number"
+									th:value="${prod.logicConstraint}" class="form-control"
+									style="width: 40%;"></td>
+								<input type="hidden" th:value="${prod.questionData.questionId}"
+									name="questionid" />
+								<td><input type="submit" value="Remove Question"
+									class="btn btn-danger" onclick="return alert()" /></td>
+							</tr>
+							</form>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="row justify-content-center">
+
+		<div class="col-3">
+
+			<a class="btn btn-primary" style="color: white; width: 80%;" onClick="return alertSave()">Back</a>
+
+		</div>
+
+		<div class="col-3">
+
+			<a class="btn btn-primary" style="color: white; width: 80%;">Save</a>
+
+		</div>
+		<div class="col-3">
+			<a class="btn btn-primary" style="color: white; width: 80%;">Publish
+				Survey</a>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

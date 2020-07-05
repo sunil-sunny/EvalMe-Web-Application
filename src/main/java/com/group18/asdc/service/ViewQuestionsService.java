@@ -10,4 +10,6 @@ public interface ViewQuestionsService {
 	public List<QuestionMetaData> getAllQuestionsSortByDate();
 
 	public List<QuestionMetaData> getAllQuestionsSortByTitle();
+
+	public QuestionMetaData getQuestionById(int questionId);
 }

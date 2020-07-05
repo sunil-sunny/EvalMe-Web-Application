@@ -38,7 +38,8 @@ public class DataBaseQueriesUtil {
 	public final static String createOptions = "insert into options (questionid,optiontext,optionlinenumber) values (?,?,?); ";
 	public final static String getQuestionId = "SELECT questionid FROM questions where bannerid=? and questiontypeid=? and qtitle=?\r\n"
 			+ "and question=? order by datecreated DESC limit 1;";
-	public final static String getAllQuestions = "SELECT a.questionid,a.qtitle,a.question,a.datecreated FROM questions as a where a.bannerid=?;";
+	public final static String getAllQuestions = "SELECT a.questionid,a.qtitle,a.question,a.datecreated,b.questiontypename FROM questions as a inner join\r\n"
+			+ "questiontype as b on a.questiontypeid=b.questiontypeid where a.bannerid=?;";
 	public final static String getAllQuestionsSortByDate = "SELECT a.questionid,a.qtitle,a.question,a.datecreated "
 			+ "FROM questions as a where a.bannerid=? order by a.datecreated DESC;\r\n" + "";
 	public final static String getAllQuestionsSortByTitle = "SELECT a.questionid,a.qtitle,a.question,a.datecreated "

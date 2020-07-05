@@ -15,6 +15,7 @@ import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.Role;
 import com.group18.asdc.entities.User;
+import com.group18.asdc.util.CourseDataBaseQueriesUtil;
 import com.group18.asdc.util.DataBaseQueriesUtil;
 
 @Repository
@@ -331,5 +332,72 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 			}
 		}
 		return eligibleStudents;
+	}
+
+	@Override
+	public Course getCourseById(int courseId) {
+
+		UserDao userDao = SystemConfig.getSingletonInstance().getTheUserDao();
+		Connection con = null;
+		PreparedStatement getCourseById = null;
+		PreparedStatement getCourseRoles = null;
+		ResultSet resultSet = null;
+		ResultSet resultSetCourseRoles = null;
+		Course course = null;
+		try {
+			con = ConnectionManager.getInstance().getDBConnection();
+			getCourseById = con.prepareStatement(CourseDataBaseQueriesUtil.getCoursesById);
+			getCourseById.setInt(1, courseId);
+			resultSet = getCourseById.executeQuery(DataBaseQueriesUtil.getAllCourses);
+			getCourseRoles = con.prepareStatement(DataBaseQueriesUtil.getCourseDetails);
+			course = null;
+			while (resultSet.next()) {
+				course = new Course();
+				List<User> students = new ArrayList<User>();
+				List<User> taList = new ArrayList<User>();
+				course.setCourseId(resultSet.getInt("courseid"));
+				course.setCourseName(resultSet.getString("coursename"));
+				getCourseRoles.setInt(1, resultSet.getInt("courseid"));
+				resultSetCourseRoles = getCourseRoles.executeQuery();
+				while (resultSetCourseRoles.next()) {
+					String role = resultSetCourseRoles.getString("rolename");
+					String bannerId = resultSetCourseRoles.getString("bannerid");
+					if (role.equalsIgnoreCase(Role.instructor)) {
+						course.setInstructorName(userDao.getUserById(bannerId));
+					} else if (role.equalsIgnoreCase(Role.student)) {
+						students.add(userDao.getUserById(bannerId));
+					} else if (role.equalsIgnoreCase(Role.ta)) {
+						taList.add(userDao.getUserById(bannerId));
+					}
+				}
+				course.setTaList(taList);
+				course.setStudentList(students);
+				resultSetCourseRoles.close();
+			}
+		} catch (SQLException e) {
+			log.info("SQL Exception occured while getting course by Id");
+		} finally {
+			try {
+				if (null != getCourseById) {
+					getCourseById.close();
+				}
+				if (null != con) {
+					con.close();
+				}
+				if (null != getCourseRoles) {
+					getCourseRoles.close();
+				}
+				if (null != resultSet) {
+					resultSet.close();
+				}
+				if (null != resultSetCourseRoles) {
+					resultSetCourseRoles.close();
+				}
+				log.info("closing all the data connections in after getting course by Id");
+			} catch (SQLException e) {
+				log.info("Error while closing the connection and statements after getting course by Id");
+			}
+		}
+		return course;
 	}
 }

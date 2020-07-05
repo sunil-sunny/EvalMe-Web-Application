@@ -49,4 +49,10 @@ public class CourseDetailsServiceImpl implements CourseDetailsService {
 		CourseDetailsDao courseDetailsDao = SystemConfig.getSingletonInstance().getTheCourseDetailsDao();
 		return courseDetailsDao.filterEligibleUsersForCourse(studentList, courseId);
 	}
+
+	@Override
+	public Course getCourseById(int courseId) {
+		CourseDetailsDao courseDetailsDao = SystemConfig.getSingletonInstance().getTheCourseDetailsDao();
+		return courseDetailsDao.getCourseById(courseId);
+	}
 }

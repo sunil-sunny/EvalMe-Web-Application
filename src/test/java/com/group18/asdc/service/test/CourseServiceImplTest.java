@@ -1,5 +1,6 @@
 package com.group18.asdc.service.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ public class CourseServiceImplTest {
 		List<Course> courseList = CourseServiceImplMock.getAllCourses();
 		assertNotEquals(0, courseList.size());
 	}
-	
+
 	@Test
 	public void getCoursesWhereUserIsStudentTestOne() {
 		CourseDetailsService CourseServiceImplMock = new CourseServiceImplMock();
@@ -76,5 +77,12 @@ public class CourseServiceImplTest {
 		List<User> userList = Arrays.asList(studentTwo, studentThree);
 		List<User> eligiList = theCourseDetailsService.filterEligibleUsersForCourse(userList, 1);
 		assertEquals(2, eligiList.size());
+	}
+
+	@Test
+	public void getCourseByIdTest() {
+		CourseDetailsService theCourseDetailsService = new CourseServiceImplMock();
+		Course theCourse = theCourseDetailsService.getCourseById(1);
+		assertNotNull(theCourse);
 	}
 }

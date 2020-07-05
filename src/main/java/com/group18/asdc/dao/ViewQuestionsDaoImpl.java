@@ -11,6 +11,7 @@ import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.util.DataBaseQueriesUtil;
+import com.group18.asdc.util.QuestionManagerDataBaseQueries;
 
 public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 
@@ -34,6 +35,7 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				theQuestionMetaData.setQuestionTitle(theResultSet.getString(2));
 				theQuestionMetaData.setQuestionText(theResultSet.getString(3));
 				theQuestionMetaData.setCreationDateTime(theResultSet.getTimestamp(4));
+				theQuestionMetaData.setQuestionType(theResultSet.getString(5));
 				allQuestions.add(theQuestionMetaData);
 			}
 		} catch (SQLException e) {
@@ -139,5 +141,45 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 			}
 		}
 		return allQuestionsSortByTitle;
+	}
+
+	@Override
+	public QuestionMetaData getQuestionById(int questionId) {
+		Connection connection = null;
+		PreparedStatement thePreparedStatement = null;
+		ResultSet theResultSet = null;
+		QuestionMetaData theQuestionMetaData = null;
+		try {
+			connection = ConnectionManager.getInstance().getDBConnection();
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.getQuestionById);
+			thePreparedStatement.setInt(1, questionId);
+			theResultSet = thePreparedStatement.executeQuery();
+			while (theResultSet.next()) {
+				theQuestionMetaData = new QuestionMetaData();
+				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
+				theQuestionMetaData.setQuestionTitle(theResultSet.getString(2));
+				theQuestionMetaData.setQuestionText(theResultSet.getString(3));
+				theQuestionMetaData.setCreationDateTime(theResultSet.getTimestamp(4));
+				theQuestionMetaData.setQuestionType(theResultSet.getString(5));
+			}
+		} catch (SQLException e) {
+			log.info("SQL Exception while getting question by id");
+		} finally {
+			try {
+				if (null != theResultSet) {
+					theResultSet.close();
+				}
+				if (null != connection) {
+					connection.close();
+				}
+				if (null != thePreparedStatement) {
+					thePreparedStatement.close();
+				}
+				log.info("closing connection after getting question by id");
+			} catch (SQLException e) {
+				log.info("SQL Exception while closing the connection and statement after getting question by id");
+			}
+		}
+		return theQuestionMetaData;
 	}
 }

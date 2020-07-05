@@ -17,4 +17,6 @@ public interface CourseDetailsService {
 	public boolean isCourseExists(Course course);
 
 	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId);
+	
+	public Course getCourseById(int courseId);
 }

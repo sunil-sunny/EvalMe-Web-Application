@@ -19,5 +19,7 @@ public interface CourseDetailsDao {
 	public User getInstructorForCourse(int courseId);
 
 	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId);
+	
+	public Course getCourseById(int courseId);
 
 }

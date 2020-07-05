@@ -33,4 +33,10 @@ public class ViewQuestionsDaoImplMock implements ViewQuestionsDao {
 		ViewQuestionsDaoImplMock.questionList.size();
 		return ViewQuestionsDaoImplMock.questionList;
 	}
+
+	@Override
+	public QuestionMetaData getQuestionById(int questionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -11,4 +11,6 @@ public interface ViewQuestionsDao {
 	public List<QuestionMetaData> getAllQuestionsSortByDate(User currentUser);
 
 	public List<QuestionMetaData> getAllQuestionsSortByTitle(User currentUser);
+	
+	public QuestionMetaData getQuestionById(int questionId);
 }

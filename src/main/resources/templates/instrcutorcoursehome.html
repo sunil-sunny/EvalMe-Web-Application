@@ -27,6 +27,7 @@ form {
 
 		<div style="width: 800px; margin: 0 auto;">
 			<h1 th:text="${coursename}"></h1>
+			<input type="hidden" th:value="${courseId}" name="courseid" />
 			<hr>
 			<div class="row justify-content-center">
 
@@ -39,11 +40,12 @@ form {
 				</div>
 
 				<div class="col-5">
-
-					<a class="btn btn-primary"
-						th:href="@{/questionpage/getCreateQuestionHome}"
-						style="color: white; width: 80%;">Create Survey</a>
-
+					<form class="form-inline" th:action="@{/survey/getSurveyPage}"
+						method="get">
+						<input type="hidden" th:value="${courseId}" name="courseid" /> <input
+							type="submit" value="Create Survey"
+							style="color: white; width: 80%;" class="btn btn-primary mb-2" />
+					</form>
 				</div>
 			</div>
 			<hr>

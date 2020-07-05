@@ -31,4 +31,11 @@ public class ViewQuestionsServiceImpl implements ViewQuestionsService {
 		User currentUser = theUserService.getCurrentUser();
 		return theViewQuestionsDao.getAllQuestionsSortByTitle(currentUser);
 	}
+
+	@Override
+	public QuestionMetaData getQuestionById(int questionId) {
+		ViewQuestionsDao theViewQuestionsDao = SystemConfig.getSingletonInstance().getTheViewQuestionsDao();
+		QuestionMetaData theQuestionMetaData=theViewQuestionsDao.getQuestionById(questionId);
+		return theQuestionMetaData;
+	}
 }
