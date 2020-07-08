@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+
 import org.springframework.stereotype.Repository;
+
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.Course;
-import com.group18.asdc.util.DataBaseQueriesUtil;
+import com.group18.asdc.util.CourseDataBaseQueriesUtil;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -30,16 +32,16 @@ public class AdminDaoImpl implements AdminDao {
 		ResultSet resultset = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			statement = connection.prepareStatement(DataBaseQueriesUtil.createCourse);
+			statement = connection.prepareStatement(CourseDataBaseQueriesUtil.CREATE_COURSE.toString());
 			statement.setInt(1, courseId);
 			statement.setString(2, courseName);
 			statement.execute();
 			statement.close();
-			statement = connection.prepareStatement(DataBaseQueriesUtil.allocateCourseInstructor);
+			statement = connection.prepareStatement(CourseDataBaseQueriesUtil.ALLOCATE_COURSE_INSTRUCTOR.toString());
 			statement.setInt(1, courseId);
 			statement.setString(2, instructorId);
 			statement.execute();
-			statement = connection.prepareStatement(DataBaseQueriesUtil.isInstructorAssigned);
+			statement = connection.prepareStatement(CourseDataBaseQueriesUtil.IS_INSTRUCTOR_ASSIGNED.toString());
 			statement.setInt(1, courseId);
 			statement.setString(2, instructorId);
 			resultset = statement.executeQuery();
@@ -75,11 +77,11 @@ public class AdminDaoImpl implements AdminDao {
 		ResultSet resultset = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			statement = connection.prepareStatement(DataBaseQueriesUtil.deleteCourse);
+			statement = connection.prepareStatement(CourseDataBaseQueriesUtil.DELETE_COURSE.toString());
 			statement.setInt(1, courseId);
 			statement.execute();
 			statement.close();
-			statement = connection.prepareStatement(DataBaseQueriesUtil.isCourseIdExists);
+			statement = connection.prepareStatement(CourseDataBaseQueriesUtil.IS_COURSE_ID_EXISTS.toString());
 			statement.setInt(1, courseId);
 			resultset = statement.executeQuery();
 			if (resultset.next()) {

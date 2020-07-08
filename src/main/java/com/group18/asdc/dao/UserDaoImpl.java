@@ -8,13 +8,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.springframework.stereotype.Repository;
+
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.database.SQLMethods;
 import com.group18.asdc.database.SQLQueries;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
-import com.group18.asdc.util.DataBaseQueriesUtil;
+import com.group18.asdc.util.UserManagementDataBaseQueriesUtil;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -29,7 +31,7 @@ public class UserDaoImpl implements UserDao {
 		boolean isUserExits = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			checkUser = connection.prepareStatement(DataBaseQueriesUtil.isUserExists);
+			checkUser = connection.prepareStatement(UserManagementDataBaseQueriesUtil.IS_USER_EXISTS.toString());
 			checkUser.setString(1, user.getBannerId());
 			resultSet = checkUser.executeQuery();
 			log.info("In User Dao to check if user exists or not");
@@ -68,7 +70,7 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			String userSql = DataBaseQueriesUtil.getUserById;
+			String userSql = UserManagementDataBaseQueriesUtil.GET_USER_BY_ID.toString();
 			getUser = connection.prepareStatement(userSql);
 			getUser.setString(1, bannerId);
 			log.info("In User Dao to get the user for given banner id");
@@ -111,7 +113,8 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getAlluserRelatedToCourse);
+			preparedStatement = connection
+					.prepareStatement(UserManagementDataBaseQueriesUtil.GET_ALL_USERS_RELATED_TO_COURSE.toString());
 			log.info("In users dao getting all users based on course id");
 			preparedStatement.setInt(1, courseId);
 			resultSetForStudentList = preparedStatement.executeQuery();
@@ -223,7 +226,7 @@ public class UserDaoImpl implements UserDao {
 		ResultSet resultset = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			statement = connection.prepareStatement(DataBaseQueriesUtil.isUserExists);
+			statement = connection.prepareStatement(UserManagementDataBaseQueriesUtil.IS_USER_EXISTS.toString());
 			statement.setString(1, instructorId);
 			resultset = statement.executeQuery();
 			statement.close();
@@ -231,7 +234,8 @@ public class UserDaoImpl implements UserDao {
 				returnValue = false;
 			} else {
 				resultset.close();
-				statement = connection.prepareStatement(DataBaseQueriesUtil.isInstructorStudent);
+				statement = connection
+						.prepareStatement(UserManagementDataBaseQueriesUtil.IS_INSTRUCTOR_A_STUDENT.toString());
 				statement.setString(1, instructorId);
 				statement.setInt(2, courseId);
 				resultset = statement.executeQuery();

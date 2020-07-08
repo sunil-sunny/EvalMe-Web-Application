@@ -5,9 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
+
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.User;
-import com.group18.asdc.util.DataBaseQueriesUtil;
+import com.group18.asdc.util.CourseDataBaseQueriesUtil;
 
 public class CourseRolesDaoImpl implements CourseRolesDao {
 
@@ -21,7 +22,7 @@ public class CourseRolesDaoImpl implements CourseRolesDao {
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			log.info("In Course Dao allocating TA");
-			statement = connection.prepareStatement(DataBaseQueriesUtil.allocateTa);
+			statement = connection.prepareStatement(CourseDataBaseQueriesUtil.ALLOCATE_TA_FOR_COURSE.toString());
 			statement.setInt(1, courseId);
 			statement.setString(2, user.getBannerId());
 			int taAllocated = statement.executeUpdate();
@@ -56,7 +57,8 @@ public class CourseRolesDaoImpl implements CourseRolesDao {
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			for (User user : studentList) {
-				queryToEnrollStudent = connection.prepareStatement(DataBaseQueriesUtil.enrollStudentIntoCourse);
+				queryToEnrollStudent = connection
+						.prepareStatement(CourseDataBaseQueriesUtil.ENROLL_STUDENTS_INTO_COURSE.toString());
 				log.info("In Course Controller for enrolling students into course");
 				queryToEnrollStudent.setInt(1, courseId);
 				queryToEnrollStudent.setString(2, user.getBannerId());

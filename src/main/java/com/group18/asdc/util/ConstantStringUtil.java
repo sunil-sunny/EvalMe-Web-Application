@@ -1,41 +1,23 @@
 package com.group18.asdc.util;
 
-public class ConstantStringUtil {
+public enum ConstantStringUtil {
 
-	private final static String emailRegex = "^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@\"\r\n"
-			+ "        + \"[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$";
-	private final static String passwordTag = "!dal";
-	private final static String bannerIdPatternCheck = "B00(.*)";
-	private final static String emailPatternCheck = "(.*)@dal.ca";
-	private final static String emailSubject = "you are now a part of EvalMe";
-	private final static String emailMessageHeader = "Thank you for being a part of us !! \\n  you username and password is ";
-	
-	public final static String groupSimilar="Group Similar" ;
-	public final static String groupDisimilar="Group Disimilar";
-	public final static String greaterThan="Greater Than";
-	public final static String lessThan="Less Than";
+	EMAIL_REGEX("^[_A-Za-z0-9-\\\\\\\\+]+(\\\\\\\\.[_A-Za-z0-9-]+)*@\\\"\\r\\n\"\r\n"
+			+ "			+ \"        + \\\"[A-Za-z0-9-]+(\\\\\\\\.[A-Za-z0-9]+)*(\\\\\\\\.[A-Za-z]{2,})$"),
+	PASSWORD_TAG("!dal"), BANNER_ID_CHECK("B00(.*)"), EMAIL_PATTERN_CHECK("(.*)@dal.ca"),
+	EMAIL_SUBJECT("you are now a part of EvalMe"),
+	EMAIL_MESSAGE_HEADER("Thank you for being a part of us !! \\\\n  you username and password is "),
+	GROUP_SIMILAR("Group Similar"), GROUP_DISIMILAR("Group Disimilar"), GREATER_THAN("Greater Than"),
+	LESS_THAN("Less Than");
 
-	public static String getEmailregex() {
-		return emailRegex;
+	private final String constantString;
+
+	private ConstantStringUtil(String constantString) {
+		this.constantString = constantString;
 	}
 
-	public static String getPasswordtag() {
-		return passwordTag;
-	}
-
-	public static String getBanneridpatterncheck() {
-		return bannerIdPatternCheck;
-	}
-
-	public static String getEmailpatterncheck() {
-		return emailPatternCheck;
-	}
-
-	public static String getEmailsubject() {
-		return emailSubject;
-	}
-
-	public static String getEmailmessageheader() {
-		return emailMessageHeader;
+	@Override
+	public String toString() {
+		return constantString;
 	}
 }

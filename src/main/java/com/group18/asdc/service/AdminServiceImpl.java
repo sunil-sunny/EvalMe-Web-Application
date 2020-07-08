@@ -1,8 +1,11 @@
 package com.group18.asdc.service;
 
 import java.util.logging.Logger;
+
 import org.springframework.stereotype.Service;
-import com.group18.asdc.SystemConfig;
+
+import com.group18.asdc.CourseConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.dao.AdminDao;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
@@ -29,10 +32,10 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean iscreateCourseParametersValid(Course course) {
-		UserService theUserService = SystemConfig.getSingletonInstance().getTheUserService();
-		CourseDetailsService theCourseDetailsService = SystemConfig.getSingletonInstance().getTheCourseDetailsService();
+		UserService theUserService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
+		CourseDetailsService theCourseDetailsService = CourseConfig.getSingletonInstance().getTheCourseDetailsService();
 		log.info("Acceesing Admin Service Impl");
-		admindao = SystemConfig.getSingletonInstance().getTheAdminDao();
+		admindao = ProfileManagementConfig.getSingletonInstance().getTheAdminDao();
 		if (isCourseIdValid(course)) {
 			if (theCourseDetailsService.isCourseExists(course)) {
 				return false;
@@ -43,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
 					return false;
 				} else {
 					if (9 == instructorId.length()
-							|| instructorId.matches(ConstantStringUtil.getBanneridpatterncheck())) {
+							|| instructorId.matches(ConstantStringUtil.BANNER_ID_CHECK.toString())) {
 						if (theUserService.isUserInstructor(course)) {
 							return false;
 						}
@@ -60,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean createCourse(Course course) {
-		admindao = SystemConfig.getSingletonInstance().getTheAdminDao();
+		admindao = ProfileManagementConfig.getSingletonInstance().getTheAdminDao();
 		log.info("Acceesing Admin Service Impl");
 		if (iscreateCourseParametersValid(course)) {
 			return admindao.addCourse(course);
@@ -70,7 +73,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean deleteCourse(Course course) {
-		admindao = SystemConfig.getSingletonInstance().getTheAdminDao();
+		admindao = ProfileManagementConfig.getSingletonInstance().getTheAdminDao();
 		log.info("Accessing Admin Service Impl");
 		if (isCourseIdValid(course)) {
 			return admindao.deleteCourse(course);

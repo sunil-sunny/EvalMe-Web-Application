@@ -7,14 +7,15 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.logging.Logger;
-import com.group18.asdc.SystemConfig;
+
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.BasicQuestionData;
 import com.group18.asdc.entities.MultipleChoiceQuestion;
 import com.group18.asdc.entities.Option;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.service.UserService;
-import com.group18.asdc.util.DataBaseQueriesUtil;
+import com.group18.asdc.util.QuestionManagerDataBaseQueries;
 
 public class CreateQuestionDaoImpl implements CreateQuestionDao {
 
@@ -27,7 +28,8 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 		boolean isQuestionCreated = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.createQuestion);
+			thePreparedStatement = connection
+					.prepareStatement(QuestionManagerDataBaseQueries.CREATE_QUESTION.toString());
 			thePreparedStatement.setString(1, theUser.getBannerId());
 			int questionTypeId = this.getIdForQuestionType(theBasicQuestionData.getQuestionType());
 			if (0 == questionTypeId) {
@@ -72,8 +74,8 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			connection.setAutoCommit(false);
-			preparedStatementForQuestionCreation = connection.prepareStatement(DataBaseQueriesUtil.createQuestion,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatementForQuestionCreation = connection.prepareStatement(
+					QuestionManagerDataBaseQueries.CREATE_QUESTION.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatementForQuestionCreation.setString(1, theUser.getBannerId());
 			int questionTypeId = this.getIdForQuestionType(theMultipleChoiceQuestion.getQuestionType());
 			if (0 == questionTypeId) {
@@ -93,7 +95,7 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 					int questionId = (int) id;
 					for (Option theOption : theMultipleChoiceQuestion.getOptionList()) {
 						preparedStatementForOptionCreation = connection
-								.prepareStatement(DataBaseQueriesUtil.createOptions);
+								.prepareStatement(QuestionManagerDataBaseQueries.CREATE_OPTIONS.toString());
 						preparedStatementForOptionCreation.setInt(1, questionId);
 						preparedStatementForOptionCreation.setString(2, theOption.getDisplayText());
 						preparedStatementForOptionCreation.setInt(3, theOption.getStoredData());
@@ -147,7 +149,7 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 		int typeId = 0;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getQuestionTypeId);
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_QUESTION_TYPE_ID.toString());
 			thePreparedStatement.setString(1, questionType);
 			theResultSet = thePreparedStatement.executeQuery();
 			if (theResultSet.next()) {
@@ -179,11 +181,11 @@ public class CreateQuestionDaoImpl implements CreateQuestionDao {
 		Connection connection = null;
 		PreparedStatement thePreparedStatement = null;
 		ResultSet theResultSet = null;
-		UserService theUserService = SystemConfig.getSingletonInstance().getTheUserService();
+		UserService theUserService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
 		boolean isQuestionExists = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getQuestionId);
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_QUESTION_ID.toString());
 			thePreparedStatement.setString(1, theUserService.getCurrentUser().getBannerId());
 			thePreparedStatement.setInt(2, this.getIdForQuestionType(theBasicQuestionData.getQuestionType()));
 			thePreparedStatement.setString(3, theBasicQuestionData.getQuestionTitle().toLowerCase());

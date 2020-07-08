@@ -80,7 +80,7 @@ public class UserRegistartionDetails {
 		this.firstname = user.getFirstName();
 		this.lastname = user.getLastName();
 		this.emailid = user.getEmail();
-		this.password = user.getBannerId() + ConstantStringUtil.getPasswordtag();
+		this.password = user.getBannerId() + ConstantStringUtil.PASSWORD_TAG.toString();
 
 	}
 }

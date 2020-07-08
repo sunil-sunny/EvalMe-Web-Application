@@ -4,8 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+
 import com.group18.asdc.database.ConnectionManager;
-import com.group18.asdc.util.DataBaseQueriesUtil;
+import com.group18.asdc.util.QuestionManagerDataBaseQueries;
 
 public class DeleteQuestionDaoImpl implements DeleteQuestionDao {
 
@@ -18,7 +19,7 @@ public class DeleteQuestionDaoImpl implements DeleteQuestionDao {
 		boolean isQuestionDeleted = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.deleteQuestion);
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.DELETE_QUESTION.toString());
 			thePreparedStatement.setInt(1, questionId);
 			int deleteQuestionStatus = thePreparedStatement.executeUpdate();
 			if (deleteQuestionStatus > 0) {

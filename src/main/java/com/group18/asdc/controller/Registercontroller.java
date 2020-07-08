@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.entities.PasswordHistory;
 import com.group18.asdc.entities.UserRegistartionDetails;
 import com.group18.asdc.service.PasswordHistoryService;
@@ -31,7 +31,7 @@ public class RegisterController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") UserRegistartionDetails bean, BindingResult result) {
-		RegisterService theRegisterService = SystemConfig.getSingletonInstance().getTheRegisterservice();
+		RegisterService theRegisterService = ProfileManagementConfig.getSingletonInstance().getTheRegisterservice();
 		if (result.hasErrors()) {
 			return "registration";
 		}
@@ -52,10 +52,10 @@ public class RegisterController {
 			passwordHistory.setBannerID(bean.getBannerid());
 			passwordHistory.setPassword(bean.getPassword());
 			passwordHistory.setDate(System.currentTimeMillis());
-			PasswordHistoryService passwordHistoryService = SystemConfig.getSingletonInstance()
+			PasswordHistoryService passwordHistoryService = ProfileManagementConfig.getSingletonInstance()
 					.getPasswordHistoryService();
 			passwordHistoryService.insertPassword(passwordHistory,
-					SystemConfig.getSingletonInstance().getPasswordEncryption());
+					ProfileManagementConfig.getSingletonInstance().getPasswordEncryption());
 			return "redirect:/login?accountcreatedsuccessfully";
 		} else {
 			return "registration";

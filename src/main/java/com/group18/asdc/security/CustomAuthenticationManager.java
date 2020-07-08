@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.ProfileManagementConfig;
 
 public class CustomAuthenticationManager implements AuthenticationManager {
 
@@ -35,8 +35,8 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 	private Authentication checkNormal(String password, User u, Authentication authentication)
 			throws AuthenticationException {
 
-		IPasswordEncryption passwordEncryption = SystemConfig.getSingletonInstance().getPasswordEncryption();
-		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
+		IPasswordEncryption passwordEncryption = ProfileManagementConfig.getSingletonInstance().getPasswordEncryption();
+		UserService userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
 		if (passwordEncryption.matches(password, u.getPassword())) {
 			List<GrantedAuthority> rights = new ArrayList<GrantedAuthority>();
 			for (Object eachRole : userService.getUserRoles(u)) {
@@ -54,7 +54,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String bannerID = authentication.getPrincipal().toString();
 		String password = authentication.getCredentials().toString();
-		UserService userDB = SystemConfig.getSingletonInstance().getTheUserService();
+		UserService userDB = ProfileManagementConfig.getSingletonInstance().getTheUserService();
 		User u;
 		try {
 			u = new User(bannerID, userDB);

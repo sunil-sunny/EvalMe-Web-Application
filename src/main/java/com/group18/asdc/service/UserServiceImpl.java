@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.dao.UserDao;
 import com.group18.asdc.dao.UserDaoImpl;
 import com.group18.asdc.entities.Course;
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean isUserInstructor(Course course) {
-		UserDao theUserDao = SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao theUserDao = ProfileManagementConfig.getSingletonInstance().getTheUserDao();
 		return theUserDao.isUserInstructor(course);
 	}
 }

@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.BasicQuestionData;
 import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.entities.User;
-import com.group18.asdc.util.DataBaseQueriesUtil;
 import com.group18.asdc.util.QuestionManagerDataBaseQueries;
 
 public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
@@ -26,7 +26,7 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		List<QuestionMetaData> allQuestions = new ArrayList<QuestionMetaData>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getAllQuestions);
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS.toString());
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
@@ -71,7 +71,7 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		List<QuestionMetaData> allQuestions = new ArrayList<QuestionMetaData>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getAllQuestionsSortByDate);
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS_SORTEDBY_DATE.toString());
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
@@ -116,7 +116,7 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		List<QuestionMetaData> allQuestionsSortByTitle = new ArrayList<QuestionMetaData>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getAllQuestionsSortByTitle);
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS_SORTEDBY_TITLE.toString());
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
@@ -163,7 +163,7 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		BasicQuestionData thBasicQuestionData=null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.getQuestionById);
+			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_QUESTION_BY_ID.toString());
 			thePreparedStatement.setInt(1, questionId);
 			theResultSet = thePreparedStatement.executeQuery();
 			while (theResultSet.next()) {

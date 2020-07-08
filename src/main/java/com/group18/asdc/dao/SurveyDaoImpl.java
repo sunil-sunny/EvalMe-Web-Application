@@ -139,13 +139,13 @@ public class SurveyDaoImpl implements SurveyDao {
 					Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 					thePreparedStatement.setTimestamp(3, currentTimestamp);
 					String logicType = surveyQuestion.getLogicDetail();
-					if (0 == logicType.compareToIgnoreCase(ConstantStringUtil.greaterThan)) {
+					if (0 == logicType.compareToIgnoreCase(ConstantStringUtil.GREATER_THAN.toString())) {
 						thePreparedStatement.setInt(4, Integer.parseInt(LogicDetail.Greater_Than.toString()));
 						thePreparedStatement.setInt(5, surveyQuestion.getLogicConstraint());
-					} else if (0 == logicType.compareToIgnoreCase(ConstantStringUtil.lessThan)) {
+					} else if (0 == logicType.compareToIgnoreCase(ConstantStringUtil.LESS_THAN.toString())) {
 						thePreparedStatement.setInt(4, Integer.parseInt(LogicDetail.Less_Than.toString()));
 						thePreparedStatement.setInt(5, surveyQuestion.getLogicConstraint());
-					} else if (0 == logicType.compareToIgnoreCase(ConstantStringUtil.groupDisimilar)) {
+					} else if (0 == logicType.compareToIgnoreCase(ConstantStringUtil.GROUP_DISIMILAR.toString())) {
 						thePreparedStatement.setInt(4, Integer.parseInt(LogicDetail.Group_Disimilar.toString()));
 						thePreparedStatement.setInt(5, 0);
 					} else {

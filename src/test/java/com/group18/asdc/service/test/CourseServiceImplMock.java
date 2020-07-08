@@ -1,7 +1,6 @@
 package com.group18.asdc.service.test;
 
 import java.util.List;
-import com.group18.asdc.SystemConfig;
 import com.group18.asdc.dao.CourseDetailsDao;
 import com.group18.asdc.dao.test.CourseDaoImplMock;
 import com.group18.asdc.entities.Course;
@@ -42,7 +41,7 @@ public class CourseServiceImplMock implements CourseDetailsService {
 
 	@Override
 	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId) {
-		final CourseDetailsDao theCourseDetailsDao=SystemConfig.getSingletonInstance().getTheCourseDetailsDao();
+		final CourseDetailsDao theCourseDetailsDao=new CourseDaoImplMock();
 		return theCourseDetailsDao.filterEligibleUsersForCourse(studentList, courseId);
 	}
 

@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Repository;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.dao.RegisterDao;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.entities.UserRegistartionDetails;
@@ -25,7 +25,7 @@ public class RegisterServiceImpl implements RegisterService {
 		try {
 			resultObj.put("STATUS", RegistrationStatus.UNSUCCESSFUL);
 			boolean isError = false;
-			if (userDetails.getBannerid().matches(ConstantStringUtil.getBanneridpatterncheck())) {
+			if (userDetails.getBannerid().matches(ConstantStringUtil.BANNER_ID_CHECK.toString())) {
 				if (9 != userDetails.getBannerid().length()) {
 					isError = true;
 					resultObj.put("STATUS", RegistrationStatus.INVALID_BANNER_LENGTH);
@@ -34,11 +34,11 @@ public class RegisterServiceImpl implements RegisterService {
 				isError = true;
 				resultObj.put("STATUS", RegistrationStatus.INVALID_BANNER_PATTERN);
 			}
-			if (userDetails.getEmailid().matches(ConstantStringUtil.getEmailpatterncheck())) {
+			if (userDetails.getEmailid().matches(ConstantStringUtil.EMAIL_PATTERN_CHECK.toString())) {
 
 				try {
 					User.isPasswordValid(userDetails.getPassword(),
-							SystemConfig.getSingletonInstance().getBasePasswordPolicyManager());
+							ProfileManagementConfig.getSingletonInstance().getBasePasswordPolicyManager());
 				} catch (PasswordPolicyException e) {
 					isError = true;
 					resultObj.put("STATUS", RegistrationStatus.PASSWORD_POLICY_ERROR);
@@ -47,7 +47,7 @@ public class RegisterServiceImpl implements RegisterService {
 				if (isError) {
 					return resultObj;
 				}
-				RegisterDao registerDao = SystemConfig.getSingletonInstance().getTheRegisterDao();
+				RegisterDao registerDao = ProfileManagementConfig.getSingletonInstance().getTheRegisterDao();
 				boolean isEmailExits = registerDao.checkUserWithEmail(userDetails.getEmailid());
 				boolean isBannerIdExists = registerDao.checkUserWithEmail(userDetails.getBannerid());
 				if (isBannerIdExists) {
@@ -77,7 +77,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 	@Override
 	public boolean registerStudents(List<User> studentList) {
-		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
+		UserService userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
 		EmailService emailService = null;
 		boolean isAllStudentsRegistered = false;
 		for (User user : studentList) {
@@ -85,10 +85,11 @@ public class RegisterServiceImpl implements RegisterService {
 				JSONObject resultObject = this.registeruser(new UserRegistartionDetails(user));
 				if (resultObject.optInt("STATUS") == RegistrationStatus.SUCCESS) {
 					isAllStudentsRegistered = true;
-					emailService = SystemConfig.getSingletonInstance().getTheEmailService();
-					String messageText = ConstantStringUtil.getEmailmessageheader() + user.getBannerId() + " "
-							+ user.getBannerId().concat(ConstantStringUtil.getPasswordtag());
-					emailService.sendSimpleMessage(user.getEmail(), ConstantStringUtil.getEmailsubject(), messageText);
+					emailService = ProfileManagementConfig.getSingletonInstance().getTheEmailService();
+					String messageText = ConstantStringUtil.EMAIL_MESSAGE_HEADER.toString() + user.getBannerId() + " "
+							+ user.getBannerId().concat(ConstantStringUtil.PASSWORD_TAG.toString());
+					emailService.sendSimpleMessage(user.getEmail(), ConstantStringUtil.EMAIL_SUBJECT.toString(),
+							messageText);
 
 				} else {
 					log.severe("user registration error");

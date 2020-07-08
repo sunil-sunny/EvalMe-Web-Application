@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.database.IPasswordPolicyDB;
 import com.group18.asdc.entities.PasswordHistory;
 import com.group18.asdc.entities.User;
@@ -61,17 +61,17 @@ public class LoginController {
 	@GetMapping("/resetPassword")
 	public String sendResetRequest(@RequestParam(name = "username", required = true) String bannerId, Model model,
 			HttpSession session) {
-		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
+		UserService userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
 		User userObj = new User(bannerId, userService);
 		if (userObj.getEmail() == null || userObj.getEmail().isEmpty()) {
 			model.addAttribute("BANNER_ID_NOT_EXIST", Boolean.TRUE);
 			return "forgot-password.html";
 		} else {
-			String genPassword = SystemConfig.getSingletonInstance().getRandomStringGenerator().generateRandomString();
+			String genPassword = ProfileManagementConfig.getSingletonInstance().getRandomStringGenerator().generateRandomString();
 			session.setAttribute("RESET_PASSWORD", genPassword);
 			model.addAttribute("resetForm", new ResetPassword(bannerId));
 			model.addAttribute("sentEmail", userObj.getEmail());
-			EmailService emailService = SystemConfig.getSingletonInstance().getTheEmailService();
+			EmailService emailService = ProfileManagementConfig.getSingletonInstance().getTheEmailService();
 			emailService.sendSimpleMessage(userObj.getEmail(), "Reset Password",
 					"Your reset password is: " + genPassword);
 			return "resetPassword.html";
@@ -83,24 +83,24 @@ public class LoginController {
 
 		String redirectURL = "login-success";
 		Boolean isError = false;
-		userService = SystemConfig.getSingletonInstance().getTheUserService();
+		userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
 		User userObj = new User(resetForm.getbannerId(), userService);
 		if (resetForm.getgeneratedPassword().equals(session.getAttribute("RESET_PASSWORD"))) {
 			if (resetForm.getnewPassword().equals(resetForm.getconfirmNewPassword())) {
 				try {
 					userObj.setPassword(resetForm.getconfirmNewPassword());
-					userObj.isPasswordValid(SystemConfig.getSingletonInstance().getPasswordPolicyManager());
+					userObj.isPasswordValid(ProfileManagementConfig.getSingletonInstance().getPasswordPolicyManager());
 					if (userService.updatePassword(userObj,
-							SystemConfig.getSingletonInstance().getPasswordEncryption())) {
+							ProfileManagementConfig.getSingletonInstance().getPasswordEncryption())) {
 
 						PasswordHistory passwordHistory = new PasswordHistory();
 						passwordHistory.setBannerID(userObj.getBannerId());
 						passwordHistory.setPassword(userObj.getPassword());
 						passwordHistory.setDate(System.currentTimeMillis());
-						PasswordHistoryService passwordHistoryService = SystemConfig.getSingletonInstance()
+						PasswordHistoryService passwordHistoryService = ProfileManagementConfig.getSingletonInstance()
 								.getPasswordHistoryService();
 						passwordHistoryService.insertPassword(passwordHistory,
-								SystemConfig.getSingletonInstance().getPasswordEncryption());
+								ProfileManagementConfig.getSingletonInstance().getPasswordEncryption());
 
 					} else {
 
@@ -142,10 +142,10 @@ public class LoginController {
 
 	@GetMapping("/resetPasswordPolicies")
 	public String resetPasswordPolicies() {
-		IPasswordPolicyDB passwordPolicyDB = SystemConfig.getSingletonInstance().getPasswordPolicyDB();
-		SystemConfig.getSingletonInstance()
+		IPasswordPolicyDB passwordPolicyDB = ProfileManagementConfig.getSingletonInstance().getPasswordPolicyDB();
+		ProfileManagementConfig.getSingletonInstance()
 				.setBasePasswordPolicyManager(new BasePasswordPolicyManager(passwordPolicyDB));
-		SystemConfig.getSingletonInstance().setPasswordPolicyManager(new PasswordPolicyManager(passwordPolicyDB));
+		ProfileManagementConfig.getSingletonInstance().setPasswordPolicyManager(new PasswordPolicyManager(passwordPolicyDB));
 		return "policyReset";
 	}
 }

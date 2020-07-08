@@ -2,7 +2,7 @@ package com.group18.asdc.passwordpolicy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.database.IPasswordPolicyDB;
 import com.group18.asdc.errorhandling.PasswordPolicyException;
 import com.group18.asdc.util.ICustomStringUtils;
@@ -42,7 +42,7 @@ public class BasePasswordPolicyManager implements IBasePasswordPolicyManager {
 	public void validatePassword(String password) throws PasswordPolicyException {
 		loadDefaultConfigurations();
 		IBasePasswordPolicy passwordPolicy = null;
-		ICustomStringUtils customStringUtils = SystemConfig.getSingletonInstance().getCustomStringUtils();
+		ICustomStringUtils customStringUtils = ProfileManagementConfig.getSingletonInstance().getCustomStringUtils();
 
 		for (HashMap eachEnabledPolicy : enabledPasswordPolicies) {
 			String policyName = (String) eachEnabledPolicy.get("POLICY_NAME");

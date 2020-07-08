@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.UserRegistartionDetails;
-import com.group18.asdc.util.DataBaseQueriesUtil;
+import com.group18.asdc.util.UserManagementDataBaseQueriesUtil;
 
 public class RegisterDaoImpl implements RegisterDao {
 
@@ -25,7 +27,8 @@ public class RegisterDaoImpl implements RegisterDao {
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			connection.setAutoCommit(false);
-			registerUserStatement = connection.prepareStatement(DataBaseQueriesUtil.insertUser);
+			registerUserStatement = connection
+					.prepareStatement(UserManagementDataBaseQueriesUtil.INSERT_USER.toString());
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String hashedPassword = passwordEncoder.encode(registerDetails.getPassword());
 			registerUserStatement.setString(1, registerDetails.getBannerid());
@@ -37,7 +40,8 @@ public class RegisterDaoImpl implements RegisterDao {
 			if (registerStatus > 0) {
 				isUserRegisterd = true;
 			}
-			assignRoleStatement = connection.prepareStatement(DataBaseQueriesUtil.allocateSystemRole);
+			assignRoleStatement = connection
+					.prepareStatement(UserManagementDataBaseQueriesUtil.ALLOCATE_SYSTEM_ROLE.toString());
 			assignRoleStatement.setInt(1, 2);
 			assignRoleStatement.setString(2, registerDetails.getBannerid());
 			int assignRoleResult = assignRoleStatement.executeUpdate();
@@ -76,7 +80,8 @@ public class RegisterDaoImpl implements RegisterDao {
 		boolean isUserExists = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.checkUserWithEmail);
+			thePreparedStatement = connection
+					.prepareStatement(UserManagementDataBaseQueriesUtil.CHECK_USER_WITH_EMAIL.toString());
 			thePreparedStatement.setString(1, email);
 			theResultSet = thePreparedStatement.executeQuery();
 			if (theResultSet.next()) {
@@ -113,7 +118,8 @@ public class RegisterDaoImpl implements RegisterDao {
 		boolean isUserExists = false;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.checkUserWithBannerId);
+			thePreparedStatement = connection
+					.prepareStatement(UserManagementDataBaseQueriesUtil.CHECK_USER_WITH_BANNERID.toString());
 			thePreparedStatement.setString(1, bannerId);
 			theResultSet = thePreparedStatement.executeQuery();
 			if (theResultSet.next()) {

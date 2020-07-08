@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.CourseConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.service.CourseRolesService;
 import com.group18.asdc.service.UserService;
@@ -35,8 +36,8 @@ public class CourseRolesController {
 		String courseName = request.getParameter("coursename");
 		theModel.addAttribute("courseId", courseId);
 		theModel.addAttribute("coursename", courseName);
-		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
-		CourseRolesService courseRolesService = SystemConfig.getSingletonInstance().getTheCourseRolesService();
+		UserService userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
+		CourseRolesService courseRolesService = CourseConfig.getSingletonInstance().getTheCourseRolesService();
 		User user = userService.getUserById(bannerId);
 		if (null == user) {
 			log.info("User doesnt exists or given id is invalid");
@@ -64,7 +65,7 @@ public class CourseRolesController {
 		String courseName = request.getParameter("coursename");
 		theModel.addAttribute("courseId", courseId);
 		theModel.addAttribute("coursename", courseName);
-		CourseRolesService courseRolesService = SystemConfig.getSingletonInstance().getTheCourseRolesService();
+		CourseRolesService courseRolesService = CourseConfig.getSingletonInstance().getTheCourseRolesService();
 		if (0 == courseId.length()) {
 			log.info("Error in loading file !! user will be prompted to upload file again");
 			theModel.addAttribute("resultEnrolling", "Error in loading file !! please try again");
@@ -90,9 +91,9 @@ public class CourseRolesController {
 							String lastName = userDetails[1];
 							String bannerId = userDetails[2];
 							String email = userDetails[3];
-							if (!bannerId.matches(ConstantStringUtil.getBanneridpatterncheck())
+							if (!bannerId.matches(ConstantStringUtil.BANNER_ID_CHECK.toString())
 									|| bannerId.length() != 9
-									|| !email.matches(ConstantStringUtil.getEmailpatterncheck())) {
+									|| !email.matches(ConstantStringUtil.EMAIL_PATTERN_CHECK.toString())) {
 								inValidUsers.add(user);
 							} else {
 								user.setFirstName(firstName);

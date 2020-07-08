@@ -2,7 +2,7 @@ package com.group18.asdc.passwordpolicy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.database.IPasswordPolicyDB;
 import com.group18.asdc.errorhandling.PasswordPolicyException;
 
@@ -31,8 +31,8 @@ public class PasswordPolicyManager extends BasePasswordPolicyManager implements 
 		for (HashMap eachEnabledPolicy : enabledPasswordPolicies) {
 			if (eachEnabledPolicy.get("POLICY_NAME").equals(HISTORY_CONSTRAINT_POLICY)) {
 				passwordPolicy = new HistoryConstraintPolicy((String) eachEnabledPolicy.get("POLICY_VALUE"),
-						SystemConfig.getSingletonInstance().getPasswordHistoryService(),
-						SystemConfig.getSingletonInstance().getPasswordEncryption());
+						ProfileManagementConfig.getSingletonInstance().getPasswordHistoryService(),
+						ProfileManagementConfig.getSingletonInstance().getPasswordEncryption());
 			}
 			passwordPolicy.validate(bannerId, password);
 		}

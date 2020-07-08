@@ -1,6 +1,7 @@
 package com.group18.asdc.controller;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.group18.asdc.CourseConfig;
 import com.group18.asdc.QuestionManagerConfig;
 import com.group18.asdc.SurveyConfig;
-import com.group18.asdc.SystemConfig;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.entities.SurveyMetaData;
@@ -27,7 +28,7 @@ public class SurveyController {
 	@GetMapping("/getSurveyPage")
 	public String getSurveyPage(Model theModel, HttpServletRequest theHttpServletRequest) {
 		String courseId = theHttpServletRequest.getParameter("courseid");
-		CourseDetailsService theCourseDetailsService = SystemConfig.getSingletonInstance().getTheCourseDetailsService();
+		CourseDetailsService theCourseDetailsService = CourseConfig.getSingletonInstance().getTheCourseDetailsService();
 		ViewQuestionsService theViewQuestionsService = QuestionManagerConfig.getSingletonInstance()
 				.getTheViewQuestionsService();
 		Course theCourse = theCourseDetailsService.getCourseById(Integer.parseInt(courseId));

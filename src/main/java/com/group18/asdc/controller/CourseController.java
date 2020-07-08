@@ -2,16 +2,14 @@ package com.group18.asdc.controller;
 
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.CourseConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.service.CourseDetailsService;
@@ -26,7 +24,7 @@ public class CourseController {
 	public String getHomePage(Model theModel) {
 
 		log.info("in course controller");
-		CourseDetailsService courseDetailsService = SystemConfig.getSingletonInstance().getTheCourseDetailsService();
+		CourseDetailsService courseDetailsService = CourseConfig.getSingletonInstance().getTheCourseDetailsService();
 		List<Course> coursesList = courseDetailsService.getAllCourses();
 		theModel.addAttribute("coursesList", coursesList);
 		return "guesthome";
@@ -35,8 +33,8 @@ public class CourseController {
 	@RequestMapping(value = "/enrolledcourses")
 	public String getEnrolledCourses(Model theModel) {
 
-		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
-		CourseDetailsService courseDetailsService = SystemConfig.getSingletonInstance().getTheCourseDetailsService();
+		UserService userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
+		CourseDetailsService courseDetailsService = CourseConfig.getSingletonInstance().getTheCourseDetailsService();
 		User user = userService.getCurrentUser();
 		if (null == user) {
 			return "error";
@@ -49,8 +47,8 @@ public class CourseController {
 
 	@GetMapping("/tacourses")
 	public String getTACourses(Model theModel) {
-		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
-		CourseDetailsService courseDetailsService = SystemConfig.getSingletonInstance().getTheCourseDetailsService();
+		UserService userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
+		CourseDetailsService courseDetailsService = CourseConfig.getSingletonInstance().getTheCourseDetailsService();
 		User user = userService.getCurrentUser();
 		if (null == user) {
 			return "error";
@@ -63,8 +61,8 @@ public class CourseController {
 
 	@RequestMapping(value = "/instructedcourses", method = RequestMethod.GET)
 	public String getInstructedCourses(Model theModel) {
-		UserService userService = SystemConfig.getSingletonInstance().getTheUserService();
-		CourseDetailsService courseDetailsService = SystemConfig.getSingletonInstance().getTheCourseDetailsService();
+		UserService userService = ProfileManagementConfig.getSingletonInstance().getTheUserService();
+		CourseDetailsService courseDetailsService = CourseConfig.getSingletonInstance().getTheCourseDetailsService();
 		User user = userService.getCurrentUser();
 		if (null == user) {
 			return "error";

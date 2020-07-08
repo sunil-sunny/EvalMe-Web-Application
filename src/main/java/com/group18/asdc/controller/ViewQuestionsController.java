@@ -1,11 +1,12 @@
 package com.group18.asdc.controller;
 
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.group18.asdc.SystemConfig;
+import com.group18.asdc.QuestionManagerConfig;
 import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.service.ViewQuestionsService;
 
@@ -15,7 +16,8 @@ public class ViewQuestionsController {
 
 	@GetMapping("/getHome")
 	public String getAllQuestions(Model theModel) {
-		ViewQuestionsService theViewQuestionsService = SystemConfig.getSingletonInstance().getTheViewQuestionsService();
+		ViewQuestionsService theViewQuestionsService = QuestionManagerConfig.getSingletonInstance()
+				.getTheViewQuestionsService();
 		List<QuestionMetaData> allQuestions = theViewQuestionsService.getAllQuestions();
 		if (null == allQuestions) {
 			return "error";
@@ -27,7 +29,8 @@ public class ViewQuestionsController {
 
 	@GetMapping("/sortByTitle")
 	public String getAllQuestionSortedByTitle(Model theModel) {
-		ViewQuestionsService theViewQuestionsService = SystemConfig.getSingletonInstance().getTheViewQuestionsService();
+		ViewQuestionsService theViewQuestionsService = QuestionManagerConfig.getSingletonInstance()
+				.getTheViewQuestionsService();
 		List<QuestionMetaData> allQuestionsSortByTitle = theViewQuestionsService.getAllQuestionsSortByTitle();
 		if (null == allQuestionsSortByTitle) {
 			return "error";
@@ -39,7 +42,8 @@ public class ViewQuestionsController {
 
 	@GetMapping("/sortByDate")
 	public String getAllQuestionsSortedByDate(Model theModel) {
-		ViewQuestionsService theViewQuestionsService = SystemConfig.getSingletonInstance().getTheViewQuestionsService();
+		ViewQuestionsService theViewQuestionsService = QuestionManagerConfig.getSingletonInstance()
+				.getTheViewQuestionsService();
 		List<QuestionMetaData> allQuestionsSortByDate = theViewQuestionsService.getAllQuestionsSortByDate();
 		if (null == allQuestionsSortByDate) {
 			return "error";

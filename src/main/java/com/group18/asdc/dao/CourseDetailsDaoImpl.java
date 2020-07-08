@@ -8,15 +8,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.springframework.stereotype.Repository;
-import com.group18.asdc.SystemConfig;
-import com.group18.asdc.controller.CourseController;
+
+import com.group18.asdc.CourseConfig;
+import com.group18.asdc.ProfileManagementConfig;
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.Role;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.util.CourseDataBaseQueriesUtil;
-import com.group18.asdc.util.DataBaseQueriesUtil;
 
 @Repository
 public class CourseDetailsDaoImpl implements CourseDetailsDao {
@@ -26,7 +27,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 	@Override
 	public List<Course> getAllCourses() {
 
-		UserDao userDao = SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao userDao = ProfileManagementConfig.getSingletonInstance().getTheUserDao();
 		Connection con = null;
 		Statement getCourses = null;
 		PreparedStatement getCourseRoles = null;
@@ -37,8 +38,8 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 			log.info("In CourseDao to get all courses");
 			con = ConnectionManager.getInstance().getDBConnection();
 			getCourses = con.createStatement();
-			resultSetAllCourses = getCourses.executeQuery(DataBaseQueriesUtil.getAllCourses);
-			getCourseRoles = con.prepareStatement(DataBaseQueriesUtil.getCourseDetails);
+			resultSetAllCourses = getCourses.executeQuery(CourseDataBaseQueriesUtil.GET_ALL_COURSES.toString());
+			getCourseRoles = con.prepareStatement(CourseDataBaseQueriesUtil.GET_COURSE_DETAILS.toString());
 			Course course = null;
 			while (resultSetAllCourses.next()) {
 				course = new Course();
@@ -93,14 +94,15 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
 	@Override
 	public List<Course> getCoursesWhereUserIsStudent(User user) {
-		CourseDetailsDao theCourseDetailsDao = SystemConfig.getSingletonInstance().getTheCourseDetailsDao();
+		CourseDetailsDao theCourseDetailsDao = CourseConfig.getSingletonInstance().getTheCourseDetailsDao();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultset = null;
 		List<Course> getCoursesAsStudent = new ArrayList<Course>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsStudent);
+			preparedStatement = connection
+					.prepareStatement(CourseDataBaseQueriesUtil.GET_COURSES_WHERE_USER_IS_STUDENT.toString());
 			preparedStatement.setString(1, user.getBannerId());
 			log.info("In course Dao after getting all courses where user is Student");
 			resultset = preparedStatement.executeQuery();
@@ -136,14 +138,15 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
 	@Override
 	public List<Course> getCoursesWhereUserIsInstrcutor(User user) {
-		CourseDetailsDao theCourseDetailsDao = SystemConfig.getSingletonInstance().getTheCourseDetailsDao();
+		CourseDetailsDao theCourseDetailsDao = CourseConfig.getSingletonInstance().getTheCourseDetailsDao();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultset = null;
 		List<Course> getCoursesAsInstructor = new ArrayList<Course>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsInstructor);
+			preparedStatement = connection
+					.prepareStatement(CourseDataBaseQueriesUtil.GET_COURSES_WHERE_USER_IS_INSTRUCTOR.toString());
 			preparedStatement.setString(1, user.getBannerId());
 			resultset = preparedStatement.executeQuery();
 			log.info("In course Dao after getting all courses where user is Instructor");
@@ -184,7 +187,8 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 		List<Course> getCoursesAsTA = new ArrayList<Course>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getCoursesWhereUserIsTA);
+			preparedStatement = connection
+					.prepareStatement(CourseDataBaseQueriesUtil.GET_COURSES_WHERE_USER_IS_TA.toString());
 			preparedStatement.setString(1, user.getBannerId());
 			resultset = preparedStatement.executeQuery();
 			log.info("In course Dao after getting all courses where user is TA");
@@ -228,7 +232,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 		ResultSet resultset = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			statement = connection.prepareStatement(DataBaseQueriesUtil.isCourseIdExists);
+			statement = connection.prepareStatement(CourseDataBaseQueriesUtil.IS_COURSE_ID_EXISTS.toString());
 			statement.setInt(1, courseId);
 			resultset = statement.executeQuery();
 			if (resultset.next()) {
@@ -239,7 +243,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 			resultset.close();
 			if (null != course.getCourseName()) {
 				String courseName = course.getCourseName();
-				statement = connection.prepareStatement(DataBaseQueriesUtil.isCourseNameExists);
+				statement = connection.prepareStatement(CourseDataBaseQueriesUtil.IS_COURSE_NAME_EXISTS.toString());
 				statement.setString(1, courseName);
 				resultset = statement.executeQuery();
 				if (resultset.next()) {
@@ -271,14 +275,14 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
 	@Override
 	public User getInstructorForCourse(int courseId) {
-		UserDao theUserDao = SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao theUserDao = ProfileManagementConfig.getSingletonInstance().getTheUserDao();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		User instructor = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			preparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getInstructorForCourse);
+			preparedStatement = connection.prepareStatement(CourseDataBaseQueriesUtil.GET_INSTRUCTOR_FOR_COURSE.toString());
 			preparedStatement.setInt(1, courseId);
 			resultSet = preparedStatement.executeQuery();
 			String bannerId = null;
@@ -313,7 +317,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
 	@Override
 	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId) {
-		UserDao theUserDao = SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao theUserDao = ProfileManagementConfig.getSingletonInstance().getTheUserDao();
 		List<User> eligibleStudents = new ArrayList<User>();
 		List<User> existingStudentsOfCourse = theUserDao.getAllUsersByCourse(courseId);
 		log.info("In User Dao to get filterEligible ");
@@ -337,7 +341,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 	@Override
 	public Course getCourseById(int courseId) {
 
-		UserDao userDao = SystemConfig.getSingletonInstance().getTheUserDao();
+		UserDao userDao = ProfileManagementConfig.getSingletonInstance().getTheUserDao();
 		Connection con = null;
 		PreparedStatement getCourseById = null;
 		PreparedStatement getCourseRoles = null;
@@ -346,10 +350,10 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 		Course course = null;
 		try {
 			con = ConnectionManager.getInstance().getDBConnection();
-			getCourseById = con.prepareStatement(CourseDataBaseQueriesUtil.getCoursesById);
+			getCourseById = con.prepareStatement(CourseDataBaseQueriesUtil.GET_COURSE_BY_ID.toString());
 			getCourseById.setInt(1, courseId);
 			resultSet = getCourseById.executeQuery();
-			getCourseRoles = con.prepareStatement(DataBaseQueriesUtil.getCourseDetails);
+			getCourseRoles = con.prepareStatement(CourseDataBaseQueriesUtil.GET_COURSE_DETAILS.toString());
 			course = null;
 			while (resultSet.next()) {
 				course = new Course();
