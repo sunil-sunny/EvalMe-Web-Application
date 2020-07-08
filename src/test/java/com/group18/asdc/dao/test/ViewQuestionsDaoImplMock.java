@@ -36,7 +36,7 @@ public class ViewQuestionsDaoImplMock implements ViewQuestionsDao {
 
 	@Override
 	public QuestionMetaData getQuestionById(int questionId) {
-		// TODO Auto-generated method stub
-		return null;
+		QuestionMetaData theQuestionMetaData=new QuestionMetaData();
+		return theQuestionMetaData;
 	}
 }

@@ -1,12 +1,20 @@
 package com.group18.asdc.dao;
 
-import java.util.List;
 import com.group18.asdc.entities.Course;
-import com.group18.asdc.entities.SurveyQuestion;
+import com.group18.asdc.entities.SurveyMetaData;
+import com.group18.asdc.errorhandling.SavingSurveyException;
 
 public interface SurveyDao {
 
-	public List<SurveyQuestion> getAllSavedSurveyQuestions(Course course);
+	public SurveyMetaData getSavedSurvey(Course course);
 
-	public boolean saveSurveyQuestions(List<SurveyQuestion> allSurveyQuestions);
+	public boolean saveSurvey(SurveyMetaData surveyData) throws SavingSurveyException;
+
+	public boolean isSurveyExists(Course course);
+
+	public int createSurvey(Course course);
+
+	public boolean isSurveyPublished(Course course);
+
+	public boolean publishSurvey(SurveyMetaData surveyMetaData);
 }

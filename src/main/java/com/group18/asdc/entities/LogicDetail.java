@@ -1,25 +1,20 @@
 package com.group18.asdc.entities;
 
-public class LogicDetail {
+public enum LogicDetail {
 
-	private final static String groupSimilar = "Group Similiar";
-	private final static String groupDisimilar = "Group Disimilar";
-	private final static String lessThan = "Less Than";
-	private final static String greaterThan = "Greater Than";
+	Group_Similar("1"),
+	Group_Disimilar("2"),
+	Less_Than("4"),
+	Greater_Than("3");
+	
+	private final String logicDetail;
 
-	public static String getGroupsimilar() {
-		return groupSimilar;
+	private LogicDetail(String logicDetail) {
+		this.logicDetail = logicDetail;
 	}
 
-	public static String getGroupdisimilar() {
-		return groupDisimilar;
-	}
-
-	public static String getLessthan() {
-		return lessThan;
-	}
-
-	public static String getGreaterthan() {
-		return greaterThan;
+	@Override
+	public String toString() {
+		return logicDetail;
 	}
 }

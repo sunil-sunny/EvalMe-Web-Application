@@ -1,5 +1,6 @@
 package com.group18.asdc.dao.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -42,5 +43,12 @@ public class ViewQuestionsDaoImplTest {
 			assertValue = true;
 		}
 		assertTrue(assertValue);
+	}
+
+	@Test
+	public void getQuestionByIdTest() {
+		ViewQuestionsDao theViewQuestionsDaoImplMock = new ViewQuestionsDaoImplMock();
+		QuestionMetaData question = theViewQuestionsDaoImplMock.getQuestionById(1);
+		assertNotNull(question);
 	}
 }

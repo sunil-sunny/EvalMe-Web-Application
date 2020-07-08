@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import com.group18.asdc.database.ConnectionManager;
+import com.group18.asdc.entities.BasicQuestionData;
 import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.util.DataBaseQueriesUtil;
@@ -29,13 +30,16 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
+			BasicQuestionData theBasicQuestionData=null;
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
+				theBasicQuestionData=new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
-				theQuestionMetaData.setQuestionTitle(theResultSet.getString(2));
-				theQuestionMetaData.setQuestionText(theResultSet.getString(3));
+				theBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
+				theBasicQuestionData.setQuestionText(theResultSet.getString(3));
 				theQuestionMetaData.setCreationDateTime(theResultSet.getTimestamp(4));
-				theQuestionMetaData.setQuestionType(theResultSet.getString(5));
+				theBasicQuestionData.setQuestionType(theResultSet.getString(5));
+				theQuestionMetaData.setBasicQuestionData(theBasicQuestionData);
 				allQuestions.add(theQuestionMetaData);
 			}
 		} catch (SQLException e) {
@@ -64,23 +68,27 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		Connection connection = null;
 		PreparedStatement thePreparedStatement = null;
 		ResultSet theResultSet = null;
-		List<QuestionMetaData> allQuestionsSortByDate = new ArrayList<QuestionMetaData>();
+		List<QuestionMetaData> allQuestions = new ArrayList<QuestionMetaData>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			thePreparedStatement = connection.prepareStatement(DataBaseQueriesUtil.getAllQuestionsSortByDate);
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
+			BasicQuestionData theBasicQuestionData=null;
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
+				theBasicQuestionData=new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
-				theQuestionMetaData.setQuestionTitle(theResultSet.getString(2));
-				theQuestionMetaData.setQuestionText(theResultSet.getString(3));
+				theBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
+				theBasicQuestionData.setQuestionText(theResultSet.getString(3));
 				theQuestionMetaData.setCreationDateTime(theResultSet.getTimestamp(4));
-				allQuestionsSortByDate.add(theQuestionMetaData);
+				theBasicQuestionData.setQuestionType(theResultSet.getString(5));
+				theQuestionMetaData.setBasicQuestionData(theBasicQuestionData);
+				allQuestions.add(theQuestionMetaData);
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception while getting all the question sort by date");
+			log.info("SQL Exception while getting all the question");
 		} finally {
 			try {
 				if (null != theResultSet) {
@@ -92,13 +100,12 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
-				log.info("closing connection after getting all questions sort by date");
+				log.info("closing connection after getting all questions");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connection "
-						+ "and statement after getting all the question sort by date");
+				log.info("SQL Exception while closing the connection and statement after getting all the question");
 			}
 		}
-		return allQuestionsSortByDate;
+		return allQuestions;
 	}
 
 	@Override
@@ -113,12 +120,16 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
+			BasicQuestionData theBasicQuestionData=null;
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
+				theBasicQuestionData=new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
-				theQuestionMetaData.setQuestionTitle(theResultSet.getString(2));
-				theQuestionMetaData.setQuestionText(theResultSet.getString(3));
+				theBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
+				theBasicQuestionData.setQuestionText(theResultSet.getString(3));
 				theQuestionMetaData.setCreationDateTime(theResultSet.getTimestamp(4));
+				theBasicQuestionData.setQuestionType(theResultSet.getString(5));
+				theQuestionMetaData.setBasicQuestionData(theBasicQuestionData);
 				allQuestionsSortByTitle.add(theQuestionMetaData);
 			}
 		} catch (SQLException e) {
@@ -149,6 +160,7 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		PreparedStatement thePreparedStatement = null;
 		ResultSet theResultSet = null;
 		QuestionMetaData theQuestionMetaData = null;
+		BasicQuestionData thBasicQuestionData=null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.getQuestionById);
@@ -156,11 +168,13 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 			theResultSet = thePreparedStatement.executeQuery();
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
+				thBasicQuestionData=new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
-				theQuestionMetaData.setQuestionTitle(theResultSet.getString(2));
-				theQuestionMetaData.setQuestionText(theResultSet.getString(3));
+				thBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
+				thBasicQuestionData.setQuestionText(theResultSet.getString(3));
 				theQuestionMetaData.setCreationDateTime(theResultSet.getTimestamp(4));
-				theQuestionMetaData.setQuestionType(theResultSet.getString(5));
+				thBasicQuestionData.setQuestionType(theResultSet.getString(5));
+				theQuestionMetaData.setBasicQuestionData(thBasicQuestionData);
 			}
 		} catch (SQLException e) {
 			log.info("SQL Exception while getting question by id");

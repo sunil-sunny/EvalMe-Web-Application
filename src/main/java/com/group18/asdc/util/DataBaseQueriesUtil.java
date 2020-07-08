@@ -40,9 +40,11 @@ public class DataBaseQueriesUtil {
 			+ "and question=? order by datecreated DESC limit 1;";
 	public final static String getAllQuestions = "SELECT a.questionid,a.qtitle,a.question,a.datecreated,b.questiontypename FROM questions as a inner join\r\n"
 			+ "questiontype as b on a.questiontypeid=b.questiontypeid where a.bannerid=?;";
-	public final static String getAllQuestionsSortByDate = "SELECT a.questionid,a.qtitle,a.question,a.datecreated "
-			+ "FROM questions as a where a.bannerid=? order by a.datecreated DESC;\r\n" + "";
-	public final static String getAllQuestionsSortByTitle = "SELECT a.questionid,a.qtitle,a.question,a.datecreated "
-			+ "FROM questions as a where a.bannerid=? order by a.qtitle;";
+	public final static String getAllQuestionsSortByDate = "SELECT a.questionid,a.qtitle,a.question,a.datecreated,b.questiontypename FROM questions as a \r\n"
+			+ "inner join questiontype as b on a.questiontypeid=b.questiontypeid where a.bannerid=?\r\n"
+			+ "order by a.datecreated DESC;";
+	public final static String getAllQuestionsSortByTitle = "SELECT a.questionid,a.qtitle,a.question,a.datecreated,b.questiontypename FROM questions as a \r\n"
+			+ "inner join questiontype as b on a.questiontypeid=b.questiontypeid where a.bannerid=?\r\n"
+			+ "order by a.qtitle;";
 	public final static String deleteQuestion = "delete from questions where questionid=?;";
 }

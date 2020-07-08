@@ -21,7 +21,7 @@ import com.group18.asdc.util.DataBaseQueriesUtil;
 @Repository
 public class CourseDetailsDaoImpl implements CourseDetailsDao {
 
-	private Logger log = Logger.getLogger(CourseController.class.getName());
+	private Logger log = Logger.getLogger(CourseDetailsDaoImpl.class.getName());
 
 	@Override
 	public List<Course> getAllCourses() {
@@ -348,7 +348,7 @@ public class CourseDetailsDaoImpl implements CourseDetailsDao {
 			con = ConnectionManager.getInstance().getDBConnection();
 			getCourseById = con.prepareStatement(CourseDataBaseQueriesUtil.getCoursesById);
 			getCourseById.setInt(1, courseId);
-			resultSet = getCourseById.executeQuery(DataBaseQueriesUtil.getAllCourses);
+			resultSet = getCourseById.executeQuery();
 			getCourseRoles = con.prepareStatement(DataBaseQueriesUtil.getCourseDetails);
 			course = null;
 			while (resultSet.next()) {

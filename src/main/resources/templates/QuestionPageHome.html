@@ -73,8 +73,8 @@ h1 {
 					method="get">
 
 					<tr>
-						<td th:text="${prod.questionTitle}" />
-						<td th:text="${prod.questionText}" />
+						<td th:text="${prod.basicQuestionData.questionTitle}" />
+						<td th:text="${prod.basicQuestionData.questionText}" />
 						<td th:text="${prod.creationDateTime}" />
 
 						<input type="hidden" th:value="${prod.questionId}" name="id" />

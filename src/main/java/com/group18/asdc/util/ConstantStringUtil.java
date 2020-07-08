@@ -9,6 +9,11 @@ public class ConstantStringUtil {
 	private final static String emailPatternCheck = "(.*)@dal.ca";
 	private final static String emailSubject = "you are now a part of EvalMe";
 	private final static String emailMessageHeader = "Thank you for being a part of us !! \\n  you username and password is ";
+	
+	public final static String groupSimilar="Group Similar" ;
+	public final static String groupDisimilar="Group Disimilar";
+	public final static String greaterThan="Greater Than";
+	public final static String lessThan="Less Than";
 
 	public static String getEmailregex() {
 		return emailRegex;

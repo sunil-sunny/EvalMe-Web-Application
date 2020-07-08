@@ -7,30 +7,27 @@ import com.group18.asdc.SurveyConfig;
 import com.group18.asdc.dao.SurveyDao;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.QuestionMetaData;
+import com.group18.asdc.entities.SurveyMetaData;
 import com.group18.asdc.entities.SurveyQuestion;
 import com.group18.asdc.errorhandling.QuestionExitsException;
+import com.group18.asdc.errorhandling.SavingSurveyException;
 import com.group18.asdc.errorhandling.SurveyAlreadyPublishedException;
 
 public class SurveyServiceImpl implements SurveyService {
-	private static List<SurveyQuestion> surveyQuestions = new ArrayList<>();
+
+	private static SurveyMetaData surveyMetaData = new SurveyMetaData();
 
 	@Override
-	public List<SurveyQuestion> getAllSavedSurveyQuestions(Course course) {
+	public SurveyMetaData getSavedSurvey(Course course) {
 		SurveyDao theSurveyDao = SurveyConfig.getSingletonInstance().getTheSurveyDao();
-		surveyQuestions = theSurveyDao.getAllSavedSurveyQuestions(course);
-		return surveyQuestions;
-	}
-
-	@Override
-	public boolean saveSurveyQuestions(List<SurveyQuestion> allSurveyQuestions) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean publishSurvey() throws SurveyAlreadyPublishedException {
-		// TODO Auto-generated method stub
-		return false;
+		surveyMetaData.setTheCourse(course);
+		boolean isSurveyExists = theSurveyDao.isSurveyExists(course);
+		if (isSurveyExists) {
+			surveyMetaData = theSurveyDao.getSavedSurvey(course);
+		} else {
+			surveyMetaData.setSurveyQuestions(new ArrayList<SurveyQuestion>());
+		}
+		return surveyMetaData;
 	}
 
 	@Override
@@ -38,7 +35,7 @@ public class SurveyServiceImpl implements SurveyService {
 
 		boolean isDeleted = false;
 		SurveyQuestion exitingQuestion = null;
-		for (SurveyQuestion theSurveyQuestion : surveyQuestions) {
+		for (SurveyQuestion theSurveyQuestion : surveyMetaData.getSurveyQuestions()) {
 			if (theSurveyQuestion.getQuestionData().getQuestionId() == theQuestionMetaData.getQuestionId()) {
 				exitingQuestion = theSurveyQuestion;
 				break;
@@ -47,22 +44,24 @@ public class SurveyServiceImpl implements SurveyService {
 		if (null == exitingQuestion) {
 			isDeleted = false;
 		} else {
-			surveyQuestions.remove(exitingQuestion);
+			List<SurveyQuestion> surveyQuestion = surveyMetaData.getSurveyQuestions();
+			surveyQuestion.remove(exitingQuestion);
+			surveyMetaData.setSurveyQuestions(surveyQuestion);
 			isDeleted = true;
 		}
 		return isDeleted;
 	}
 
 	@Override
-	public List<SurveyQuestion> getCurrentListOfSurveyQuestions() {
-		return surveyQuestions;
+	public SurveyMetaData getCurrentSurvey() {
+		return surveyMetaData;
 	}
 
 	@Override
 	public boolean addQuestionToSurvey(QuestionMetaData theQuestionMetaData) throws QuestionExitsException {
 		boolean isAdded = false;
 		SurveyQuestion exitingQuestion = null;
-		for (SurveyQuestion theSurveyQuestion : surveyQuestions) {
+		for (SurveyQuestion theSurveyQuestion : surveyMetaData.getSurveyQuestions()) {
 			if (theSurveyQuestion.getQuestionData().getQuestionId() == theQuestionMetaData.getQuestionId()) {
 				exitingQuestion = theSurveyQuestion;
 				break;
@@ -71,11 +70,43 @@ public class SurveyServiceImpl implements SurveyService {
 		if (null == exitingQuestion) {
 			SurveyQuestion newQuestion = new SurveyQuestion();
 			newQuestion.setQuestionData(theQuestionMetaData);
-			surveyQuestions.add(newQuestion);
+			List<SurveyQuestion> surveyQuestion = surveyMetaData.getSurveyQuestions();
+			surveyQuestion.add(newQuestion);
+			surveyMetaData.setSurveyQuestions(surveyQuestion);
 			isAdded = true;
 		} else {
 			throw new QuestionExitsException("Question Already Added");
 		}
 		return isAdded;
+	}
+
+	@Override
+	public boolean isSurveyPublishedForCourse(Course theCourse) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean saveSurvey(SurveyMetaData surveyData) throws SavingSurveyException {
+		SurveyDao theSurveyDao = SurveyConfig.getSingletonInstance().getTheSurveyDao();
+		surveyData.setSurveyId(surveyMetaData.getSurveyId());
+		if (theSurveyDao.isSurveyExists(surveyData.getTheCourse())) {
+			return theSurveyDao.saveSurvey(surveyData);
+		} else {
+
+			int surveyId = theSurveyDao.createSurvey(surveyData.getTheCourse());
+			if (0 == surveyId) {
+				throw new SavingSurveyException("Exception while creating the Survey");
+			} else {
+				surveyData.setSurveyId(surveyId);
+				return theSurveyDao.saveSurvey(surveyData);
+			}
+		}
+	}
+
+	@Override
+	public boolean publishSurvey() throws SurveyAlreadyPublishedException {
+
+		return false;
 	}
 }

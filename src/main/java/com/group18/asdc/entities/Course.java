@@ -71,4 +71,10 @@ public class Course {
 	public void setStudentList(List<User> studentList) {
 		this.studentList = studentList;
 	}
+
+	@Override
+	public String toString() {
+		return "Course [courseId=" + courseId + ", CourseName=" + CourseName + ", instructorName=" + instructorName
+				+ ", taList=" + taList + ", studentList=" + studentList + "]";
+	}
 }
