@@ -7,5 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EvalMeMain {
 	public static void main(String[] args) {
 		SpringApplication.run(EvalMeMain.class, args);		
-	}
+	}	
 }

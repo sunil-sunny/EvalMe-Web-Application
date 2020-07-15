@@ -16,9 +16,9 @@ public class ViewQuestionsDaoImplTest {
 	public void getAllQuestionsTest() {
 		ViewQuestionsDao theViewQuestionsDaoImplMock = new ViewQuestionsDaoImplMock();
 		List<QuestionMetaData> theQuestionList = theViewQuestionsDaoImplMock.getAllQuestions(new User());
-		boolean assertValue = false;
+		boolean assertValue = Boolean.FALSE;
 		if (theQuestionList.size() > 0) {
-			assertValue = true;
+			assertValue = Boolean.TRUE;
 		}
 		assertTrue(assertValue);
 	}
@@ -27,9 +27,9 @@ public class ViewQuestionsDaoImplTest {
 	public void getAllQuestionsSortByDateTest() {
 		ViewQuestionsDao theViewQuestionsDaoImplMock = new ViewQuestionsDaoImplMock();
 		List<QuestionMetaData> theQuestionList = theViewQuestionsDaoImplMock.getAllQuestionsSortByDate(new User());
-		boolean assertValue = false;
+		boolean assertValue = Boolean.FALSE;
 		if (theQuestionList.size() > 0) {
-			assertValue = true;
+			assertValue = Boolean.TRUE;
 		}
 		assertTrue(assertValue);
 	}
@@ -38,9 +38,9 @@ public class ViewQuestionsDaoImplTest {
 	public void getAllQuestionsSortByTitleTest() {
 		ViewQuestionsDao theViewQuestionsDaoImplMock = new ViewQuestionsDaoImplMock();
 		List<QuestionMetaData> theQuestionList = theViewQuestionsDaoImplMock.getAllQuestionsSortByTitle(new User());
-		boolean assertValue = false;
+		boolean assertValue = Boolean.FALSE;
 		if (theQuestionList.size() > 0) {
-			assertValue = true;
+			assertValue = Boolean.TRUE;
 		}
 		assertTrue(assertValue);
 	}

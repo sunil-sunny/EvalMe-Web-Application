@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.group18.asdc.dao.UserDao;
+import com.group18.asdc.database.SQLStatus;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
 
@@ -15,7 +16,6 @@ public class UserDaoImplMock implements UserDao {
 
 	public UserDaoImplMock() {
 		super();
-
 		courseDaoImplMock = new CourseDaoImplMock();
 		Course firstCourse = null;
 		Course secondCourse = null;
@@ -62,12 +62,12 @@ public class UserDaoImplMock implements UserDao {
 
 	@Override
 	public boolean isUserExists(User user) {
-		boolean isExists = false;
+		boolean isExists = Boolean.FALSE;
 
 		if (null != user) {
 			for (User theUser : UserDaoImplMock.userList) {
 				if (theUser.getBannerId() == user.getBannerId()) {
-					isExists = true;
+					isExists = Boolean.TRUE;
 					break;
 				}
 			}
@@ -92,7 +92,9 @@ public class UserDaoImplMock implements UserDao {
 	public List<User> getAllUsersByCourse(int courseId) {
 		List<User> userList = new ArrayList<User>();
 		Course course = courseDaoImplMock.getCourseById(courseId);
-		if (null != course) {
+		if (null == course) {
+			userList.size();
+		} else {
 			userList.add(course.getInstructorName());
 			userList.addAll(course.getTaList());
 			userList.addAll(course.getStudentList());
@@ -101,12 +103,13 @@ public class UserDaoImplMock implements UserDao {
 	}
 
 	@Override
-	public void loadUserWithBannerId(ArrayList<Object> valueList, User userObj) {
+	public int loadUserWithBannerId(ArrayList<Object> valueList, User userObj) {
 		for (User theUser : UserDaoImplMock.userList) {
 			if (theUser.getBannerId() == "B00123456") {
 				userObj = theUser;
 			}
 		}
+		return SQLStatus.SUCCESSFUL;
 	}
 
 	@Override
@@ -125,8 +128,9 @@ public class UserDaoImplMock implements UserDao {
 		Course theCourse = new Course();
 		theCourse.setInstructorName(instructor);
 		if (null == theCourse.getInstructorName()) {
-			return false;
-		}
-		return true;
+			return Boolean.FALSE;
+		}else {
+			return Boolean.TRUE;
+		}	
 	}
 }

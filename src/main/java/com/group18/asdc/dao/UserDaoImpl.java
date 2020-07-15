@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.database.SQLMethods;
 import com.group18.asdc.database.SQLQueries;
+import com.group18.asdc.database.SQLStatus;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
 import com.group18.asdc.util.UserManagementDataBaseQueriesUtil;
@@ -21,27 +23,29 @@ import com.group18.asdc.util.UserManagementDataBaseQueriesUtil;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-	private Logger log = Logger.getLogger(UserDaoImpl.class.getName());
+	private Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
 
 	@Override
 	public boolean isUserExists(User user) {
 		Connection connection = null;
 		ResultSet resultSet = null;
 		PreparedStatement checkUser = null;
-		boolean isUserExits = false;
+		boolean isUserExits = Boolean.FALSE;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			checkUser = connection.prepareStatement(UserManagementDataBaseQueriesUtil.IS_USER_EXISTS.toString());
 			checkUser.setString(1, user.getBannerId());
 			resultSet = checkUser.executeQuery();
-			log.info("In User Dao to check if user exists or not");
 			if (resultSet.next()) {
-				isUserExits = true;
+				isUserExits = Boolean.TRUE;
+				logger.log(Level.INFO, "User with id " + user.getBannerId() + " is exists");
 			} else {
-				isUserExits = false;
+				isUserExits = Boolean.FALSE;
+				logger.log(Level.FINE, "User with id " + user.getBannerId() + " is not exists");
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception occured while checking if user exists or not");
+			logger.log(Level.SEVERE,
+					"SQL Exception occurred while checking if user exists or not for user id " + user.getBannerId());
 		} finally {
 			try {
 				if (null != resultSet) {
@@ -53,10 +57,9 @@ public class UserDaoImpl implements UserDao {
 				if (null != checkUser) {
 					checkUser.close();
 				}
-				log.info("closing connection after having a check if user exists or not");
 			} catch (SQLException e) {
-				log.info("SQL Exception occured while closing the connections "
-						+ "and statements after checking if user exists or not");
+				logger.log(Level.SEVERE,
+						"SQL Exception occurred while closing the connections and statements after checking if user exists or not");
 			}
 		}
 		return isUserExits;
@@ -73,7 +76,6 @@ public class UserDaoImpl implements UserDao {
 			String userSql = UserManagementDataBaseQueriesUtil.GET_USER_BY_ID.toString();
 			getUser = connection.prepareStatement(userSql);
 			getUser.setString(1, bannerId);
-			log.info("In User Dao to get the user for given banner id");
 			resultSet = getUser.executeQuery();
 			while (resultSet.next()) {
 				user = new User();
@@ -84,7 +86,7 @@ public class UserDaoImpl implements UserDao {
 			}
 
 		} catch (SQLException e) {
-			log.info("SQL Exception while getting user by banner id");
+			logger.log(Level.SEVERE, "SQL Exception while getting user with banner id " + bannerId);
 		} finally {
 			try {
 				if (null != resultSet) {
@@ -96,9 +98,10 @@ public class UserDaoImpl implements UserDao {
 				if (null != getUser) {
 					getUser.close();
 				}
-				log.info("closing the connection after getting user by banner id");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connections and statements after getting user by banner id");
+				logger.log(Level.SEVERE,
+						"SQL Exception while closing the connections and statements after getting user with banner id "
+								+ bannerId);
 			}
 		}
 		return user;
@@ -115,7 +118,6 @@ public class UserDaoImpl implements UserDao {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			preparedStatement = connection
 					.prepareStatement(UserManagementDataBaseQueriesUtil.GET_ALL_USERS_RELATED_TO_COURSE.toString());
-			log.info("In users dao getting all users based on course id");
 			preparedStatement.setInt(1, courseId);
 			resultSetForStudentList = preparedStatement.executeQuery();
 			while (resultSetForStudentList.next()) {
@@ -127,7 +129,7 @@ public class UserDaoImpl implements UserDao {
 				studentList.add(user);
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception while getting all the users realted to course");
+			logger.log(Level.SEVERE, "SQL Exception while getting all the users realted to course with id " + courseId);
 		} finally {
 			try {
 				if (null != connection) {
@@ -139,18 +141,19 @@ public class UserDaoImpl implements UserDao {
 				if (null != preparedStatement) {
 					preparedStatement.close();
 				}
-				log.info("Closing connections after getting users based on course");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connections "
-						+ "and statements after getting all the users realted to course");
+				logger.log(Level.SEVERE,
+						"SQL Exception while closing the connections and statements after getting all the users related to course with id "
+								+ courseId);
 			}
 		}
 		return studentList;
 	}
 
 	@Override
-	public void loadUserWithBannerId(ArrayList<Object> valueList, User userObj) {
+	public int loadUserWithBannerId(ArrayList<Object> valueList, User userObj) {
 		SQLMethods sqlImplementation = null;
+		int sqlCodes = SQLStatus.NO_DATA_AVAILABLE;
 		try {
 			Connection connection = ConnectionManager.getInstance().getDBConnection();
 			sqlImplementation = new SQLMethods(connection);
@@ -163,33 +166,37 @@ public class UserDaoImpl implements UserDao {
 				userObj.setFirstName((String) valuesMap.get("firstname"));
 				userObj.setLastName((String) valuesMap.get("lastname"));
 				userObj.setPassword((String) valuesMap.get("password"));
+				sqlCodes = SQLStatus.SUCCESSFUL;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "SQL Exception", e);
+			sqlCodes = SQLStatus.SQL_ERROR;
 		} finally {
 			if (null != sqlImplementation) {
 				sqlImplementation.cleanup();
 			}
 		}
+		return sqlCodes;
 	}
 
 	@Override
 	public Boolean updatePassword(ArrayList<Object> criteriaList, ArrayList<Object> valueList) {
 		SQLMethods sqlImplementation = null;
+		boolean isUpdateSuccessful = Boolean.FALSE;
 		try {
 			Connection connection = ConnectionManager.getInstance().getDBConnection();
 			sqlImplementation = new SQLMethods(connection);
 			Integer rowCount = sqlImplementation.updateQuery(SQLQueries.UPDATE_PASSWORD_FOR_USER.toString(), valueList,
 					criteriaList);
-			return rowCount > 0;
+			isUpdateSuccessful = rowCount > 0;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "SQL Exception", e);
 		} finally {
 			if (null != sqlImplementation) {
 				sqlImplementation.cleanup();
 			}
 		}
-		return Boolean.FALSE;
+		return isUpdateSuccessful;
 	}
 
 	@Override
@@ -207,7 +214,7 @@ public class UserDaoImpl implements UserDao {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "SQL Exception", e);
 		} finally {
 			if (null != sqlImplementation) {
 				sqlImplementation.cleanup();
@@ -218,7 +225,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean isUserInstructor(Course course) {
-		boolean returnValue = true;
+		boolean returnValue = Boolean.TRUE;
 		String instructorId = course.getInstructorName().getBannerId();
 		int courseId = course.getCourseId();
 		Connection connection = null;
@@ -231,7 +238,7 @@ public class UserDaoImpl implements UserDao {
 			resultset = statement.executeQuery();
 			statement.close();
 			if (null == resultset) {
-				returnValue = false;
+				returnValue = Boolean.FALSE;
 			} else {
 				resultset.close();
 				statement = connection
@@ -240,11 +247,12 @@ public class UserDaoImpl implements UserDao {
 				statement.setInt(2, courseId);
 				resultset = statement.executeQuery();
 				if (null != resultset) {
-					returnValue = false;
+					returnValue = Boolean.FALSE;
 				}
 			}
 		} catch (SQLException e) {
-			log.info("Error closing connection.");
+			logger.log(Level.SEVERE,
+					"SQL Exception while Checking the user as instructor or not for course " + course.getCourseId());
 		} finally {
 			try {
 				if (null != statement) {
@@ -257,7 +265,9 @@ public class UserDaoImpl implements UserDao {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				log.info("Error closing connection.");
+				logger.log(Level.SEVERE,
+						"SQL Exception while closing connections Checking the user as instructor or not for course "
+								+ course.getCourseId());
 			}
 		}
 		return returnValue;

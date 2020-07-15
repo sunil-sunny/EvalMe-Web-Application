@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home Page</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<style>
+h1 {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<div>
+		<h1>Survey Submitted! </h1>
+		<form th:action="@{/coursepage}" method="get">
+			<button class="primary" th:href="@{coursepage}">Course Home</button>
+		</form>
+	</div>
+</body>
+</html>

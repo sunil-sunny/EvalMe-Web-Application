@@ -5,7 +5,7 @@ import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.entities.SurveyMetaData;
 import com.group18.asdc.errorhandling.QuestionExitsException;
 import com.group18.asdc.errorhandling.SavingSurveyException;
-import com.group18.asdc.errorhandling.SurveyAlreadyPublishedException;
+import com.group18.asdc.errorhandling.PublishSurveyException;
 
 public interface SurveyService {
 	
@@ -15,12 +15,13 @@ public interface SurveyService {
 	
 	public boolean saveSurvey(SurveyMetaData surveyData) throws SavingSurveyException;
 	
-	public boolean publishSurvey() throws SurveyAlreadyPublishedException;	
+	public boolean publishSurvey() throws PublishSurveyException;	
 	
 	public boolean removeQuestionFromSurvey(QuestionMetaData theQuestionMetaData);
 	
 	public SurveyMetaData getCurrentSurvey();
 	
 	public boolean isSurveyPublishedForCourse(Course theCourse);
+	
 
 }

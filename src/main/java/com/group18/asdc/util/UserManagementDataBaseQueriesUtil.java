@@ -3,10 +3,7 @@ package com.group18.asdc.util;
 public enum UserManagementDataBaseQueriesUtil {
 
 	GET_ALL_USERS_RELATED_TO_COURSE(
-			"SELECT c.bannerid,c.lastname,c.firstname,c.emailid FROM courserole as a\\r\\n\"\r\n"
-					+ "			+ \"inner join role as b on a.roleid=b.roleid\\r\\n\"\r\n"
-					+ "			+ \"inner join user as c on a.bannerid=c.bannerid where (b.rolename='STUDENT' || b.rolename='INSTRUCTOR' ||\\r\\n\"\r\n"
-					+ "			+ \"b.rolename='TA') and a.courseid=?;"),
+			"SELECT c.bannerid,c.lastname,c.firstname,c.emailid FROM courserole as a inner join role as b on a.roleid=b.roleid inner join user as c on a.bannerid=c.bannerid where (b.rolename='STUDENT' || b.rolename='INSTRUCTOR' || b.rolename='TA') and a.courseid=?;"),
 	INSERT_USER("insert into user values(?,?,?,?,?);"),
 	ALLOCATE_SYSTEM_ROLE("insert into systemrole(roleid,bannerid) values(?,?);"),
 	CHECK_USER_WITH_EMAIL("select * from user where emailid=?;"),

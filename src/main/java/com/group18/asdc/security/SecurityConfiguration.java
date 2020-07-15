@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -16,8 +17,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/public/**", "/forgot-password", "/registration", "/home", "/resetPassword", "/login")
 				.permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login")
-				.failureUrl("/login-error").defaultSuccessUrl("/login-success").permitAll().and().logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+				.failureHandler(new CustomAuthenticationFailureHandler()).defaultSuccessUrl("/login-success").permitAll().and()
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
 	}
 

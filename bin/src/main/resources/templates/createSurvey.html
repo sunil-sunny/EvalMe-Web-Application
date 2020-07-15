@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.center {
+	text-align: center;
+}
+
+.vl {
+	border-left: 3px solid black;
+	height: 500px;
+}
+
+.small {
+	height: 500px;
+	width: 600px;
+}
+</style>
+<script>
+	function alert() {
+		if (confirm("Remove question from Survey")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function alertSave() {
+		if (confirm("All the unsaved questions will not be in added into survey")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	function doSomething() {
+
+		var selected = document.getElementById("question type").value;
+		console.log(selected)
+	}
+</script>
+</head>
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+	<br>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-6">
+				<h1 th:text="'Survey Details for '+${survey.theCourse.CourseName}+' ('+${survey.theCourse.courseId}+')'"></h1>
+			</div>
+
+			<div class="col-4" th:if="${survey.publishedStatus}"
+				th:class="${'container justify-content-center alert alert-success'}"
+				style="width: 235px;">
+				<p>Survey is Published</p>
+			</div>
+			<div class="col-4" th:if="${!survey.publishedStatus}"
+				th:class="${'container justify-content-center alert alert-primary'}"
+				style="width: 235px;">
+				<p>Survey is not published</p>
+			</div>
+		</div>
+		<hr>
+		<div></div>
+		<div class="container-fluid">
+			<div class="row justify-content-center"
+				th:if="${!survey.publishedStatus}">
+				<form class="form-inline" th:action="@{/survey/addQuestion}"
+					method="post">
+					<div class="form-group mx-sm-3 mb-2">
+						<select class="custom-select" style="width: 600px;"
+							id="selectedQuestion" name="selectedQuestion">
+							<option value="default">Add a question</option>
+							<option th:each="prod: ${existingQuestions}"
+								th:value="${prod.questionId}"
+								th:text="${prod.basicQuestionData.questionText}" />
+						</select>
+					</div>
+					<input type="submit" value="Add to Survey"
+						class="btn btn-primary mb-2" onClick="addQuestion()" />
+				</form>
+
+			</div>
+			<div th:if="${message}"
+				th:class="${'container justify-content-center alert alert-danger'}"
+				style="width: 220px;">
+
+				<div class="col-04" th:text="${message}"></div>
+
+			</div>
+			<div th:if="${success}"
+				th:class="${'container justify-content-center alert alert-success'}"
+				style="width: 220px;">
+				<div class="col-04" th:text="${success}"></div>
+			</div>
+			<br>
+			<div class="row">
+				<!-- Existing Questions -->
+
+				<!-- Edit Survey Module -->
+				<form th:action="@{/survey/saveSurvey}" method="post"
+					th:object="${survey}">
+					<div class="col-12">
+
+						<div class="row">
+
+							<div class="col-8">
+								<span class="label label-default">Group Size:</span> <span
+									th:if="${survey.publishedStatus}">
+									<p th:text="${survey.groupSize}"></p>
+								</span> <select th:if="${!survey.publishedStatus}"
+									style="width: 200px;" class="custom-select"
+									th:value="${survey.groupSize}" id="question type"
+									name="question type" th:field="*{groupSize}">
+									<option value="2" selected="selected">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+							<div class="col-1.5" th:if="${!survey.publishedStatus}">
+								<input type="submit" class="btn btn-success" value="Save Survey" />
+							</div>
+							<div class="col-2">
+								<a th:if="${!survey.publishedStatus}" 
+								th:href="@{/survey/publishSurvey}" class="btn btn-success"
+									style="color: white;" onClick="alertSave()">Publish Survey</a>
+							</div>
+							<div class="col-2">
+								<a th:if="${survey.publishedStatus}" class="btn btn-success"
+									style="color: white;">Form Groups</a>
+							</div>
+						</div>
+						<hr>
+						<input type="hidden" th:value="${survey.surveyId}"
+							th:field="*{surveyId}" /> <input type="hidden"
+							th:value="${survey.theCourse.courseId}"
+							th:field="*{theCourse.courseId}" />
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Question Type</th>
+									<th scope="col">Question Text</th>
+									<th scope="col">Logic Detail</th>
+									<th scope="col">Number Constraint</th>
+									<th scope="col">Priority</th>
+									<th scope="col" th:if="${!survey.publishedStatus}">Remove
+										Question</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="prod, stat : ${survey.surveyQuestions}">
+									<!-- survey Question ID binding -->
+									<input type="hidden"
+										th:value="${prod.questionData.basicQuestionData.questionText}"
+										th:name="book"
+										th:field="*{surveyQuestions[__${stat.index}__].questionData.basicQuestionData.questionText}" />
+									<input type="hidden" th:value="${prod.questionData.questionId}"
+										name="book"
+										th:field="*{surveyQuestions[__${stat.index}__].questionData.questionId}" />
+									<input type="hidden"
+										th:value="${prod.questionData.basicQuestionData.questionTitle}"
+										th:field="*{surveyQuestions[__${stat.index}__].questionData.basicQuestionData.questionTitle}" />
+									<input type="hidden"
+										th:value="${prod.questionData.basicQuestionData.questionType}"
+										th:field="*{surveyQuestions[__${stat.index}__].questionData.basicQuestionData.questionType}" />
+									<td
+										th:text="${prod.questionData.basicQuestionData.questionType}" />
+									<td
+										th:text="${prod.questionData.basicQuestionData.questionText}" />
+
+									<td scope="col" th:if="${survey.publishedStatus}">
+										<p th:text="${prod.logicDetail}"></p>
+									</td>
+
+									<div th:if="${!survey.publishedStatus}">
+										<td
+											th:if="${prod.questionData.basicQuestionData.questionType} == 'numeric'"
+											style="padding: 10px;"><select style="width: 200px;"
+											class="custom-select" id="question type" name="question type"
+											th:value="${prod.logicDetail}"
+											th:field="*{surveyQuestions[__${stat.index}__].logicDetail}"
+											onfocus="this.selectedIndex=-1;this.blur();"
+											onChange="doSomething();">
+												<option value="Group Similar">Group Similar</option>
+												<option value="Group Disimilar">Group Disimlar</option>
+												<option value="Greater Than">Greater than (>)</option>
+												<option value="Less Than">Less than (<)</option>
+										</select></td>
+										<td
+											th:if="${prod.questionData.basicQuestionData.questionType} == 'multiple-choice-choose-one' OR 
+									${prod.questionData.basicQuestionData.questionType} == 'multiple-choice-choose-more' OR 
+									${prod.questionData.basicQuestionData.questionType} == 'freetext'"
+											style="padding: 10px;"><select style="width: 200px;"
+											class="custom-select" th:value="${prod.logicDetail}"
+											id="question type" name="question type"
+											th:field="*{surveyQuestions[__${stat.index}__].logicDetail}">
+												<option value="Group Similar">Group Similar</option>
+												<option value="Group Disimilar">Group Disimilar</option>
+												Disimilar
+												</option>
+										</select></td>
+									</div>
+
+
+									<td
+										th:if="${prod.questionData.basicQuestionData.questionType} == 'multiple-choice-choose-one' OR 
+									${prod.questionData.basicQuestionData.questionType} == 'multiple-choice-choose-more' OR 
+									${prod.questionData.basicQuestionData.questionType} == 'freetext'"
+										style="padding: 10px;">Not Applicable</td>
+									<div th:if="${!survey.publishedStatus}">
+
+
+										<td
+											th:if="${prod.questionData.basicQuestionData.questionType} == 'numeric'"
+											style="padding: 10px;"><input type="number"
+											th:value="${prod.logicConstraint}" class="form-control"
+											style="width: 40%;"
+											th:field="*{surveyQuestions[__${stat.index}__].logicConstraint}"
+											min="1"></td>
+									</div>
+									<div th:if="${survey.publishedStatus}">
+										<td
+											th:if="${prod.questionData.basicQuestionData.questionType} == 'numeric'"
+											style="padding: 10px;">
+											<p th:text="${prod.logicConstraint}"></p>
+										</td>
+									</div>
+									<div th:if="${!survey.publishedStatus}">
+										<td style="padding: 10px;"><select style="width: 200px;"
+											class="custom-select" th:value="${prod.priority}"
+											th:field="*{surveyQuestions[__${stat.index}__].priority}">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+												<option value="7">7</option>
+												<option value="8">8</option>
+												<option value="9">9</option>
+												<option value="10">10</option>
+										</select></td>
+									</div>
+									
+									<div th:if="${survey.publishedStatus}">
+										<td style="padding: 10px;"><p th:text="${prod.priority}">
+										</p></td>
+									</div>
+									
+									<td>
+									
+									<a th:href="@{'/survey/removeQuestion/'+${prod.questionData.questionId}}"
+										th:if="${!survey.publishedStatus}" class="btn btn-danger"
+										onclick="return alert()" style=" color: white;">Remove <i class="fa fa-trash"></i></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

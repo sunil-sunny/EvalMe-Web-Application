@@ -14,7 +14,7 @@ public class SQLMethods {
 	private Connection connection;
 	private ResultSet rs;
 
-	public SQLMethods(Connection connection) throws SQLException {
+	public SQLMethods(Connection connection){
 		rs = null;
 		this.connection = connection;
 	}

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.group18.asdc.ProfileManagementConfig;
+import com.group18.asdc.SystemConfig;
 import com.group18.asdc.entities.PasswordHistory;
 import com.group18.asdc.entities.UserRegistartionDetails;
 import com.group18.asdc.service.PasswordHistoryService;
@@ -18,6 +19,9 @@ import com.group18.asdc.util.RegistrationStatus;
 @Controller
 @RequestMapping("/registration")
 public class RegisterController {
+
+	private final static RegisterService theRegisterService = SystemConfig.getSingletonInstance()
+			.getServiceAbstractFactory().getRegisterService();
 
 	@ModelAttribute("user")
 	public UserRegistartionDetails bean() {
@@ -31,7 +35,7 @@ public class RegisterController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") UserRegistartionDetails bean, BindingResult result) {
-		RegisterService theRegisterService = ProfileManagementConfig.getSingletonInstance().getTheRegisterservice();
+		
 		if (result.hasErrors()) {
 			return "registration";
 		}

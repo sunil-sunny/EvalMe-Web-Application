@@ -5,6 +5,8 @@
 <meta charset="ISO-8859-1">
 <title>EvalMe</title>
 <link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 .center {
 	text-align: center;
@@ -40,7 +42,6 @@
 
 		var selected = document.getElementById("question type").value;
 		console.log(selected)
-		/* document.getElementById("myBtn").disabled = true; */
 	}
 </script>
 </head>
@@ -51,16 +52,20 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-6">
-				<h1>Survey Details</h1>
+				<h1
+					th:text="'Survey Details for '+${survey.theCourse.CourseName}+' ('+${survey.theCourse.courseId}+')'"
+					style="font-variant: small-caps;"></h1>
 			</div>
-			
+
 			<div class="col-4" th:if="${survey.publishedStatus}"
-				th:class="${'container justify-content-center alert alert-success'}" style="width: 235px;">
-				<p>Survey is already Published</p>
+				th:class="${'container justify-content-center alert alert-success'}"
+				style="width: 235px;">
+				<p>Survey is Published</p>
 			</div>
 			<div class="col-4" th:if="${!survey.publishedStatus}"
-				th:class="${'container justify-content-center alert alert-primary'}" style="width: 235px;">
-				<p>Survey is not yet published</p>
+				th:class="${'container justify-content-center alert alert-primary'}"
+				style="width: 235px;">
+				<p>Survey is not published</p>
 			</div>
 		</div>
 		<hr>
@@ -82,7 +87,6 @@
 					<input type="submit" value="Add to Survey"
 						class="btn btn-primary mb-2" onClick="addQuestion()" />
 				</form>
-
 			</div>
 			<div th:if="${message}"
 				th:class="${'container justify-content-center alert alert-danger'}"
@@ -94,9 +98,7 @@
 			<div th:if="${success}"
 				th:class="${'container justify-content-center alert alert-success'}"
 				style="width: 220px;">
-
 				<div class="col-04" th:text="${success}"></div>
-
 			</div>
 			<br>
 			<div class="row">
@@ -110,25 +112,31 @@
 						<div class="row">
 
 							<div class="col-8">
-								<span class="label label-default">Group Size:</span>
-								<span th:if="${survey.publishedStatus}"> <p th:text="${survey.groupSize}"></p></span>
-								 <input th:if="${!survey.publishedStatus}"
-									type="number" th:value="${survey.groupSize}"
-									class="form-control" id="group size" style="width: 40%;"
-									th:field="*{groupSize}">
+								<span class="label label-default">Group Size:</span> <span
+									th:if="${survey.publishedStatus}">
+									<p th:text="${survey.groupSize}"></p>
+								</span> <select th:if="${!survey.publishedStatus}"
+									style="width: 200px;" class="custom-select"
+									th:value="${survey.groupSize}" id="question type"
+									name="question type" th:field="*{groupSize}">
+									<option value="2" selected="selected">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
 							</div>
 							<div class="col-1.5" th:if="${!survey.publishedStatus}">
 								<input type="submit" class="btn btn-success" value="Save Survey" />
 							</div>
 							<div class="col-2">
 								<a th:if="${!survey.publishedStatus}"
-								class="btn btn-success" style="color: white;"
-									onClick="alertSave()">Publish Survey</a>
+									th:href="@{/survey/publishSurvey}" class="btn btn-success"
+									style="color: white;" onClick="alertSave()">Publish Survey</a>
 							</div>
 							<div class="col-2">
-								<a th:if="${survey.publishedStatus}"
-								class="btn btn-success" style="color: white;"
-									>Form Groups</a>
+								<a th:if="${survey.publishedStatus}" class="btn btn-success" 
+								th:href="@{/groupformation/result?courseId=}+${courseid}"
+									style="color: white;">Form Groups</a>
 							</div>
 						</div>
 						<hr>
@@ -143,7 +151,9 @@
 									<th scope="col">Question Text</th>
 									<th scope="col">Logic Detail</th>
 									<th scope="col">Number Constraint</th>
-									<th scope="col" th:if="${!survey.publishedStatus}">Remove Question</th>
+									<th scope="col">Priority</th>
+									<th scope="col" th:if="${!survey.publishedStatus}">Remove
+										Question</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -200,7 +210,6 @@
 										</select></td>
 									</div>
 
-
 									<td
 										th:if="${prod.questionData.basicQuestionData.questionType} == 'multiple-choice-choose-one' OR 
 									${prod.questionData.basicQuestionData.questionType} == 'multiple-choice-choose-more' OR 
@@ -214,7 +223,8 @@
 											style="padding: 10px;"><input type="number"
 											th:value="${prod.logicConstraint}" class="form-control"
 											style="width: 40%;"
-											th:field="*{surveyQuestions[__${stat.index}__].logicConstraint}"></td>
+											th:field="*{surveyQuestions[__${stat.index}__].logicConstraint}"
+											min="1"></td>
 									</div>
 									<div th:if="${survey.publishedStatus}">
 										<td
@@ -223,11 +233,31 @@
 											<p th:text="${prod.logicConstraint}"></p>
 										</td>
 									</div>
+									<div th:if="${!survey.publishedStatus}">
+										<td style="padding: 10px;"><select style="width: 200px;"
+											class="custom-select" th:value="${prod.priority}"
+											th:field="*{surveyQuestions[__${stat.index}__].priority}">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+												<option value="7">7</option>
+												<option value="8">8</option>
+												<option value="9">9</option>
+												<option value="10">10</option>
+										</select></td>
+									</div>
+									<div th:if="${survey.publishedStatus}">
+										<td style="padding: 10px;"><p th:text="${prod.priority}">
+											</p></td>
+									</div>
 									<td><a
 										th:href="@{'/survey/removeQuestion/'+${prod.questionData.questionId}}"
-										th:if="${!survey.publishedStatus}"
-										class="btn btn-danger" onclick="return alert()">Remove
-											Question</a>
+										th:if="${!survey.publishedStatus}" class="btn btn-danger"
+										onclick="return alert()" style="color: white;">Remove <i
+											class="fa fa-trash"></i></a></td>
 								</tr>
 							</tbody>
 						</table>

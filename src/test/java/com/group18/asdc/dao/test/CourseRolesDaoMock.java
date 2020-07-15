@@ -56,16 +56,18 @@ public class CourseRolesDaoMock implements CourseRolesDao {
 
 	@Override
 	public boolean allocateTa(int courseId, User user) {
-		if (null != user) {
+		if (null == user) {
+			return Boolean.FALSE;
+		} else {
 			Course theCourse = new Course();
 			theCourse.setCourseId(courseId);
 			theCourse.setTaList(Arrays.asList(user));
 			if (theCourse.getTaList().size() > 0) {
-				return true;
+				return Boolean.TRUE;
+			} else {
+				return Boolean.FALSE;
 			}
-			return false;
 		}
-		return false;
 	}
 
 	@Override
@@ -74,8 +76,9 @@ public class CourseRolesDaoMock implements CourseRolesDao {
 		theCourse.setCourseId(courseId);
 		theCourse.setStudentList(studentList);
 		if (theCourse.getStudentList().size() > 0) {
-			return true;
+			return Boolean.TRUE;
+		}else {
+			return Boolean.FALSE;
 		}
-		return false;
 	}
 }

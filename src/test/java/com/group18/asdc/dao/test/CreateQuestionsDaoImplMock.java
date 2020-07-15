@@ -26,7 +26,7 @@ public class CreateQuestionsDaoImplMock implements CreateQuestionDao {
 	@Override
 	public boolean createNumericOrTextQuestion(BasicQuestionData theBasicQuestionData, User theUser) {
 		CreateQuestionsDaoImplMock.numberOrTextQuestions.add(theBasicQuestionData);
-		return true;
+		return Boolean.TRUE;
 	}
 
 	@Override
@@ -38,15 +38,15 @@ public class CreateQuestionsDaoImplMock implements CreateQuestionDao {
 	@Override
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion theMultipleChoiceChoose, User theUser) {
 		CreateQuestionsDaoImplMock.multipleQuestions.add(theMultipleChoiceChoose);
-		return true;
+		return Boolean.TRUE;
 	}
 
 	@Override
 	public boolean isQuestionExists(BasicQuestionData theBasicQuestionData) {
 		String questionTitle = theBasicQuestionData.getQuestionTitle();
 		if (null == questionTitle) {
-			return true;
+			return Boolean.TRUE;
 		}
-		return true;
+		return Boolean.TRUE;
 	}
 }

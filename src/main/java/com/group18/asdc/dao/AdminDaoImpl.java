@@ -4,10 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.springframework.stereotype.Repository;
-
 import com.group18.asdc.database.ConnectionManager;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.util.CourseDataBaseQueriesUtil;
@@ -23,7 +22,7 @@ public class AdminDaoImpl implements AdminDao {
 
 	@Override
 	public boolean addCourse(Course course) {
-		boolean returnValue = true;
+		boolean returnValue = Boolean.TRUE;
 		int courseId = course.getCourseId();
 		String courseName = course.getCourseName();
 		String instructorId = course.getInstructorName().getBannerId();
@@ -46,10 +45,11 @@ public class AdminDaoImpl implements AdminDao {
 			statement.setString(2, instructorId);
 			resultset = statement.executeQuery();
 			if (null == resultset) {
-				returnValue = false;
+				returnValue = Boolean.FALSE;
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception. Please check connection");
+			log.log(Level.SEVERE, "SQL Exception while adding the course",
+					course.getCourseId() + " " + course.getCourseName());
 		} finally {
 			try {
 				if (null != statement) {
@@ -62,7 +62,8 @@ public class AdminDaoImpl implements AdminDao {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				log.info("Error closing connection.");
+				log.log(Level.SEVERE, "SQL Exception while closing the connection after adding course of ",
+						course.getCourseId() + " " + course.getCourseName());
 			}
 		}
 		return returnValue;
@@ -70,7 +71,7 @@ public class AdminDaoImpl implements AdminDao {
 
 	@Override
 	public boolean deleteCourse(Course course) {
-		boolean returnValue = false;
+		boolean returnValue = Boolean.FALSE;
 		int courseId = course.getCourseId();
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -85,12 +86,13 @@ public class AdminDaoImpl implements AdminDao {
 			statement.setInt(1, courseId);
 			resultset = statement.executeQuery();
 			if (resultset.next()) {
-				returnValue = false;
+				returnValue = Boolean.FALSE;
 			} else {
-				returnValue = true;
+				returnValue = Boolean.TRUE;
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception. Check connection.");
+			log.log(Level.SEVERE, "SQL Exception while deleting the course ",
+					course.getCourseId() + " " + course.getCourseName());
 		} finally {
 			try {
 				if (null != statement) {
@@ -103,7 +105,8 @@ public class AdminDaoImpl implements AdminDao {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				log.info("Error closing connection.");
+				log.log(Level.SEVERE, "Exception while closing the conections after deleting the course ",
+						course.getCourseId() + " " + course.getCourseName());
 			}
 		}
 		return returnValue;

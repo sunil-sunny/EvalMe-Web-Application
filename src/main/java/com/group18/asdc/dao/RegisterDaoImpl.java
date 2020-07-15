@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,11 +23,11 @@ public class RegisterDaoImpl implements RegisterDao {
 		Connection connection = null;
 		PreparedStatement registerUserStatement = null;
 		PreparedStatement assignRoleStatement = null;
-		boolean isUserRegisterd = false;
-		boolean isGuestRoleAssigned = false;
+		boolean isUserRegisterd = Boolean.FALSE;
+		boolean isGuestRoleAssigned = Boolean.FALSE;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			connection.setAutoCommit(false);
+			connection.setAutoCommit(Boolean.FALSE);
 			registerUserStatement = connection
 					.prepareStatement(UserManagementDataBaseQueriesUtil.INSERT_USER.toString());
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -38,7 +39,7 @@ public class RegisterDaoImpl implements RegisterDao {
 			registerUserStatement.setString(5, hashedPassword);
 			int registerStatus = registerUserStatement.executeUpdate();
 			if (registerStatus > 0) {
-				isUserRegisterd = true;
+				isUserRegisterd = Boolean.TRUE;
 			}
 			assignRoleStatement = connection
 					.prepareStatement(UserManagementDataBaseQueriesUtil.ALLOCATE_SYSTEM_ROLE.toString());
@@ -46,13 +47,17 @@ public class RegisterDaoImpl implements RegisterDao {
 			assignRoleStatement.setString(2, registerDetails.getBannerid());
 			int assignRoleResult = assignRoleStatement.executeUpdate();
 			if (assignRoleResult > 0) {
-				isGuestRoleAssigned = true;
+				isGuestRoleAssigned = Boolean.TRUE;
 			}
 			if (isGuestRoleAssigned && isUserRegisterd) {
+				log.info("User with id " + registerDetails.getBannerid() + " has been successfully registered");
 				connection.commit();
+			} else {
+				log.log(Level.WARNING, "User with id " + registerDetails.getBannerid() + " has not been registered");
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception occured while Registering the user");
+			log.log(Level.SEVERE,
+					"SQL Exception occured while Registering the user with id " + registerDetails.getBannerid());
 		} finally {
 			try {
 				if (null != connection) {
@@ -64,9 +69,9 @@ public class RegisterDaoImpl implements RegisterDao {
 				if (null != assignRoleStatement) {
 					assignRoleStatement.close();
 				}
-				log.info("Closng connections after registering the user");
 			} catch (SQLException e) {
-				log.info("SQL Exception occured while closing connections and statements after registering user ");
+				log.log(Level.SEVERE,
+						"SQL Exception occured while closing connections and statements after registering user");
 			}
 		}
 		return isUserRegisterd && isGuestRoleAssigned;
@@ -77,7 +82,7 @@ public class RegisterDaoImpl implements RegisterDao {
 		Connection connection = null;
 		PreparedStatement thePreparedStatement = null;
 		ResultSet theResultSet = null;
-		boolean isUserExists = false;
+		boolean isUserExists = Boolean.FALSE;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			thePreparedStatement = connection
@@ -85,10 +90,12 @@ public class RegisterDaoImpl implements RegisterDao {
 			thePreparedStatement.setString(1, email);
 			theResultSet = thePreparedStatement.executeQuery();
 			if (theResultSet.next()) {
-				isUserExists = true;
+				isUserExists = Boolean.TRUE;
+			} else {
+				isUserExists = Boolean.FALSE;
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception while checking the user with email");
+			log.log(Level.SEVERE, "SQL Exception while checking the user with email " + email);
 		} finally {
 			try {
 				if (null != connection) {
@@ -100,9 +107,8 @@ public class RegisterDaoImpl implements RegisterDao {
 				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				log.info("Closed Connections after checking user with email");
 			} catch (SQLException e) {
-				log.info(
+				log.log(Level.SEVERE,
 						"SQL Exception occured while closing the statement and connection after checking the user with email");
 			}
 		}
@@ -115,7 +121,7 @@ public class RegisterDaoImpl implements RegisterDao {
 		Connection connection = null;
 		PreparedStatement thePreparedStatement = null;
 		ResultSet theResultSet = null;
-		boolean isUserExists = false;
+		boolean isUserExists = Boolean.FALSE;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
 			thePreparedStatement = connection
@@ -123,10 +129,12 @@ public class RegisterDaoImpl implements RegisterDao {
 			thePreparedStatement.setString(1, bannerId);
 			theResultSet = thePreparedStatement.executeQuery();
 			if (theResultSet.next()) {
-				isUserExists = true;
+				isUserExists = Boolean.TRUE;
+			} else {
+				isUserExists = Boolean.FALSE;
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception occured while checking the user with banner id");
+			log.log(Level.SEVERE, "SQL Exception occured while checking the user with banner id " + bannerId);
 		} finally {
 			try {
 				if (null != connection) {
@@ -138,9 +146,9 @@ public class RegisterDaoImpl implements RegisterDao {
 				if (null != theResultSet) {
 					theResultSet.close();
 				}
-				log.info("Closing the connection after checking the user with banner id");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing connection and statements after checking user with banner id");
+				log.log(Level.SEVERE,
+						"SQL Exception while closing connection and statements after checking user with banner id");
 			}
 		}
 		return isUserExists;

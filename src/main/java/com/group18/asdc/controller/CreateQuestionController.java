@@ -2,7 +2,6 @@ package com.group18.asdc.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.group18.asdc.QuestionManagerConfig;
+import com.group18.asdc.SystemConfig;
 import com.group18.asdc.entities.BasicQuestionData;
 import com.group18.asdc.entities.MultipleChoiceQuestion;
 import com.group18.asdc.entities.Option;
@@ -26,7 +25,8 @@ import com.group18.asdc.service.CreateQuestionService;
 @Controller
 public class CreateQuestionController {
 
-	private Logger log = Logger.getLogger(CreateQuestionController.class.getName());
+	private static final CreateQuestionService theCreateQuestionService = SystemConfig.getSingletonInstance()
+			.getServiceAbstractFactory().getCreateQuestionService();
 
 	@ModelAttribute("question")
 	public BasicQuestionData setBasicQuestionBean() {
@@ -45,14 +45,13 @@ public class CreateQuestionController {
 
 	@PostMapping("/getQuestionConfirm")
 	public String getQuestionConfirmPage(@ModelAttribute("question") BasicQuestionData basicQuestionData, Model model) {
-		log.info("confirming questions based on type");
 		model.addAttribute("BasicQuestion", basicQuestionData);
-		if (basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.numericType)
-				|| basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.freeText)) {
+		if (basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.NUMERIC_TYPE.toString())
+				|| basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.FREE_TEXT.toString())) {
 			return "NumericOrTextQuestion";
 		}
-		if (basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.multipleChooseMore)
-				|| basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.multipleChooseOne)) {
+		if (basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.MULTIPLE_CHOOSE_ONE.toString())
+				|| basicQuestionData.getQuestionType().equalsIgnoreCase(QuestionType.MULTIPLE_CHOOSE_MORE.toString())) {
 			return "MultipleChoiceQuestion";
 		}
 		return "error";
@@ -61,15 +60,10 @@ public class CreateQuestionController {
 	@RequestMapping(value = "/createNumericOrTextQuestion", method = RequestMethod.POST)
 	public String createNumericOrQuestion(@ModelAttribute("question") BasicQuestionData basicQuestionData, Model model,
 			RedirectAttributes theRedirectAttributes) {
-		log.info("creating Numeric question");
-		CreateQuestionService theCreateQuestionService = QuestionManagerConfig.getSingletonInstance()
-				.getTheCreateQuestionService();
 		boolean isQuestionCreated = theCreateQuestionService.createNumericOrTextQuestion(basicQuestionData);
 		if (isQuestionCreated) {
-			log.info("Numeric or text question created");
 			return "QuestionCreateSuccess";
 		} else {
-			log.info("Error creating numeric or text question");
 			return "error";
 		}
 	}
@@ -77,8 +71,7 @@ public class CreateQuestionController {
 	@RequestMapping(value = "/createMultipleChoiceQuestion", method = RequestMethod.POST)
 	public String createMultipleChoiceQuestion(@ModelAttribute("question") BasicQuestionData theBasicQuestionData,
 			HttpServletRequest request, Model model, RedirectAttributes theRedirectAttributes) {
-		CreateQuestionService theCreateQuestionService = QuestionManagerConfig.getSingletonInstance()
-				.getTheCreateQuestionService();
+	
 		MultipleChoiceQuestion theMultipleChoiceQuestion = new MultipleChoiceQuestion();
 		theMultipleChoiceQuestion.setQuestionTitle(theBasicQuestionData.getQuestionTitle());
 		theMultipleChoiceQuestion.setQuestionText(theBasicQuestionData.getQuestionText());
@@ -111,10 +104,8 @@ public class CreateQuestionController {
 		}
 		boolean isQuestionCreated = theCreateQuestionService.createMultipleQuestion(theMultipleChoiceQuestion);
 		if (isQuestionCreated) {
-			log.info("Created multiple choice questions success");
 			return "QuestionCreateSuccess";
 		} else {
-			log.info("Error in Created multiple choice questions");
 			return "error";
 		}
 	}

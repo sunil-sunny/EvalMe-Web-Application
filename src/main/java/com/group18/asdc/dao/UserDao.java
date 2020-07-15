@@ -15,7 +15,7 @@ public interface UserDao {
 
 	public List<User> getAllUsersByCourse(int courseId);
 
-	public void loadUserWithBannerId(ArrayList<Object> valueList, User userObj);
+	public int loadUserWithBannerId(ArrayList<Object> valueList, User userObj);
 
 	public Boolean updatePassword(ArrayList<Object> criteriaList, ArrayList<Object> valuesList);
 

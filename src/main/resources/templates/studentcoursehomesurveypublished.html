@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home Page</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<style>
+h1 {
+	text-align: center;
+}
+
+.round {
+	border: 2px solid #e3e2de;
+	border-radius: 5px;
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/courseheader :: header"></div>
+	<br>
+	<div class="container" style="align-content: center;">
+		<h1 th:text="${coursename}" style="font-variant: small-caps;"></h1>
+		<br>
+	</div>
+
+	<div
+		th:class="${'container justify-content-center alert alert-success'}"
+		style="width: 100%;">
+		<p>
+		<h5 style="text-align: center">The Survey for this course is
+			published and you will be assigned to a group based on your Response</h5>
+	</div>
+
+	<div th:class="${'container'}" style="width: 100%; padding: 50px;">
+		<form style="padding: 20px;">
+			<div th:each="question, stats : ${questionlist}"
+				class="row form-group round" style="padding: 20px;">
+
+				<div class="col-1">
+					<label th:text="${stats.index+1}"></label>
+				</div>
+
+				<div class="col-5">
+					<label
+						th:text="${question.questionData.basicQuestionData.questionText}"></label>
+				</div>
+
+				<div
+					th:if="${question.questionData.basicQuestionData.questionType == 'freetext'}"
+					class="col-5">
+					<textarea class="form-control" id="freetext" rows="3" cols="10"
+						style="width: 45%;"></textarea>
+				</div>
+				<div
+					th:if="${question.questionData.basicQuestionData.questionType == 'numeric'}"
+					class="col-5">
+					<input type="number" min="1" max="10" class="form-control"
+						style="width: 20%;"></input>
+				</div>
+
+				<div
+					th:if="${question.questionData.basicQuestionData.questionType == 'multiple-choice-choose-one'}"
+					class="col-5">
+
+					<select class="custom-select">
+						<option selected disabled>Select one</option>
+						<th:block th:each="option, stats : ${question.options}">
+							<option value="${stats.index+1}" th:text="${option.displayText}"></option>
+						</th:block>
+					</select>
+				</div>
+
+				<div
+					th:if="${question.questionData.basicQuestionData.questionType == 'multiple-choice-choose-more'}"
+					class="col-5 form-check">
+					<th:block th:each="option, stats : ${question.options}">
+						<input type="checkbox" id="${stats.index+1}"
+							name="${stats.index+1}" class="form-check-input">
+						<label class="form-check-label" for="${stats.index+1}"
+							th:text="${option.displayText}"></label>
+						<br>
+					</th:block>
+				</div>
+				<hr>
+			</div>
+			<div class="row">
+				<div class="col-5">
+					<input class="btn btn-success" type="submit" value="Submit"
+						style="width: 40%;" />
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

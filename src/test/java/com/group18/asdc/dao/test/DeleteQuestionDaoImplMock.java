@@ -13,6 +13,6 @@ public class DeleteQuestionDaoImplMock implements DeleteQuestionDao {
 		questionList.add(new BasicQuestionData());
 		questionList.add(new BasicQuestionData());
 		questionList.remove(1);
-		return true;
+		return Boolean.TRUE;
 	}
 }

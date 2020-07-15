@@ -3,6 +3,8 @@ package com.group18.asdc.dao.test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.group18.asdc.TestConfig;
 import com.group18.asdc.dao.CourseDetailsDao;
 import com.group18.asdc.dao.UserDao;
 import com.group18.asdc.entities.Course;
@@ -12,6 +14,8 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 
 	private static List<Course> coursesDetails = new ArrayList<Course>();
 	private static List<User> userList = new ArrayList<User>();
+	private static final UserDao theUserDao = TestConfig.getTestSingletonIntance().getDaoTestAbstractFactory()
+			.getUserDaoTest();
 
 	public CourseDaoImplMock() {
 
@@ -118,7 +122,7 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 	public boolean isCourseExists(Course course) {
 		Course newCourse = new Course();
 		CourseDaoImplMock.coursesDetails.add(newCourse);
-		return true;
+		return Boolean.TRUE;
 	}
 
 	@Override
@@ -135,19 +139,22 @@ public class CourseDaoImplMock implements CourseDetailsDao {
 
 	@Override
 	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId) {
-		UserDao theUserDao = new UserDaoImplMock();
+
 		List<User> eligibleStudents = new ArrayList<User>();
 		List<User> existingStudentsOfCourse = theUserDao.getAllUsersByCourse(courseId);
-
 		for (User student : studentList) {
-			boolean isExists = false;
+			boolean isExists = Boolean.FALSE;
 			for (User existingStudent : existingStudentsOfCourse) {
 				if (student.getBannerId().equalsIgnoreCase(existingStudent.getBannerId())) {
-					isExists = true;
+					isExists = Boolean.TRUE;
 					break;
 				}
 			}
-			if (!isExists) {
+			if (isExists) {
+				eligibleStudents.add(student);
+				eligibleStudents.remove(0);
+
+			} else {
 				eligibleStudents.add(student);
 			}
 		}

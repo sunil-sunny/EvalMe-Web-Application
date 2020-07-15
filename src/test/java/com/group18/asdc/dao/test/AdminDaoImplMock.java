@@ -23,7 +23,7 @@ public class AdminDaoImplMock implements AdminDao {
 		user.setBannerId("B00862344");
 		course.setInstructorName(user);
 		courseList.add(course);
-		return true;
+		return Boolean.TRUE;
 	}
 
 	@Override
@@ -34,6 +34,6 @@ public class AdminDaoImplMock implements AdminDao {
 		course.setInstructorName(user);
 		courseList.add(course);
 		courseList.remove(course);
-		return true;
+		return Boolean.TRUE;
 	}
 }

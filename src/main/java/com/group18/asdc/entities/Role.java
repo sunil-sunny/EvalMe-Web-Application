@@ -1,9 +1,17 @@
 package com.group18.asdc.entities;
 
-public class Role {
+public enum Role {
 
-	public final static String admin = "ADMIN";
-	public final static String student = "STUDENT";
-	public final static String instructor = "INSTRUCTOR";
-	public final static String ta = "TA";
+	ADMIN("ADMIN"), STUDENT("STUDENT"), INSTRUCTOR("INSTRUCTOR"), TA("TA");
+
+	private final String role;
+
+	private Role(String role) {
+		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return role;
+	}
 }

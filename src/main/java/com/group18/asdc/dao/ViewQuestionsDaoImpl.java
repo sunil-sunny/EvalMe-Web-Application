@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.group18.asdc.database.ConnectionManager;
@@ -26,14 +27,15 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		List<QuestionMetaData> allQuestions = new ArrayList<QuestionMetaData>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS.toString());
+			thePreparedStatement = connection
+					.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS.toString());
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
-			BasicQuestionData theBasicQuestionData=null;
+			BasicQuestionData theBasicQuestionData = null;
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
-				theBasicQuestionData=new BasicQuestionData();
+				theBasicQuestionData = new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
 				theBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
 				theBasicQuestionData.setQuestionText(theResultSet.getString(3));
@@ -43,7 +45,8 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				allQuestions.add(theQuestionMetaData);
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception while getting all the question");
+			log.log(Level.SEVERE,
+					"SQL Exception while getting all the question for user with id " + currentUser.getBannerId());
 		} finally {
 			try {
 				if (null != theResultSet) {
@@ -55,9 +58,10 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
-				log.info("closing connection after getting all questions");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connection and statement after getting all the question");
+				log.log(Level.SEVERE,
+						"SQL Exception while closing the connection and statement getting all the question for user with id "
+								+ currentUser.getBannerId());
 			}
 		}
 		return allQuestions;
@@ -71,14 +75,15 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		List<QuestionMetaData> allQuestions = new ArrayList<QuestionMetaData>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS_SORTEDBY_DATE.toString());
+			thePreparedStatement = connection
+					.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS_SORTEDBY_DATE.toString());
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
-			BasicQuestionData theBasicQuestionData=null;
+			BasicQuestionData theBasicQuestionData = null;
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
-				theBasicQuestionData=new BasicQuestionData();
+				theBasicQuestionData = new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
 				theBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
 				theBasicQuestionData.setQuestionText(theResultSet.getString(3));
@@ -88,7 +93,8 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				allQuestions.add(theQuestionMetaData);
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception while getting all the question");
+			log.log(Level.SEVERE, "SQL Exception while getting all the questions sorted by date for user with id "
+					+ currentUser.getBannerId());
 		} finally {
 			try {
 				if (null != theResultSet) {
@@ -100,9 +106,10 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
-				log.info("closing connection after getting all questions");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connection and statement after getting all the question");
+				log.log(Level.SEVERE,
+						"SQL Exception while closing the connection and statement getting all the question sorted by date for user with id "
+								+ currentUser.getBannerId());
 			}
 		}
 		return allQuestions;
@@ -116,14 +123,15 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		List<QuestionMetaData> allQuestionsSortByTitle = new ArrayList<QuestionMetaData>();
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS_SORTEDBY_TITLE.toString());
+			thePreparedStatement = connection
+					.prepareStatement(QuestionManagerDataBaseQueries.GET_ALL_QUESTIONS_SORTEDBY_TITLE.toString());
 			thePreparedStatement.setString(1, currentUser.getBannerId());
 			theResultSet = thePreparedStatement.executeQuery();
 			QuestionMetaData theQuestionMetaData = null;
-			BasicQuestionData theBasicQuestionData=null;
+			BasicQuestionData theBasicQuestionData = null;
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
-				theBasicQuestionData=new BasicQuestionData();
+				theBasicQuestionData = new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
 				theBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
 				theBasicQuestionData.setQuestionText(theResultSet.getString(3));
@@ -133,7 +141,8 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				allQuestionsSortByTitle.add(theQuestionMetaData);
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception while getting all the question sort by title");
+			log.log(Level.SEVERE, "SQL Exception while getting all the question sorted by title for user with id "
+					+ currentUser.getBannerId());
 		} finally {
 			try {
 				if (null != theResultSet) {
@@ -145,10 +154,10 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
-				log.info("closing connection after getting all questions sort by title");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connection "
-						+ "and statement after getting all the question sort by title");
+				log.log(Level.SEVERE,
+						"SQL Exception while closing the connection and statement getting all the question sorted by title for user with id "
+								+ currentUser.getBannerId());
 			}
 		}
 		return allQuestionsSortByTitle;
@@ -160,15 +169,16 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 		PreparedStatement thePreparedStatement = null;
 		ResultSet theResultSet = null;
 		QuestionMetaData theQuestionMetaData = null;
-		BasicQuestionData thBasicQuestionData=null;
+		BasicQuestionData thBasicQuestionData = null;
 		try {
 			connection = ConnectionManager.getInstance().getDBConnection();
-			thePreparedStatement = connection.prepareStatement(QuestionManagerDataBaseQueries.GET_QUESTION_BY_ID.toString());
+			thePreparedStatement = connection
+					.prepareStatement(QuestionManagerDataBaseQueries.GET_QUESTION_BY_ID.toString());
 			thePreparedStatement.setInt(1, questionId);
 			theResultSet = thePreparedStatement.executeQuery();
 			while (theResultSet.next()) {
 				theQuestionMetaData = new QuestionMetaData();
-				thBasicQuestionData=new BasicQuestionData();
+				thBasicQuestionData = new BasicQuestionData();
 				theQuestionMetaData.setQuestionId(theResultSet.getInt(1));
 				thBasicQuestionData.setQuestionTitle(theResultSet.getString(2));
 				thBasicQuestionData.setQuestionText(theResultSet.getString(3));
@@ -177,7 +187,7 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				theQuestionMetaData.setBasicQuestionData(thBasicQuestionData);
 			}
 		} catch (SQLException e) {
-			log.info("SQL Exception while getting question by id");
+			log.log(Level.SEVERE, "SQL Exception while getting the question with id " + questionId);
 		} finally {
 			try {
 				if (null != theResultSet) {
@@ -189,9 +199,10 @@ public class ViewQuestionsDaoImpl implements ViewQuestionsDao {
 				if (null != thePreparedStatement) {
 					thePreparedStatement.close();
 				}
-				log.info("closing connection after getting question by id");
 			} catch (SQLException e) {
-				log.info("SQL Exception while closing the connection and statement after getting question by id");
+				log.log(Level.SEVERE,
+						"SQL Exception while closing the connection and statement after getting question with id"
+								+ questionId);
 			}
 		}
 		return theQuestionMetaData;

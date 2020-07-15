@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+
+<title>Create Elements Dynamically using jQuery</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+	<div class="container">
+
+		<div class="container">
+
+			<div class="row">
+				<h4>Answers</h4>
+			</div>
+			<hr>
+
+			<div class="row alert alert-danger" th:if="${error} != null"
+				th:text="${error}">
+				<p></p>
+			</div>
+
+			<form th:action="@{/questionpage/createMultipleChoiceQuestion}"
+				th:object="${question}" method="post">
+				<div id="options">
+
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-1">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-1"
+								name="optiontext-1" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-1">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-1"
+								name="optionstored-1" value="1">
+						</div>
+						<hr>
+					</div>
+
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-2">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-2"
+								name="optiontext-2" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-2">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-2"
+								name="optionstored-2" value="2">
+						</div>
+						<hr>
+					</div>
+
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-3">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-3"
+								name="optiontext-3" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-3">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-3"
+								name="optionstored-3" value="3">
+						</div>
+						<hr>
+					</div>
+
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-4">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-4"
+								name="optiontext-4" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-4">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-4"
+								name="optionstored-4" value="4">
+						</div>
+						<hr>
+					</div>
+
+					<div class="row">
+						<div class="col-5 form-group">
+							<label for="optiontext-5">Display Text:</label> <input
+								type="text" class="form-control" id="optiontext-5"
+								name="optiontext-5" placeholder="Enter Display text">
+						</div>
+						<div class="col-5 form-group">
+							<label for="optionstored-5">Stored As:</label> <input
+								type="number" class="form-control" id="optionstored-5"
+								name="optionstored-5" value="5">
+						</div>
+						<hr>
+					</div>
+
+
+				</div>
+
+				<input type="hidden" id="questionTitle" name="questionTitle"
+					th:field="*{questionTitle}"
+					th:value="${BasicQuestion.questionTitle}"> <input
+					type="hidden" id="questionText" name="questionText"
+					th:field="*{questionText}" th:value="${BasicQuestion.questionText}">
+
+				<input type="hidden" id="questionType" name="questionType"
+					th:field="*{questionType}" th:value="${questionType}"> <a
+					href="/questionpage/getCreateQuestionHome" class="btn btn-primary"
+					style="width: 15%; color: white;">Back</a> <input type="button"
+					id="btAdd" value="Add Option" style="width: 15%;"
+					class="btn btn-primary" />
+				<button type="submit" class="btn btn-primary" style="width: 15%;">Save</button>
+
+			</form>
+
+
+		</div>
+
+	</div>
+
+</body>
+
+<script>
+	$(document)
+			.ready(
+					function() {
+						var i = 5;
+
+						// Create a DIV and style it using .css() method.
+						var row = $(document.createElement('div')).css({
+
+						});
+
+						var columnone = $(document.createElement('div')).css({
+
+						});
+						var columntwo = $(document.createElement('div')).css({
+
+						});
+
+						$(row).addClass("row");
+						$(columnone).addClass("col-5 form-group");
+						$(columntwo).addClass("col-5 form-group");
+
+						$('#btAdd')
+								.click(
+										function() {
+
+											i = i + 1;
+											$(columnone)
+													.append(
+															'<label for="displaytext-1">Display Text:</label>'
+																	+ ' <input type="text" class="form-control" id="optiontext-'+i+'"'+
+							'name="optiontext-'+i+'" placeholder="Enter Display text">');
+											$(columntwo)
+													.append(
+															'<label for="stored-1">Stored As:</label>'
+																	+ ' <input type="number" class="form-control" id="optionstored-'+i+'" '+
+				'name="optionstored-'+i+'" value="'+i+'">');
+											$(row).append(columnone);
+											$(row).append(columntwo);
+											// Add both DIVs to the main container.
+											$('#options').after(row);
+
+										});
+					});
+</script>
+</html>

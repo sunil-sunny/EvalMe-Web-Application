@@ -3,7 +3,7 @@ package com.group18.asdc.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course {
+public class Course implements ICourse {
 
 	private int courseId;
 	private String CourseName;
@@ -24,50 +24,62 @@ public class Course {
 		this.studentList = studentList;
 	}
 
+	@Override
 	public int getCourseId() {
 		return courseId;
 	}
 
+	@Override
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
 	}
 
+	@Override
 	public String getCourseName() {
 		return CourseName;
 	}
 
+	@Override
 	public void setCourseName(String courseName) {
 		CourseName = courseName;
 	}
 
+	@Override
 	public User getInstructorName() {
 		return instructorName;
 	}
 
+	@Override
 	public void setInstructorName(User instructorName) {
 		this.instructorName = instructorName;
 	}
 
+	@Override
 	public List<User> getTaName() {
 		return taList;
 	}
 
+	@Override
 	public void setTaName(List<User> taList) {
 		this.taList = taList;
 	}
 
+	@Override
 	public List<User> getTaList() {
 		return taList;
 	}
 
+	@Override
 	public void setTaList(List<User> taList) {
 		this.taList = taList;
 	}
 
+	@Override
 	public List<User> getStudentList() {
 		return studentList;
 	}
 
+	@Override
 	public void setStudentList(List<User> studentList) {
 		this.studentList = studentList;
 	}

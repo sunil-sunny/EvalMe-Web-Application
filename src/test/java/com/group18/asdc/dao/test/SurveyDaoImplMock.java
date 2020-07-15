@@ -19,14 +19,14 @@ public class SurveyDaoImplMock implements SurveyDao {
 	@Override
 	public boolean saveSurvey(SurveyMetaData surveyData) throws SavingSurveyException {
 		surveyData.setSurveyQuestions(new ArrayList<SurveyQuestion>());
-		return true;
+		return Boolean.TRUE;
 	}
 
 	@Override
 	public boolean isSurveyExists(Course course) {
 		SurveyMetaData surveyMetaData = new SurveyMetaData();
 		surveyMetaData.getSurveyId();
-		return true;
+		return Boolean.TRUE;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class SurveyDaoImplMock implements SurveyDao {
 
 	@Override
 	public boolean isSurveyPublished(Course course) {
-		SurveyMetaData survey=new SurveyMetaData();
+		SurveyMetaData survey = new SurveyMetaData();
 		survey.setPublishedStatus(Boolean.FALSE);
 		return survey.isPublishedStatus();
 	}
@@ -48,5 +48,4 @@ public class SurveyDaoImplMock implements SurveyDao {
 		surveyMetaData.setPublishedStatus(Boolean.TRUE);
 		return surveyMetaData.isPublishedStatus();
 	}
-
 }
