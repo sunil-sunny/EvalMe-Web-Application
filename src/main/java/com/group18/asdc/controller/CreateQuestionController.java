@@ -30,12 +30,12 @@ public class CreateQuestionController {
 
 	@ModelAttribute("question")
 	public BasicQuestionData setBasicQuestionBean() {
-		return new BasicQuestionData();
+		return SystemConfig.getSingletonInstance().getModelAbstractFactory().getBasicQuestionData();
 	}
 
 	@ModelAttribute("multiplequestion")
 	public MultipleChoiceQuestion setMultipleChoiceQuestion() {
-		return new MultipleChoiceQuestion();
+		return SystemConfig.getSingletonInstance().getModelAbstractFactory().getMultipleChoiceQuestion();
 	}
 
 	@GetMapping("/getCreateQuestionHome")
@@ -71,8 +71,9 @@ public class CreateQuestionController {
 	@RequestMapping(value = "/createMultipleChoiceQuestion", method = RequestMethod.POST)
 	public String createMultipleChoiceQuestion(@ModelAttribute("question") BasicQuestionData theBasicQuestionData,
 			HttpServletRequest request, Model model, RedirectAttributes theRedirectAttributes) {
-	
-		MultipleChoiceQuestion theMultipleChoiceQuestion = new MultipleChoiceQuestion();
+
+		MultipleChoiceQuestion theMultipleChoiceQuestion = SystemConfig.getSingletonInstance().getModelAbstractFactory()
+				.getMultipleChoiceQuestion();
 		theMultipleChoiceQuestion.setQuestionTitle(theBasicQuestionData.getQuestionTitle());
 		theMultipleChoiceQuestion.setQuestionText(theBasicQuestionData.getQuestionText());
 		theMultipleChoiceQuestion.setQuestionType(theBasicQuestionData.getQuestionType());
@@ -82,7 +83,7 @@ public class CreateQuestionController {
 		Option theOption = null;
 		int iterativeNumber = 1;
 		while (true) {
-			theOption = new Option();
+			theOption = SystemConfig.getSingletonInstance().getModelAbstractFactory().getOption();
 			displayOption = request.getParameter("optiontext-" + iterativeNumber + "");
 			storedOption = request.getParameter("optionstored-" + iterativeNumber + "");
 			if ((null == displayOption) || (null == storedOption)) {
@@ -95,7 +96,7 @@ public class CreateQuestionController {
 			}
 			iterativeNumber++;
 		}
-		if (optionList.size() == 0) {
+		if (0 == optionList.size()) {
 			model.addAttribute("BasicQuestion", theBasicQuestionData);
 			model.addAttribute("error", "Enter Options to proceed");
 			return "MultipleChoiceQuestion";

@@ -13,7 +13,7 @@ public class AdminServiceImplMock implements AdminService {
 			.getDaoTestAbstractFactory().getAdminDaoTest();
 
 	public AdminServiceImplMock() {
-		user = new User();
+		user = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest();
 	}
 
 	@Override

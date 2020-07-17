@@ -4,23 +4,23 @@ import java.util.List;
 
 public interface ISurveyMetaData {
 
-	public int getSurveyId();
+    public int getSurveyId();
 
-	public void setSurveyId(int surveyId);
+    public void setSurveyId(int surveyId);
 
-	public List<SurveyQuestion> getSurveyQuestions();
+    public List<SurveyQuestion> getSurveyQuestions();
 
-	public void setSurveyQuestions(List<SurveyQuestion> surveyQuestions);
+    public void setSurveyQuestions(List<SurveyQuestion> surveyQuestions);
 
-	public boolean isPublishedStatus();
+    public boolean isPublishedStatus();
 
-	public void setPublishedStatus(boolean publishedStatus);
+    public void setPublishedStatus(boolean publishedStatus);
 
-	public int getGroupSize();
+    public int getGroupSize();
 
-	public void setGroupSize(int groupSize);
+    public void setGroupSize(int groupSize);
 
-	public Course getTheCourse();
+    public Course getTheCourse();
 
-	public void setTheCourse(Course theCourse);
+    public void setTheCourse(Course theCourse);
 }

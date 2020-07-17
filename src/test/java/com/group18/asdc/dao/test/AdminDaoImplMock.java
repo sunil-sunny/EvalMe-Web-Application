@@ -2,6 +2,8 @@ package com.group18.asdc.dao.test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.group18.asdc.TestConfig;
 import com.group18.asdc.dao.AdminDao;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
@@ -13,7 +15,7 @@ public class AdminDaoImplMock implements AdminDao {
 
 	public AdminDaoImplMock() {
 		courseList = new ArrayList<Course>();
-		user = new User();
+		user = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest();
 	}
 
 	@Override

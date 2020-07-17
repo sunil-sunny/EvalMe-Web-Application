@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.group18.asdc.TestConfig;
 import com.group18.asdc.dao.UserDao;
-import com.group18.asdc.dao.UserDaoImpl;
 import com.group18.asdc.database.SQLMethods;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.User;
@@ -28,7 +27,7 @@ import com.group18.asdc.entities.User;
 public class UserDaoImplTest {
 
 	@InjectMocks
-	UserDao userDao = new UserDaoImpl();
+	UserDao userDao = TestConfig.getTestSingletonIntance().getDaoTestAbstractFactory().getUserDaoTest();
 
 	private final static UserDao userDaoImplMock = TestConfig.getTestSingletonIntance().getDaoTestAbstractFactory()
 			.getUserDaoTest();
@@ -51,7 +50,8 @@ public class UserDaoImplTest {
 	@Test
 	public void isUserExistsTestTwo() {
 
-		User user = new User("Justin", "Langer", "B00123456", "justin@dal.ca");
+		User user = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Justin", "Langer",
+				"B00123456", "justin@dal.ca");
 		boolean isExist = userDaoImplMock.isUserExists(user);
 		assertTrue(isExist);
 	}
@@ -59,7 +59,8 @@ public class UserDaoImplTest {
 	@Test
 	public void isUserExistsTestThree() {
 
-		User user = new User("Sachin", "Tendulkar", "B00999999", "sachin@dal.ca");
+		User user = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Sachin",
+				"Tendulkar", "B00999999", "sachin@dal.ca");
 		boolean isExist = userDaoImplMock.isUserExists(user);
 		assertFalse(isExist);
 	}
@@ -99,7 +100,7 @@ public class UserDaoImplTest {
 	@Test
 	public void isUserInstructorTest() {
 
-		Course theCourse = new Course();
+		Course theCourse = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		boolean isUserExists = userDaoImplMock.isUserInstructor(theCourse);
 		assertTrue(isUserExists);
 	}

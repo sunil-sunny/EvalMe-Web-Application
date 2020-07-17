@@ -8,8 +8,10 @@ public class ResetPassword {
 	private String bannerId;
 
 	public ResetPassword(String bannerId) {
-		super();
 		this.bannerId = bannerId;
+	}
+
+	public ResetPassword() {
 	}
 
 	public String getgeneratedPassword() {

@@ -2,18 +2,19 @@ package com.group18.asdc.passwordpolicy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.group18.asdc.ProfileManagementConfig;
-import com.group18.asdc.database.IPasswordPolicyDB;
+
+import com.group18.asdc.SystemConfig;
+import com.group18.asdc.dao.IPasswordPolicyDB;
 import com.group18.asdc.errorhandling.PasswordPolicyException;
 
-public class PasswordPolicyManager extends BasePasswordPolicyManager implements IPasswordPolicyManager {
+public class PasswordPolicyManager extends PasswordPolicyFactory {
 
 	private ArrayList<HashMap> enabledPasswordPolicies = null;
 	private IPasswordPolicyDB passwordPolicyDB;
 	private final String HISTORY_CONSTRAINT_POLICY = "HistoryConstraint";
+	private final String POLICY_NAME = "POLICY_NAME", POLICY_VALUE = "POLICY_VALUE";
 
 	public PasswordPolicyManager(IPasswordPolicyDB passwordPolicyDB) {
-		super(passwordPolicyDB);
 		this.passwordPolicyDB = passwordPolicyDB;
 	}
 
@@ -26,13 +27,14 @@ public class PasswordPolicyManager extends BasePasswordPolicyManager implements 
 	@Override
 	public void validatePassword(String bannerId, String password) throws PasswordPolicyException {
 		loadDefaultConfigurations();
-		super.validatePassword(password);
 		IPasswordPolicy passwordPolicy = null;
 		for (HashMap eachEnabledPolicy : enabledPasswordPolicies) {
-			if (eachEnabledPolicy.get("POLICY_NAME").equals(HISTORY_CONSTRAINT_POLICY)) {
-				passwordPolicy = new HistoryConstraintPolicy((String) eachEnabledPolicy.get("POLICY_VALUE"),
-						ProfileManagementConfig.getSingletonInstance().getPasswordHistoryService(),
-						ProfileManagementConfig.getSingletonInstance().getPasswordEncryption());
+			if (eachEnabledPolicy.get(POLICY_NAME).equals(HISTORY_CONSTRAINT_POLICY)) {
+				passwordPolicy = new HistoryConstraintPolicy((String) eachEnabledPolicy.get(POLICY_VALUE),
+						SystemConfig.getSingletonInstance().getServiceAbstractFactory()
+								.getPasswordHistoryService(SystemConfig.getSingletonInstance().getUtilAbstractFactory()
+										.getQueryVariableToArrayList()),
+						SystemConfig.getSingletonInstance().getSecurityAbstractFactory().getPasswordEncryption());
 			}
 			passwordPolicy.validate(bannerId, password);
 		}

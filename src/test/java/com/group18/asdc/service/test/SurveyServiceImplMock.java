@@ -21,8 +21,10 @@ public class SurveyServiceImplMock implements SurveyService {
 
 	@Override
 	public boolean addQuestionToSurvey(QuestionMetaData theQuestionMetaData) throws QuestionExitsException {
-		SurveyMetaData surveyMetaData = new SurveyMetaData();
-		SurveyQuestion surveyQuestion = new SurveyQuestion();
+		SurveyMetaData surveyMetaData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyMetaDataTest();
+		SurveyQuestion surveyQuestion = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyQuestionTest();
 		surveyQuestion.setQuestionData(theQuestionMetaData);
 		List<SurveyQuestion> surveyQuestions = new ArrayList<SurveyQuestion>();
 		surveyMetaData.setSurveyQuestions(surveyQuestions);
@@ -42,13 +44,16 @@ public class SurveyServiceImplMock implements SurveyService {
 
 	@Override
 	public boolean publishSurvey() throws PublishSurveyException {
-		return theSurveyDao.publishSurvey(new SurveyMetaData());
+		return theSurveyDao.publishSurvey(
+				TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getSurveyMetaDataTest());
 	}
 
 	@Override
 	public boolean removeQuestionFromSurvey(QuestionMetaData theQuestionMetaData) {
-		SurveyMetaData surveyMetaData = new SurveyMetaData();
-		SurveyQuestion surveyQuestion = new SurveyQuestion();
+		SurveyMetaData surveyMetaData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyMetaDataTest();
+		SurveyQuestion surveyQuestion = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyQuestionTest();
 		surveyQuestion.setQuestionData(theQuestionMetaData);
 		List<SurveyQuestion> surveyQuestions = new ArrayList<SurveyQuestion>();
 		surveyMetaData.setSurveyQuestions(surveyQuestions);
@@ -64,12 +69,15 @@ public class SurveyServiceImplMock implements SurveyService {
 
 	@Override
 	public SurveyMetaData getSavedSurvey(Course course) {
-		return theSurveyDao.getSavedSurvey(course);
+		SurveyMetaData surveyMetaData = theSurveyDao.getSavedSurvey(course);
+		surveyMetaData.setSurveyId(1);
+		return surveyMetaData;
 	}
 
 	@Override
 	public SurveyMetaData getCurrentSurvey() {
-		SurveyMetaData surveyMetaData = new SurveyMetaData();
+		SurveyMetaData surveyMetaData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyMetaDataTest();
 		return surveyMetaData;
 	}
 

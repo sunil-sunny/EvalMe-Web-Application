@@ -8,13 +8,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class SQLMethods {
+public class SQLMethods implements ISQLMethods {
 
 	private Connection connection;
 	private ResultSet rs;
 
-	public SQLMethods(Connection connection){
+	private Logger logger = Logger.getLogger(SQLMethods.class.getName());
+
+	public SQLMethods(Connection connection) {
 		rs = null;
 		this.connection = connection;
 	}
@@ -51,17 +55,16 @@ public class SQLMethods {
 	}
 
 	public void cleanup() {
+		logger.log(Level.INFO, "Cleaning up the db connections");
 		try {
-			if (null != connection) {
-				if (!connection.isClosed()) {
-					connection.close();
-				}
-			}
-			if (null != rs) {
+			connection.close();
+			if (null == rs) {
+				return;
+			} else {
 				rs.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Error while cleaning up the connections", e);
 		}
 	}
 

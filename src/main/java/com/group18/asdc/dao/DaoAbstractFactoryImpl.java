@@ -28,11 +28,6 @@ public class DaoAbstractFactoryImpl implements DaoAbstractFactory {
 	}
 
 	@Override
-	public GroupFormationDao getGroupFormationDao() {
-		return new GroupFormationDaoImpl();
-	}
-
-	@Override
 	public PasswordHistoryDao getPasswordHistoryDao() {
 		return new PasswordHistoryDaoImpl();
 	}
@@ -40,11 +35,6 @@ public class DaoAbstractFactoryImpl implements DaoAbstractFactory {
 	@Override
 	public RegisterDao getRegisterDao() {
 		return new RegisterDaoImpl();
-	}
-
-	@Override
-	public SubmitAnswerDao getSubmitAnswerDao() {
-		return new SubmitAnswerDaoImpl();
 	}
 
 	@Override
@@ -60,5 +50,15 @@ public class DaoAbstractFactoryImpl implements DaoAbstractFactory {
 	@Override
 	public ViewQuestionsDao getViewQuestionsDao() {
 		return new ViewQuestionsDaoImpl();
+	}
+
+	@Override
+	public IPasswordPolicyDB getPasswordPolicyDB() {
+		return new PasswordPolicyDB();
+	}
+
+	@Override
+	public SurveyAnswerDao getSurveyAnswerDao() {
+		return new SurveyAnswerDaoImpl();
 	}
 }

@@ -1,13 +1,17 @@
 package com.group18.asdc.util;
 
-public class RegistrationStatus {
+public enum RegistrationStatus {
 
-    public static final Integer SUCCESS = 0;
-    public static final Integer INVALID_BANNER_PATTERN = 1;
-    public static final Integer INVALID_BANNER_LENGTH = 2;
-    public static final Integer INVALID_EMAIL_PATTERN = 3;
-    public static final Integer PASSWORD_POLICY_ERROR = 4;
-    public static final Integer EXISTING_BANNER_ID = 5;
-    public static final Integer EXISTING_EMAIL_ID = 6;
-    public static final Integer UNSUCCESSFUL = 7;
+	SUCCESS("0"), INVALID_BANNER_PATTERN("1"), INVALID_BANNER_LENGTH("2"), INVALID_EMAIL_PATTERN("3"),
+	PASSWORD_POLICY_ERROR("4"), EXISTING_BANNER_ID("5"), EXISTING_EMAIL_ID("6"), UNSUCCESSFUL("7");
+
+	private final String status;
+
+	private RegistrationStatus(String status) {
+		this.status = status;
+	}
+
+	public int value() {
+		return Integer.parseInt(status);
+	}
 }

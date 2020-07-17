@@ -21,37 +21,37 @@ public class CourseServiceImplMock implements CourseDetailsService {
 
 	@Override
 	public List<Course> getCoursesWhereUserIsStudent(User user) {
-		
+
 		return theCourseDaoImplMock.getCoursesWhereUserIsStudent(user);
 	}
 
 	@Override
 	public List<Course> getCoursesWhereUserIsInstrcutor(User user) {
-		
+
 		return theCourseDaoImplMock.getCoursesWhereUserIsInstrcutor(user);
 	}
 
 	@Override
 	public List<Course> getCoursesWhereUserIsTA(User user) {
-		
+
 		return theCourseDaoImplMock.getCoursesWhereUserIsTA(user);
 	}
 
 	@Override
 	public boolean isCourseExists(Course course) {
-		
+
 		return theCourseDaoImplMock.isCourseExists(course);
 	}
 
 	@Override
 	public List<User> filterEligibleUsersForCourse(List<User> studentList, int courseId) {
-		
+
 		return theCourseDaoImplMock.filterEligibleUsersForCourse(studentList, courseId);
 	}
 
 	@Override
 	public Course getCourseById(int courseId) {
-		Course course = new Course();
+		Course course = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		course.setCourseId(courseId);
 		course.getCourseId();
 		return course;

@@ -18,7 +18,8 @@ import com.group18.asdc.errorhandling.SavingSurveyException;
 public class SurveyServiceImpl implements SurveyService {
 
 	private final Logger log = Logger.getLogger(SurveyServiceImpl.class.getName());
-	private static SurveyMetaData surveyMetaData = new SurveyMetaData();
+	private static SurveyMetaData surveyMetaData = SystemConfig.getSingletonInstance().getModelAbstractFactory()
+			.getSurveyMetaData();
 	private static final SurveyDao theSurveyDao = SystemConfig.getSingletonInstance().getDaoAbstractFactory()
 			.getSurveyDao();
 
@@ -74,7 +75,8 @@ public class SurveyServiceImpl implements SurveyService {
 			}
 		}
 		if (null == exitingQuestion) {
-			SurveyQuestion newQuestion = new SurveyQuestion();
+			SurveyQuestion newQuestion = SystemConfig.getSingletonInstance().getModelAbstractFactory()
+					.getSurveyQuestion();
 			newQuestion.setQuestionData(theQuestionMetaData);
 			List<SurveyQuestion> surveyQuestion = surveyMetaData.getSurveyQuestions();
 			surveyQuestion.add(newQuestion);
@@ -95,7 +97,10 @@ public class SurveyServiceImpl implements SurveyService {
 	@Override
 	public boolean saveSurvey(SurveyMetaData surveyData) throws SavingSurveyException {
 		surveyData.setSurveyId(surveyMetaData.getSurveyId());
-		if ((null != surveyData.getSurveyQuestions())) {
+		if ((null == surveyData.getSurveyQuestions())) {
+			log.log(Level.WARNING, "Survey is empty and questions need to be added");
+			throw new SavingSurveyException("Add questions before saving the survey");
+		} else {
 			if (0 == surveyData.getSurveyQuestions().size()) {
 				throw new SavingSurveyException("Add questions before saving the survey");
 			} else {
@@ -118,15 +123,12 @@ public class SurveyServiceImpl implements SurveyService {
 					}
 				}
 			}
-		} else {
-			log.log(Level.WARNING, "Survey is empty and questions need to be added");
-			throw new SavingSurveyException("Add questions before saving the survey");
 		}
 	}
 
 	@Override
 	public boolean publishSurvey() throws PublishSurveyException {
-		
+
 		if (null == surveyMetaData.getSurveyQuestions()) {
 			throw new PublishSurveyException("Add questions before publishing the survey");
 		} else {

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.group18.asdc.SystemConfig;
+import com.group18.asdc.dao.IPasswordPolicyDB;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.service.AdminService;
 
@@ -16,6 +17,8 @@ public class AdminController {
 
 	private static final AdminService theAdminService = SystemConfig.getSingletonInstance().getServiceAbstractFactory()
 			.getAdminService();
+	private static final IPasswordPolicyDB passwordPolicyDB = SystemConfig.getSingletonInstance()
+			.getDaoAbstractFactory().getPasswordPolicyDB();
 
 	@GetMapping("/adminhome")
 	public String adminHome() {
@@ -24,7 +27,7 @@ public class AdminController {
 
 	@GetMapping("/adminadd")
 	public String adminAddDisplay(Model model) {
-		model.addAttribute("course", new Course());
+		model.addAttribute("course", SystemConfig.getSingletonInstance().getModelAbstractFactory().getCourse());
 		return "adminaddcourse";
 	}
 
@@ -32,18 +35,19 @@ public class AdminController {
 	public String adminAddForm(@ModelAttribute("course") Course course, BindingResult bindingresult) {
 		if (bindingresult.hasErrors()) {
 			return "redirect:/adminadd?error";
-		}
-		boolean result = theAdminService.createCourse(course);
-		if (result) {
-			return "adminaddcourseresult";
 		} else {
-			return "redirect:/adminadd?error";
+			boolean result = theAdminService.createCourse(course);
+			if (result) {
+				return "adminaddcourseresult";
+			} else {
+				return "redirect:/adminadd?error";
+			}
 		}
 	}
 
 	@GetMapping("/admindelete")
 	public String adminDeleteDisplay(Model model) {
-		model.addAttribute("course", new Course());
+		model.addAttribute("course", SystemConfig.getSingletonInstance().getModelAbstractFactory().getCourse());
 		return "admindeletecourse";
 	}
 
@@ -60,5 +64,12 @@ public class AdminController {
 				return "redirect:/admindelete?error";
 			}
 		}
+	}
+
+	@GetMapping("/resetPasswordPolicies")
+	public String resetPasswordPolicies() {
+		SystemConfig.getSingletonInstance().setBasePasswordPolicyManager(passwordPolicyDB);
+		SystemConfig.getSingletonInstance().setPasswordPolicyManager(passwordPolicyDB);
+		return "policyReset";
 	}
 }

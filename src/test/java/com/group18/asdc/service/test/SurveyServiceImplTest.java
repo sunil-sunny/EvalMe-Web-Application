@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.group18.asdc.TestConfig;
-import com.group18.asdc.entities.Course;
-import com.group18.asdc.entities.QuestionMetaData;
 import com.group18.asdc.entities.SurveyMetaData;
 import com.group18.asdc.errorhandling.PublishSurveyException;
 import com.group18.asdc.errorhandling.QuestionExitsException;
@@ -27,7 +25,8 @@ public class SurveyServiceImplTest {
 
 		boolean isAdded;
 		try {
-			isAdded = surveyService.addQuestionToSurvey(new QuestionMetaData());
+			isAdded = surveyService.addQuestionToSurvey(
+					TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getQuestionMetaDataTest());
 		} catch (QuestionExitsException e) {
 			isAdded = Boolean.FALSE;
 		}
@@ -38,7 +37,8 @@ public class SurveyServiceImplTest {
 	public void saveSurveyTest() {
 		boolean isSaved = Boolean.FALSE;
 		try {
-			isSaved = surveyService.saveSurvey(new SurveyMetaData());
+			isSaved = surveyService.saveSurvey(
+					TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getSurveyMetaDataTest());
 			assertTrue(isSaved);
 		} catch (SavingSurveyException e) {
 			assertFalse(isSaved);
@@ -58,19 +58,22 @@ public class SurveyServiceImplTest {
 
 	@Test
 	public void removeQuestionFromSurveyTest() {
-		boolean isRemoved = surveyService.removeQuestionFromSurvey(new QuestionMetaData());
+		boolean isRemoved = surveyService.removeQuestionFromSurvey(
+				TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getQuestionMetaDataTest());
 		assertTrue(isRemoved);
 	}
 
 	@Test
 	public void isSurveyPublishedForCourseTest() {
-		boolean isPublished = surveyService.isSurveyPublishedForCourse(new Course());
+		boolean isPublished = surveyService.isSurveyPublishedForCourse(
+				TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest());
 		assertFalse(isPublished);
 	}
 
 	@Test
 	public void getSavedSurveyTest() {
-		SurveyMetaData surveyData = surveyService.getSavedSurvey(new Course());
+		SurveyMetaData surveyData = surveyService
+				.getSavedSurvey(TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest());
 		assertNotNull(surveyData);
 	}
 

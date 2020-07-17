@@ -24,7 +24,7 @@ import com.group18.asdc.service.UserService;
 public class CourseController {
 
 	private static final UserService userService = SystemConfig.getSingletonInstance().getServiceAbstractFactory()
-			.getUserService();
+			.getUserService(SystemConfig.getSingletonInstance().getUtilAbstractFactory().getQueryVariableToArrayList());
 	private static final CourseDetailsService courseDetailsService = SystemConfig.getSingletonInstance()
 			.getServiceAbstractFactory().getCourseDetailsService();
 	private static final SurveyService surveyService = SystemConfig.getSingletonInstance().getServiceAbstractFactory()
@@ -78,8 +78,9 @@ public class CourseController {
 	@RequestMapping(value = "/coursepage", method = RequestMethod.GET)
 	public String getCoursePage(Model theModel, HttpServletRequest request) {
 
-		Course course = new Course();
-		SurveyMetaData surveyMetaData = new SurveyMetaData();
+		Course course = SystemConfig.getSingletonInstance().getModelAbstractFactory().getCourse();
+		SurveyMetaData surveyMetaData = SystemConfig.getSingletonInstance().getModelAbstractFactory()
+				.getSurveyMetaData();
 		List<SurveyQuestion> questionList = new ArrayList<SurveyQuestion>();
 		String courseId = request.getParameter("id");
 		int courseID = Integer.parseInt(courseId);

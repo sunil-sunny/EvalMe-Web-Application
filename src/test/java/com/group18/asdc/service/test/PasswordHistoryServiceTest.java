@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.group18.asdc.TestConfig;
 import com.group18.asdc.dao.PasswordHistoryDao;
 import com.group18.asdc.entities.PasswordHistory;
 import com.group18.asdc.security.IPasswordEncryption;
@@ -41,7 +43,8 @@ public class PasswordHistoryServiceTest {
 	}
 
 	private PasswordHistory getDefaultPasswordHistory() {
-		PasswordHistory passwordHistory = new PasswordHistory();
+		PasswordHistory passwordHistory = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getPasswordHistoryTest();
 		passwordHistory.setBannerID("B00838575");
 		passwordHistory.setDate(123456789l);
 		passwordHistory.setPassword("password");
@@ -80,7 +83,7 @@ public class PasswordHistoryServiceTest {
 		valuesList.add("B00838575");
 		valuesList.add(5);
 		when(queryVariableToArraylist.convertQueryVariablesToArrayList(isA(String.class), isA(Integer.class)))
-		.thenReturn(valuesList);
+				.thenReturn(valuesList);
 		when(passwordHistoryDao.getPasswordHistory(isA(ArrayList.class))).thenReturn(getDefaultPasswordHistoryDao());
 		ArrayList resultList = passwordHistoryService.getPasswordHistory("B00838575", 5);
 		verify(passwordHistoryDao, times(1)).getPasswordHistory(valuesList);

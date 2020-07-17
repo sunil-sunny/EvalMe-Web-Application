@@ -2,7 +2,7 @@ package com.group18.asdc.entities;
 
 import com.group18.asdc.util.ConstantStringUtil;
 
-public class UserRegistartionDetails implements IUserRegistartionDetails {
+public class UserRegistartionDetails {
 
 	private String firstname;
 	private String lastname;
@@ -26,62 +26,50 @@ public class UserRegistartionDetails implements IUserRegistartionDetails {
 		this.lastname = lastname;
 	}
 
-	@Override
 	public String getFirstname() {
 		return firstname;
 	}
 
-	@Override
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 
-	@Override
 	public String getLastname() {
 		return lastname;
 	}
 
-	@Override
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
 
-	@Override
 	public String getBannerid() {
 		return bannerid;
 	}
 
-	@Override
 	public void setBannerid(String bannerid) {
 		this.bannerid = bannerid;
 	}
 
-	@Override
 	public String getEmailid() {
 		return emailid;
 	}
 
-	@Override
 	public void setEmailid(String emailid) {
 		this.emailid = emailid;
 	}
 
-	@Override
 	public String getPassword() {
 		return password;
 	}
 
-	@Override
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	@Override
 	public String getConfirmpassword() {
 		return confirmpassword;
 	}
 
-	@Override
 	public void setConfirmpassword(String confirmpassword) {
 		this.confirmpassword = confirmpassword;
 	}

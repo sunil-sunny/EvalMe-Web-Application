@@ -20,8 +20,9 @@ public class CreateQuestionsDaoImplTest {
 
 	@Test
 	public void createNumericOrTextQuestionTest() {
-		BasicQuestionData theBasicQuestionData = new BasicQuestionData();
-		User theUser = new User();
+		BasicQuestionData theBasicQuestionData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getBasicQuestionDataTest();
+		User theUser = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest();
 		boolean isQuestionCreated = theCreateQuestionsDaoImplMock.createNumericOrTextQuestion(theBasicQuestionData,
 				theUser);
 		assertTrue(isQuestionCreated);
@@ -29,8 +30,9 @@ public class CreateQuestionsDaoImplTest {
 
 	@Test
 	public void createMultipleChoiceQuestionTest() {
-		MultipleChoiceQuestion theMultipleChoiceQuestion = new MultipleChoiceQuestion();
-		User theUser = new User();
+		MultipleChoiceQuestion theMultipleChoiceQuestion = TestConfig.getTestSingletonIntance()
+				.getModelTestAbstractFactory().getMultipleChoiceQuestionTest();
+		User theUser = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest();
 		boolean isQuestionCreated = theCreateQuestionsDaoImplMock
 				.createMultipleChoiceQuestion(theMultipleChoiceQuestion, theUser);
 		assertTrue(isQuestionCreated);
@@ -50,7 +52,7 @@ public class CreateQuestionsDaoImplTest {
 
 	@Test
 	public void isQuestionExsistTest() {
-		BasicQuestionData theBasicQuestionData = new BasicQuestionData();
+		BasicQuestionData theBasicQuestionData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getBasicQuestionDataTest();
 		boolean isQuestionExists = theCreateQuestionsDaoImplMock.isQuestionExists(theBasicQuestionData);
 		assertTrue(isQuestionExists);
 	}

@@ -18,8 +18,8 @@ public class CourseRolesDaoImplTest {
 	@Test
 	public void enrollStudentsIntoCourseTestOne() {
 
-		User user = new User("Rahul", "Dravid", "B09896157", "dravid@dal.ca");
-		User userOne = new User("Rahul", "Chahar", "B09898157", "chahar@dal.ca");
+		User user = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Rahul", "Dravid", "B09896157", "dravid@dal.ca");
+		User userOne = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Rahul", "Chahar", "B09898157", "chahar@dal.ca");
 		List<User> studentsList = new ArrayList<User>();
 		studentsList.add(user);
 		studentsList.add(userOne);
@@ -46,7 +46,7 @@ public class CourseRolesDaoImplTest {
 	@Test
 	public void allocateTaTestTwo() {
 
-		User studentsList = new User("Rahul", "Chahar", "B09898157", "chahar@dal.ca");
+		User studentsList = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Rahul", "Chahar", "B09898157", "chahar@dal.ca");
 		boolean isEnrolled = theCourseRolesDaoMock.allocateTa(2, studentsList);
 		assertTrue(isEnrolled);
 	}

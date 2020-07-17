@@ -17,7 +17,7 @@ public class AdminServiceImplTest {
 	@Test
 	public void isCourseIdValid() {
 
-		Course course = new Course();
+		Course course = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		boolean isValid = theAdminServiceImplMock.isCourseIdValid(course);
 		assertTrue(isValid);
 	}
@@ -25,7 +25,7 @@ public class AdminServiceImplTest {
 	@Test
 	public void iscreateCourseParametersValid() {
 		
-		Course course = new Course();
+		Course course = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		boolean isValid = theAdminServiceImplMock.iscreateCourseParametersValid(course);
 		assertTrue(isValid);
 	}
@@ -33,7 +33,7 @@ public class AdminServiceImplTest {
 	@Test
 	public void createCourse() {
 		
-		Course course = new Course();
+		Course course = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		boolean isCreated = theAdminServiceImplMock.createCourse(course);
 		assertTrue(isCreated);
 	}
@@ -41,7 +41,7 @@ public class AdminServiceImplTest {
 	@Test
 	public void deleteCourse() {
 		
-		Course course = new Course();
+		Course course = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		boolean isCreated = theAdminServiceImplMock.deleteCourse(course);
 		assertTrue(isCreated);
 	}

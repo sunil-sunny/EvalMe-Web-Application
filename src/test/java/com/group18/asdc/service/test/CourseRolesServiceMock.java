@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.group18.asdc.SystemConfig;
 import com.group18.asdc.TestConfig;
 import com.group18.asdc.dao.CourseRolesDao;
 import com.group18.asdc.entities.User;
@@ -31,10 +30,9 @@ public class CourseRolesServiceMock implements CourseRolesService {
 	public List<User> extraxtValidStudentsFromFile(MultipartFile file) throws FileProcessingException {
 		List<User> validUsers = new ArrayList<User>();
 		if (file.isEmpty()) {
-			throw SystemConfig.getSingletonInstance().getExceptionAbstractFactory()
-					.getFileProcessingException("File is empty");
+			throw new FileProcessingException("File is empty");
 		} else {
-			validUsers.add(new User());
+			validUsers.add(TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest());
 		}
 		return validUsers;
 	}

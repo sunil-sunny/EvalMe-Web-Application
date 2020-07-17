@@ -3,52 +3,79 @@ package com.group18.asdc.entities;
 public class ModelAbstractFactoryImpl implements ModelAbstractFactory {
 
 	@Override
-	public IBasicQuestionData getBasicQuestionData() {
+	public BasicQuestionData getBasicQuestionData() {
 		return new BasicQuestionData();
 	}
 
 	@Override
-	public IOption getOption() {
+	public Option getOption() {
 		return new Option();
 	}
 
 	@Override
-	public ICourse getCourse() {
+	public Course getCourse() {
 		return new Course();
 	}
 
 	@Override
-	public IMultipleChoiceQuestion getMultipleChoiceQuestion() {
+	public MultipleChoiceQuestion getMultipleChoiceQuestion() {
 		return new MultipleChoiceQuestion();
 	}
 
 	@Override
-	public IPasswordHistory getPasswordHistory() {
+	public PasswordHistory getPasswordHistory() {
 		return new PasswordHistory();
 	}
 
 	@Override
-	public IQuestionMetaData getQuestionMetaData() {
+	public QuestionMetaData getQuestionMetaData() {
 		return new QuestionMetaData();
 	}
 
 	@Override
-	public ISurveyMetaData getSurveyMetaData() {
+	public SurveyMetaData getSurveyMetaData() {
 		return new SurveyMetaData();
 	}
 
 	@Override
-	public IUserRegistartionDetails getIUserRegistartionDetails() {
+	public UserRegistartionDetails getIUserRegistartionDetails() {
 		return new UserRegistartionDetails();
 	}
 
 	@Override
-	public IUser getUser() {
+	public User getUser() {
 		return new User();
 	}
 
 	@Override
-	public ISurveyQuestion getSurveyQuestion() {
+	public SurveyQuestion getSurveyQuestion() {
 		return new SurveyQuestion();
+	}
+
+	@Override
+	public SurveyList getSurveyList() {
+
+		return new SurveyList();
+	}
+
+	@Override
+	public SurveyGroups getSurveyGroups() {
+
+		return new SurveyGroups();
+	}
+
+	@Override
+	public Group getGroup() {
+		return new Group();
+	}
+
+	@Override
+	public UserRegistartionDetails getIUserRegistartionDetails(User user) {
+		return new UserRegistartionDetails(user);
+	}
+
+	@Override
+	public Answer getAnswer(String answer, String bannerId, Integer surveyQuestionId) {
+		return new Answer(answer, bannerId, surveyQuestionId);
 	}
 }

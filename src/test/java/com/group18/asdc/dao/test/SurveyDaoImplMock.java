@@ -2,6 +2,7 @@ package com.group18.asdc.dao.test;
 
 import java.util.ArrayList;
 
+import com.group18.asdc.TestConfig;
 import com.group18.asdc.dao.SurveyDao;
 import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.SurveyMetaData;
@@ -12,7 +13,8 @@ public class SurveyDaoImplMock implements SurveyDao {
 
 	@Override
 	public SurveyMetaData getSavedSurvey(Course course) {
-		SurveyMetaData surveyData = new SurveyMetaData();
+		SurveyMetaData surveyData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyMetaDataTest();
 		return surveyData;
 	}
 
@@ -24,21 +26,24 @@ public class SurveyDaoImplMock implements SurveyDao {
 
 	@Override
 	public boolean isSurveyExists(Course course) {
-		SurveyMetaData surveyMetaData = new SurveyMetaData();
+		SurveyMetaData surveyMetaData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyMetaDataTest();
 		surveyMetaData.getSurveyId();
 		return Boolean.TRUE;
 	}
 
 	@Override
 	public int createSurvey(Course course) {
-		SurveyMetaData surveyMetaData = new SurveyMetaData();
+		SurveyMetaData surveyMetaData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyMetaDataTest();
 		surveyMetaData.setSurveyId(1);
 		return surveyMetaData.getSurveyId();
 	}
 
 	@Override
 	public boolean isSurveyPublished(Course course) {
-		SurveyMetaData survey = new SurveyMetaData();
+		SurveyMetaData survey = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getSurveyMetaDataTest();
 		survey.setPublishedStatus(Boolean.FALSE);
 		return survey.isPublishedStatus();
 	}

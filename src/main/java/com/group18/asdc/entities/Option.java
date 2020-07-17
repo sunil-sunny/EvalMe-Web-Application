@@ -1,26 +1,22 @@
 package com.group18.asdc.entities;
 
-public class Option implements IOption{
+public class Option{
 
 	private String displayText;
 	private int storedData;
 
-	@Override
 	public String getDisplayText() {
 		return displayText;
 	}
 
-	@Override
 	public void setDisplayText(String displayText) {
 		this.displayText = displayText;
 	}
-
-	@Override
+	
 	public int getStoredData() {
 		return storedData;
 	}
-
-	@Override
+	
 	public void setStoredData(int storedData) {
 		this.storedData = storedData;
 	}

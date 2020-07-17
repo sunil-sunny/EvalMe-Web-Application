@@ -1,6 +1,8 @@
 package com.group18.asdc.service;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ public class CourseDetailsServiceImpl implements CourseDetailsService {
 
 	private static final CourseDetailsDao courseDetailsDao = SystemConfig.getSingletonInstance().getDaoAbstractFactory()
 			.getCourseDetailsDao();
+	private static final Logger log=Logger.getLogger(CourseDetailsServiceImpl.class.getName());
 
 	@Override
 	public List<Course> getAllCourses() {
@@ -38,6 +41,7 @@ public class CourseDetailsServiceImpl implements CourseDetailsService {
 	@Override
 	public boolean isCourseExists(Course course) {
 		if (null == course) {
+			log.log(Level.SEVERE, "Course object received as null while checking course existance");
 			return Boolean.FALSE;
 		} else {
 			return courseDetailsDao.isCourseExists(course);

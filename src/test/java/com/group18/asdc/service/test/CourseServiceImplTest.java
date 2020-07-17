@@ -28,50 +28,58 @@ public class CourseServiceImplTest {
 
 	@Test
 	public void getCoursesWhereUserIsStudentTestOne() {
-		User studentFive = new User("Shane", "Warne", "B00654194", "shane@dal.ca");
+		User studentFive = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Shane",
+				"Warne", "B00654194", "shane@dal.ca");
 		List<Course> courseList = courseServiceImplMock.getCoursesWhereUserIsStudent(studentFive);
 		assertNotEquals(0, courseList.size());
 	}
 
 	@Test
 	public void getCoursesWhereUserIsStudentTestTwo() {
-		User studentFive = new User("Shane", "Watson", "B00222222", "shane@dal.ca");
+		User studentFive = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Shane",
+				"Watson", "B00222222", "shane@dal.ca");
 		List<Course> courseList = courseServiceImplMock.getCoursesWhereUserIsStudent(studentFive);
 		assertEquals(0, courseList.size());
 	}
 
 	@Test
 	public void getCoursesWhereUserIsInstrcutorTestOne() {
-		User instructorThree = new User("Michel", "Bevan", "B00675984", "bevan@dal.com");
+		User instructorThree = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Michel",
+				"Bevan", "B00675984", "bevan@dal.com");
 		List<Course> instructorCourses = courseServiceImplMock.getCoursesWhereUserIsInstrcutor(instructorThree);
 		assertNotEquals(0, instructorCourses.size());
 	}
 
 	@Test
 	public void getCoursesWhereUserIsInstrcutorTestTwo() {
-		User studentFive = new User("Shane", "Warne", "B00654194", "shane@dal.ca");
+		User studentFive = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Shane",
+				"Warne", "B00654194", "shane@dal.ca");
 		List<Course> instructorCourses = courseServiceImplMock.getCoursesWhereUserIsInstrcutor(studentFive);
 		assertEquals(0, instructorCourses.size());
 	}
 
 	@Test
 	public void getCoursesWhereUserIsTATestOne() {
-		User instructorTwo = new User("Don", "Bradman", "B00741399", "don@dal.com");
+		User instructorTwo = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Don",
+				"Bradman", "B00741399", "don@dal.com");
 		List<Course> instructorCourses = courseServiceImplMock.getCoursesWhereUserIsTA(instructorTwo);
 		assertEquals(0, instructorCourses.size());
 	}
 
 	@Test
 	public void getCoursesWhereUserIsTATestTwo() {
-		User taTwo = new User("Ricky", "Ponting", "B00951789", "ricky@dal.ca");
+		User taTwo = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Ricky", "Ponting",
+				"B00951789", "ricky@dal.ca");
 		List<Course> instructorCourses = courseServiceImplMock.getCoursesWhereUserIsTA(taTwo);
 		assertNotEquals(0, instructorCourses.size());
 	}
 
 	@Test
 	public void filterEligibleUsersForCourseTest() {
-		User studentTwo = new User("Glenn", "Maxwell", "B00753159", "glenn@dal.ca");
-		User studentThree = new User("Brett", "Lee", "B00852693", "ricky@dal.ca");
+		User studentTwo = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Glenn",
+				"Maxwell", "B00753159", "glenn@dal.ca");
+		User studentThree = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest("Brett",
+				"Lee", "B00852693", "ricky@dal.ca");
 		List<User> userList = Arrays.asList(studentTwo, studentThree);
 		List<User> eligiList = courseServiceImplMock.filterEligibleUsersForCourse(userList, 1);
 		assertEquals(2, eligiList.size());

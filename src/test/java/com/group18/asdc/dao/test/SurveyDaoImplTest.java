@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.group18.asdc.TestConfig;
 import com.group18.asdc.dao.SurveyDao;
-import com.group18.asdc.entities.Course;
 import com.group18.asdc.entities.SurveyMetaData;
 import com.group18.asdc.errorhandling.PublishSurveyException;
 import com.group18.asdc.errorhandling.SavingSurveyException;
@@ -23,25 +22,29 @@ public class SurveyDaoImplTest {
 
 	@Test
 	public void getSavedSurveyTest() {
-		SurveyMetaData surveyData = theSurveyDao.getSavedSurvey(new Course());
+		SurveyMetaData surveyData = theSurveyDao
+				.getSavedSurvey(TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest());
 		assertNotNull(surveyData);
 	}
 
 	@Test
 	public void saveSurvey() throws SavingSurveyException {
-		boolean isSaved = theSurveyDao.saveSurvey(new SurveyMetaData());
+		boolean isSaved = theSurveyDao
+				.saveSurvey(TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getSurveyMetaDataTest());
 		assertTrue(isSaved);
 	}
 
 	@Test
 	public void isSurveyExists() {
-		boolean isExists = theSurveyDao.isSurveyExists(new Course());
+		boolean isExists = theSurveyDao
+				.isSurveyExists(TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest());
 		assertTrue(isExists);
 	}
 
 	@Test
 	public void createSurvey() {
-		int surveyId = theSurveyDao.createSurvey(new Course());
+		int surveyId = theSurveyDao
+				.createSurvey(TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest());
 		assertNotEquals(0, surveyId);
 	}
 
@@ -49,7 +52,8 @@ public class SurveyDaoImplTest {
 	public void publishSurveyTest() {
 		boolean isPublished;
 		try {
-			isPublished = theSurveyDao.publishSurvey(new SurveyMetaData());
+			isPublished = theSurveyDao.publishSurvey(
+					TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getSurveyMetaDataTest());
 		} catch (PublishSurveyException e) {
 			isPublished = Boolean.FALSE;
 		}
@@ -58,7 +62,8 @@ public class SurveyDaoImplTest {
 
 	@Test
 	public void isSurveyPublished() {
-		boolean isPublished = theSurveyDao.isSurveyPublished(new Course());
+		boolean isPublished = theSurveyDao
+				.isSurveyPublished(TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest());
 		assertFalse(isPublished);
 	}
 

@@ -16,14 +16,14 @@ public class AdminDaoImplTest {
 
 	@Test
 	public void addCourseTest() {
-		Course course  = new Course();
+		Course course  = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		boolean isCourseCreated = theAdminDaoMock.addCourse(course);
 		assertTrue(isCourseCreated);
 	}
 
 	@Test
 	public void deleteCourseTest() {
-		Course course = new Course();
+		Course course  = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getCourseTest();
 		boolean isCourseDeleted = theAdminDaoMock.deleteCourse(course);
 		assertTrue(isCourseDeleted);	
 	}

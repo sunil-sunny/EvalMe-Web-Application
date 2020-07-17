@@ -1,5 +1,7 @@
 package com.group18.asdc.service;
 
+import com.group18.asdc.util.IQueryVariableToArrayList;
+
 public class ServiceAbstractFactoryImpl implements ServiceAbstractFactory {
 
 	@Override
@@ -29,34 +31,27 @@ public class ServiceAbstractFactoryImpl implements ServiceAbstractFactory {
 
 	@Override
 	public EmailService getEmailService() {
-		return null;
+		return new EmailServiceImpl(getJavaMailSenderConfiguration());
 	}
 
 	@Override
 	public IJavaMailSenderConfiguration getJavaMailSenderConfiguration() {
-		
-		return null;
+		return new DefaultMailSenderConfiguration();
 	}
 
 	@Override
-	public PasswordHistoryService getPasswordHistoryService() {
-		
-		return null;
+	public PasswordHistoryService getPasswordHistoryService(IQueryVariableToArrayList queryVariableToArrayList) {		
+		return new PasswordHistoryServiceImpl(queryVariableToArrayList);
 	}
 
 	@Override
 	public RegisterService getRegisterService() {
 		return new RegisterServiceImpl();
 	}
-
-	@Override
-	public SubmitAnswerService getSubmitAnswerService() {
-		return new SubmitAnswerServiceImpl();
-	}
 	
 	@Override
-	public UserService getUserService() {
-		return null;
+	public UserService getUserService(IQueryVariableToArrayList queryVariableToArrayList) {
+		return new UserServiceImpl(queryVariableToArrayList);
 	}
 
 	@Override
@@ -73,4 +68,16 @@ public class ServiceAbstractFactoryImpl implements ServiceAbstractFactory {
 	public GroupFormationService getGroupFormationService() {
 		return new GroupFormationServiceImpl();
 	}
+
+	@Override
+	public SurveyAnswersService getSurveyAnswersService() {
+		return new SurveyAnswerServiceImpl();
+	}
+
+	@Override
+	public ResetPasswordService getResetPasswordService() {
+		return new ResetPasswordServiceImpl();
+	}
+
+	
 }

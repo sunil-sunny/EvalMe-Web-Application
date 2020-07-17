@@ -15,14 +15,14 @@ public class CreateQuestionServiceImplMock implements CreateQuestionService {
 	@Override
 	public boolean createNumericOrTextQuestion(BasicQuestionData theBasicQuestionData) {
 
-		User theCurrentUser = new User();
+		User theCurrentUser = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest();
 		return theCreateQuestionsDaoImplMock.createNumericOrTextQuestion(theBasicQuestionData, theCurrentUser);
 	}
 
 	@Override
 	public boolean createMultipleQuestion(MultipleChoiceQuestion theMultipleChoiceChoose) {
 
-		User theCurrentUser = new User();
+		User theCurrentUser = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory().getUserTest();
 		return theCreateQuestionsDaoImplMock.createMultipleChoiceQuestion(theMultipleChoiceChoose, theCurrentUser);
 	}
 }

@@ -4,12 +4,14 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.group18.asdc.database.IPasswordPolicyDB;
+import com.group18.asdc.dao.IPasswordPolicyDB;
 import com.group18.asdc.errorhandling.PasswordPolicyException;
 import com.group18.asdc.util.ICustomStringUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

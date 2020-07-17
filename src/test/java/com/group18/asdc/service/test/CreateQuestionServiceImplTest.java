@@ -18,14 +18,16 @@ public class CreateQuestionServiceImplTest {
 	@Test
 	public void createNumericOrTextQuestionTest() {
 
-		BasicQuestionData basicQuestionData = new BasicQuestionData();
+		BasicQuestionData basicQuestionData = TestConfig.getTestSingletonIntance().getModelTestAbstractFactory()
+				.getBasicQuestionDataTest();
 		boolean isCreated = theCreateQuestionServiceImplMock.createNumericOrTextQuestion(basicQuestionData);
 		assertTrue(isCreated);
 	}
 
 	@Test
 	public void createMultipleQuestion() {
-		MultipleChoiceQuestion theMultipleChoiceChoose = new MultipleChoiceQuestion();
+		MultipleChoiceQuestion theMultipleChoiceChoose = TestConfig.getTestSingletonIntance()
+				.getModelTestAbstractFactory().getMultipleChoiceQuestionTest();
 		boolean isCreated = theCreateQuestionServiceImplMock.createMultipleQuestion(theMultipleChoiceChoose);
 		assertTrue(isCreated);
 	}
